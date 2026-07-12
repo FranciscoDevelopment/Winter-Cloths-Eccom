@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16
+    container_name: clothes_eccom_postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${THE_DATABASE_USER}
+      POSTGRES_PASSWORD: ${THE_DATABASE_PASS}
+      POSTGRES_DB: ${THE_DATABASE_NAME}
+
+    ports:
+      - "${DB_PORT}:5432"
+    
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: clothes_eccom_appi
+    restart: unless-stopped
+
+    environment:
+      PORT: ${API_PORT}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${THE_DATABASE_USER}
+      DATABASE_PASS: ${THE_DATABASE_PASS}
+      DATABASE_NAME: ${THE_DATABASE_NAME}
+
+    ports:
+      - "${API_PORT}:${API_PORT}"
+
+    depends_on:
+      - db
+
+
+#frontend:
+#  build:
+#    context: ./frontend
+#    dockerfile: Dockerfile
+
+#  container_name: clothes_eccom_frontend
+#  restart: unless-stopped
+
+#  environment:
+#    NEXT_PUBLIC_API_URL: http://api:${API_PORT}
+
+#  ports:
+#    - "${FRONTEND_PORT}:3000"
+
+#  depends_on:
+#    - api
+
+
+volumes:
+  pgdata:
+    name: clothes_eccom_pgdata
