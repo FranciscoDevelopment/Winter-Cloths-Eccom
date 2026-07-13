@@ -3,6 +3,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UsingJoinColumnOnlyOnOneSideAllowedError } from 'typeorm';
+import BadParamInRequest from 'src/utils/BadParamInRequest';
 
 @Controller('categories')
 export class CategoriesController {
@@ -27,7 +28,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne( @Param( 'id', ParseIntPipe ) id: string) {  // @Param('id') id : string ==== const id = req.params.id
+  findOne( @Param( 'id', new ParseIntPipe( {exceptionFactory: BadParamInRequest} ) ) id: string) {  // @Param('id') id : string ==== const id = req.params.id
 
 
     console.log( id )
