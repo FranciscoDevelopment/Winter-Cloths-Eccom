@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { UsingJoinColumnOnlyOnOneSideAllowedError } from 'typeorm';
 
 @Controller('categories')
 export class CategoriesController {
@@ -27,6 +28,11 @@ export class CategoriesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+
+    // @Param('id') id : string ==== const id = req.params.id
+
+    console.log( id )
+
     return this.categoriesService.findOne(+id);
   }
 
