@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { UsingJoinColumnOnlyOnOneSideAllowedError } from 'typeorm';
 import BadParamInRequest from 'src/utils/BadParamInRequest';
+import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
 
 @Controller('categories')
 export class CategoriesController {
@@ -28,8 +28,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne( @Param( 'id', new ParseIntPipe( {exceptionFactory: BadParamInRequest} ) ) id: string) {  // @Param('id') id : string ==== const id = req.params.id
-
+  findOne( @Param( 'id', IdValidationPipe ) id: string) {  // @Param('id') id : string ==== const id = req.params.id
 
     console.log( id )
 
@@ -37,12 +36,12 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  update(@Param('id', IdValidationPipe) id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
     return this.categoriesService.update(+id, updateCategoryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.categoriesService.remove(+id);
   }
 }
