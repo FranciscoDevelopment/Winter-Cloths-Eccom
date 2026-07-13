@@ -20,6 +20,11 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  @Get("length")
+  findAllAndLength() {
+    return this.categoriesService.findAllAndLength() ;
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
