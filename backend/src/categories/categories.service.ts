@@ -11,7 +11,7 @@ export class CategoriesService {
   constructor(
 
     @InjectRepository( Category )
-    private readonly categoryRepository : Repository<Category>
+    private readonly categoryRepository$ : Repository<Category>
 
   ) {}
 
@@ -22,24 +22,24 @@ export class CategoriesService {
    
    newCategory.name = createCategoryDto.name ;
 
-   return this.categoryRepository.save( newCategory )
+   return this.categoryRepository$.save( newCategory )
 
   }
 
 
   findAll() {
-    return this.categoryRepository.find() 
+    return this.categoryRepository$.find() 
   }
 
 
   findAllAndLength () {
-    return this.categoryRepository.findAndCount() ;
+    return this.categoryRepository$.findAndCount() ;
   }
 
 
   async findOne(id: number) {
 
-    const category = await this.categoryRepository.findOneBy( {id} ) ;
+    const category = await this.categoryRepository$.findOneBy( {id} ) ;
 
     if( !category )  throw new NotFoundException( "The category doesn't exist" )  //404 ; 
 
@@ -55,7 +55,7 @@ export class CategoriesService {
     category.name = updateCategoryDto.name
 
 
-    return await this.categoryRepository.save( category )
+    return await this.categoryRepository$.save( category )
 
   }
 
@@ -64,7 +64,7 @@ export class CategoriesService {
     
     const category = await this.findOne( id ) ;
 
-    await this.categoryRepository.remove( category )
+    await this.categoryRepository$.remove( category )
 
     return `Category #${id} deleted`
 
