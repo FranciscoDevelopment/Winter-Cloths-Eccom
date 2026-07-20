@@ -3,7 +3,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetProductsQueryDto } from './dto/get-product-byId.dto';
-import { PAGINATION_LIMIT } from './settings/pagination';
+import { PAGINATION_LIMIT, SKIP_DEFAULT } from './settings/pagination';
 
 @Controller('products')
 export class ProductsController {
@@ -29,13 +29,15 @@ export class ProductsController {
   @Get( "length" )
   findAllAndLength ( @Query() query : GetProductsQueryDto ) {
 
-    console.log( query.take )
+    console.log( query )
 
     const categoryId = query.category_id ?? null ;
 
     const take = query.take ?? PAGINATION_LIMIT ;
 
-    return this.productsService.findAllAndLength( categoryId, take ) 
+    const skip = query.skip ?? SKIP_DEFAULT ;
+
+    return this.productsService.findAllAndLength( categoryId, take, skip ) 
 
   }
 

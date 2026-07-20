@@ -1,4 +1,4 @@
-import { IsNumberString, IsOptional } from 'class-validator'
+import { IsNumber, IsNumberString, IsOptional } from 'class-validator'
 
 export class GetProductsQueryDto {
 
@@ -10,5 +10,10 @@ export class GetProductsQueryDto {
     @IsOptional()
     @IsNumberString( {}, {message: "The pagination quantity has to be a number"} )
     take? : number
+
+
+    @IsOptional()
+    @IsNumberString( {}, {message: "The skip quantity has to be a number"} )
+    skip? : number
 
 }

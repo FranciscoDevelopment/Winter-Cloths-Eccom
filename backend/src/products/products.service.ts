@@ -70,7 +70,7 @@ export class ProductsService {
   }
 
 
-  async findAllAndLength ( id? : number | null, take? : number ) {
+  async findAllAndLength ( id? : number | null, take? : number, skip? : number ) {
 
     const whereClause = id ? {category: {id} } : {}  ;
 
@@ -80,7 +80,8 @@ export class ProductsService {
         where: whereClause,
         relations: {category: true} ,
         order: {id: "DESC"},
-        take: take
+        take: take,
+        skip
       }
 
     )
