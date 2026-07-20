@@ -112,8 +112,15 @@ export class ProductsService {
   }
 
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    
+    const product = await this.findOne(id) ;
+
+    Object.assign( product, updateProductDto )
+
+    return await this.productsRepository$.save( product ) ;
+    
+  
   }
 
 
