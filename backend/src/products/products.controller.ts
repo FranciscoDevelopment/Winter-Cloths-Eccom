@@ -4,6 +4,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetProductsQueryDto } from './dto/get-product-byId.dto';
 import { PAGINATION_LIMIT, SKIP_DEFAULT } from './settings/pagination';
+import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
 
 @Controller('products')
 export class ProductsController {
@@ -17,12 +18,16 @@ export class ProductsController {
   @Get()
   findAll( @Query() query : GetProductsQueryDto ) {
 
-    console.log( query.take )
+    console.log( query )
 
 
     const categoryId = query.category_id ?? null
 
-    return this.productsService.findAll( categoryId );
+    const take = query.take ?? PAGINATION_LIMIT ;
+
+    const skip = query.skip ?? SKIP_DEFAULT ;
+
+    return this.productsService.findAll( categoryId, take, skip );
   }
 
 
@@ -43,7 +48,7 @@ export class ProductsController {
 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', IdValidationPipe) id: string) {
     return this.productsService.findOne(+id);
   }
 

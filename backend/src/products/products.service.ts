@@ -36,7 +36,8 @@ export class ProductsService {
     return this.productsRepository$.save( 
       {
         ...createProductDto,
-        category: category
+        category: category,
+        //categoryId: category.id
     
       } 
     )
@@ -44,15 +45,13 @@ export class ProductsService {
   }
 
 
-  async findAll( categoryId : number | null ) {
+  async findAll( categoryId : number | null, take? : number , skip? : number ) {
 
     if( categoryId ) {
 
       const data = await this.productsRepository$.find(
         {
           where: {category: {id: categoryId} } ,
-          relations: {category: true},
-          order: {id: "DESC"}
         }
       )
 
@@ -63,7 +62,9 @@ export class ProductsService {
     return this.productsRepository$.find(
       {
         relations: {category: true },       // Equivalente en product.entity     @ManyToOne( () => Category, {eager: true} )
-        order: {id: "ASC" }
+        order: {id: "DESC" },
+        take: take,
+        skip
       }    
     )
 
@@ -94,8 +95,20 @@ export class ProductsService {
   }
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+
+    const product = await this.productsRepository$.findOne(
+      {
+        where: {id},
+        relations: {category: true}
+      }
+    ) ;
+
+    if( !product ) throw new NotFoundException( `The #${id} product doesn't exist` ) ;
+
+
+    return product 
+
   }
 
 

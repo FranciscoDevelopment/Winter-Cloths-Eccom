@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { imageProductSchema, inventoryProductSchema, priceProductSchema, productNameSchema } from "../schemas/products.schema"
+import { categoryIdProductSchema, imageProductSchema, inventoryProductSchema, priceProductSchema, productNameSchema } from "../schemas/products.schema"
 import { Category } from "src/categories/entities/category.entity"
 
 
@@ -20,11 +20,17 @@ export class Product {
     @Column( priceProductSchema )
     price! : number
 
+
     @Column( inventoryProductSchema )
     inventory! : number
 
+
     @ManyToOne( () => Category )
     category! : Category
+
+
+    @Column( categoryIdProductSchema )
+    categoryId! : number
 
 
 }

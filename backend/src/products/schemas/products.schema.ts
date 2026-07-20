@@ -25,3 +25,7 @@ export const priceProductSchema : ColumnOptions = {
 export const inventoryProductSchema : ColumnOptions = {
     type: "int"
 }
+
+export const categoryIdProductSchema : ColumnOptions = {
+    type: "int"
+}
