@@ -43,19 +43,69 @@ export class ProductsService {
 
   }
 
-  findAll() {
-    return this.productsRepository$.find()
+
+  async findAll( categoryId : number | null ) {
+
+    if( categoryId ) {
+
+      const data = await this.productsRepository$.find(
+        {
+          where: {category: {id: categoryId} } ,
+          relations: {category: true},
+          order: {id: "DESC"}
+        }
+      )
+
+      return data
+
+    }
+
+    return this.productsRepository$.find(
+      {
+        relations: {category: true },       // Equivalente en product.entity     @ManyToOne( () => Category, {eager: true} )
+        order: {id: "ASC" }
+      }    
+    )
+
   }
+
+
+  async findAllAndLength ( id? : number | null, take? : number ) {
+
+    const whereClause = id ? {category: {id} } : {}  ;
+
+    const [ data, totalProducts ] = await this.productsRepository$.findAndCount(
+
+      {
+        where: whereClause,
+        relations: {category: true} ,
+        order: {id: "DESC"},
+        take: take
+      }
+
+    )
+
+    return {
+      data,
+      total: totalProducts
+    }
+
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} product`;
   }
 
+
   update(id: number, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
+
   remove(id: number) {
     return `This action removes a #${id} product`;
   }
+
+  
 }

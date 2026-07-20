@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { GetProductsQueryDto } from './dto/get-product-byId.dto';
+import { PAGINATION_LIMIT } from './settings/pagination';
 
 @Controller('products')
 export class ProductsController {
@@ -13,9 +15,30 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll( @Query() query : GetProductsQueryDto ) {
+
+    console.log( query.take )
+
+
+    const categoryId = query.category_id ?? null
+
+    return this.productsService.findAll( categoryId );
   }
+
+
+  @Get( "length" )
+  findAllAndLength ( @Query() query : GetProductsQueryDto ) {
+
+    console.log( query.take )
+
+    const categoryId = query.category_id ?? null ;
+
+    const take = query.take ?? PAGINATION_LIMIT ;
+
+    return this.productsService.findAllAndLength( categoryId, take ) 
+
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
