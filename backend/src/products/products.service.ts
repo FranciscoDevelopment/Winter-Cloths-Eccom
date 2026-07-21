@@ -146,8 +146,14 @@ export class ProductsService {
   }
 
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+  
+    const productToDelete = await this.findOne( id ) ;
+
+    await this.productsRepository$.remove( productToDelete ) ;
+
+    return `Product #${id} deleted`
+  
   }
 
   

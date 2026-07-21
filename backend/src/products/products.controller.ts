@@ -62,8 +62,9 @@ export class ProductsController {
     return await this.productsService.update( +id, updateProductDto )
   }
 
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.productsService.remove(+id);
   }
 }
