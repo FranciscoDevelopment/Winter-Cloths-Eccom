@@ -118,9 +118,31 @@ export class ProductsService {
 
     Object.assign( product, updateProductDto )
 
+    if( updateProductDto.categoryId ) {
+
+      const categoryToUpdate = await this.categoryRepository$.findOneBy(
+        {
+          id: updateProductDto.categoryId
+        }
+      )
+
+      if( !categoryToUpdate ) {
+
+        let errors : string[] = [] ;
+
+        errors.push( "The respective category doen't exist" ) ;
+
+        throw new NotFoundException( errors ) ;
+
+      }
+
+      product.category = categoryToUpdate ;
+
+    }
+
+
     return await this.productsRepository$.save( product ) ;
     
-  
   }
 
 
