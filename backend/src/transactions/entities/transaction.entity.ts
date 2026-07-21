@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { date_TransactionSchema, total_TransactionsSchema } from "../schemas/transaction.schema";
 import { quantity_TransactionContentsSchema } from "../schemas/transaction-contents.schema";
 import { Product } from "src/products/entities/product.entity";
@@ -15,6 +15,8 @@ export class Transaction {
     @Column( date_TransactionSchema )
     transactionDate! : Date
 
+    @OneToMany( () => TransactionContents, ( transactionContents ) => transactionContents.transaction )
+    contents! : TransactionContents[]
 }
 
 
@@ -35,5 +37,10 @@ export class TransactionContents {
 
     //@ManyToOne( () => Transaction )
     //transaction! : Transaction
+
+    @ManyToOne( () => Transaction , ( transaction ) => transaction.contents )
+    transaction! : Transaction
+
+    //@ManyToOne( ()  )
 
 }
