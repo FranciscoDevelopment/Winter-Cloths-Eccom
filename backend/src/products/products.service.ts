@@ -37,8 +37,6 @@ export class ProductsService {
       {
         ...createProductDto,
         category: category,
-        //categoryId: category.id
-    
       } 
     )
 
