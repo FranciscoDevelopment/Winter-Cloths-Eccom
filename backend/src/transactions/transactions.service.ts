@@ -20,7 +20,7 @@ export class TransactionsService {
     private readonly productRepository$ : Repository< Product >
   ) {}
 
-  /*
+  
   async create(createTransactionDto: CreateTransactionDto) {
   
     const transaction = new Transaction() ;
@@ -32,7 +32,7 @@ export class TransactionsService {
     return "Sale successfully registered"
 
   }
-*/
+
 
   findAll() {
     return `This action returns all transactions`;
