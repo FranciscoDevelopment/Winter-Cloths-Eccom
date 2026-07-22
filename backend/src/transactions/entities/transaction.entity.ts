@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { date_TransactionSchema, total_TransactionsSchema } from "../schemas/transaction.schema";
-import { quantity_TransactionContentsSchema } from "../schemas/transaction-contents.schema";
+import { priceAtTransactionDate_TransactionContentsSchema, quantity_TransactionContentsSchema } from "../schemas/transaction-contents.schema";
 import { Product } from "src/products/entities/product.entity";
 
 @Entity()
@@ -29,18 +29,14 @@ export class TransactionContents {
     @Column( quantity_TransactionContentsSchema )
     quantity! : number
 
-    @Column()
+    @Column( priceAtTransactionDate_TransactionContentsSchema )
     priceAtTransactionDate! : number
 
-    @ManyToOne( () => Product, ( product ) => product.id )
+    @ManyToOne( () => Product, ( product ) => product.id , {cascade: true})
     product! : Product
 
-    //@ManyToOne( () => Transaction )
-    //transaction! : Transaction
-
-    @ManyToOne( () => Transaction , ( transaction ) => transaction.contents )
+    @ManyToOne( () => Transaction , ( transaction ) => transaction.contents, {cascade: true} )
     transaction! : Transaction
 
-    //@ManyToOne( ()  )
 
 }

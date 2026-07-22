@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,7 +20,7 @@ export class TransactionsService {
     private readonly productRepository$ : Repository< Product >
   ) {}
 
-  
+
   async create(createTransactionDto: CreateTransactionDto) {
   
     const transaction = new Transaction() ;
@@ -28,6 +28,30 @@ export class TransactionsService {
     transaction.total = createTransactionDto.total ;
 
     await this.transactionRepository$.save( transaction )
+
+
+    for( const contents of createTransactionDto.contents ) {
+
+      const productToBuy = await this.productRepository$.findOneBy( {id: contents.productId } )
+
+      if( !productToBuy ) {
+
+        let errors : string[] = [] ;
+
+        errors.push( "The input product doen't exist" ) ;
+
+        throw new NotFoundException( errors ) ;
+      }
+
+      await this.transactionContentsRepository$.save(
+        {
+          ...contents,
+          transaction,
+          product: productToBuy
+        }
+      )
+
+    }
 
     return "Sale successfully registered"
 
