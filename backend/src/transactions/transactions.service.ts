@@ -4,7 +4,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
+import { parseISO } from 'date-fns';
 
 @Injectable()
 export class TransactionsService {
@@ -92,8 +93,20 @@ export class TransactionsService {
   }
 
 
-  findAll() {
-    return `This action returns all transactions`;
+  findAll( transactionDate? : string ) {
+    
+    const options : FindManyOptions<Transaction> = {
+      relations: {contents: {product: true} }
+    }
+
+    if( transactionDate ) {
+      const formattedDate = parseISO(  transactionDate) ;
+      console.log( formattedDate )
+    }
+
+
+    return this.transactionRepository$.find( options ) ;
+
   }
 
 
@@ -110,5 +123,5 @@ export class TransactionsService {
   remove(id: number) {
     return `This action removes a #${id} transaction`;
   }
-  
+
 }
