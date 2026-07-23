@@ -126,8 +126,19 @@ export class TransactionsService {
   }
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOne(id: number) {
+  
+    const options : FindManyOptions<Transaction> = {
+      where: {id: id} ,
+      relations: {contents: {product: true } }
+    }
+
+    const transaction = await this.transactionRepository$.findOne( options )
+
+    if( !transaction ) throw new NotFoundException( `Transaction #${id} not founded`) ;
+
+    return transaction
+
   }
 
 
