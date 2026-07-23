@@ -147,8 +147,29 @@ export class TransactionsService {
   }
 
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: number) {
+    
+    const transaction = await this.findOne( id ) ;
+
+    for( const contents of transaction.contents ) {
+
+      const transactionContentsToDelete = await this.transactionContentsRepository$.findOneBy( {id: contents.id} ) ;
+
+      if( !transactionContentsToDelete ){
+        
+        this.errors.push( `The respective contents doesn't exist in the #${transaction.id} transaction` ) ;
+  
+        throw new NotFoundException( this.errors ) ;
+      }
+
+      await this.transactionContentsRepository$.remove( transactionContentsToDelete ) ;
+
+    }
+
+    await this.transactionRepository$.remove( transaction ) ;
+
+    return {message: `#${id} Transaction deleted`}
+
   }
 
 }
