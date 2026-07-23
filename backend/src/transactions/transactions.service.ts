@@ -153,6 +153,20 @@ export class TransactionsService {
 
     for( const contents of transaction.contents ) {
 
+      const productToBeRefunded = await this.productRepository$.findOneBy( {id: contents.product.id } ) ;
+
+      if( !productToBeRefunded ) {
+        
+        this.errors.push( `Currently, the respective product/s doesn't exist for the operation` ) ;
+  
+        throw new NotFoundException( this.errors ) ;
+      }
+      
+      productToBeRefunded.inventory = productToBeRefunded.inventory + contents.quantity ;
+
+      await this.productRepository$.save( productToBeRefunded ) ;
+
+      
       const transactionContentsToDelete = await this.transactionContentsRepository$.findOneBy( {id: contents.id} ) ;
 
       if( !transactionContentsToDelete ){
