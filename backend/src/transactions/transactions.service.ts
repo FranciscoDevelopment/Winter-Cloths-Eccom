@@ -4,8 +4,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
-import { FindManyOptions, Repository } from 'typeorm';
-import { parseISO } from 'date-fns';
+import { Between, FindManyOptions, Repository } from 'typeorm';
+import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 
 @Injectable()
 export class TransactionsService {
@@ -100,8 +100,24 @@ export class TransactionsService {
     }
 
     if( transactionDate ) {
-      const formattedDate = parseISO(  transactionDate) ;
-      console.log( formattedDate )
+      const formattedDate : Date = parseISO(  transactionDate) ;
+      console.log( formattedDate  )
+
+      if( !isValid(formattedDate) ) throw new BadRequestException( "Invalid date" ) ;
+
+      const startOfTheDay = startOfDay( formattedDate )
+
+      const endOfTheDay = endOfDay( formattedDate ) ;
+
+      console.log( startOfTheDay )
+      console.log( endOfTheDay )
+
+
+      options.where = {
+        transactionDate: Between( startOfTheDay, endOfTheDay )
+      } 
+      
+
     }
 
 
