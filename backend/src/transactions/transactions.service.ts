@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,6 +23,9 @@ export class TransactionsService {
 
   async create(createTransactionDto: CreateTransactionDto) {
   
+    // 
+
+
     const transaction = new Transaction() ;
 
     transaction.total = createTransactionDto.total ;
@@ -42,6 +45,10 @@ export class TransactionsService {
 
         throw new NotFoundException( errors ) ;
       }
+
+      if( contents.quantity > productToBuy.inventory ) throw new BadRequestException(`The article ${productToBuy.name} exceeds the quantity available in stock`) ;
+
+      productToBuy.inventory -= contents.quantity ;     // productToBuy.inventory = productToBuy.inventory - contents.quantity
 
       await this.transactionContentsRepository$.save(
         {
