@@ -4,8 +4,9 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
-import { Between, FindManyOptions, Repository } from 'typeorm';
+import { Between, Entity, FindManyOptions, Repository } from 'typeorm';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
+import { ProductsController } from 'src/products/products.controller';
 
 @Injectable()
 export class TransactionsService {
@@ -142,8 +143,102 @@ export class TransactionsService {
   }
 
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  async update(id: number, updateTransactionDto: UpdateTransactionDto) {
+
+    const transactionToUpdate = await this.findOne( id ) ;  // ya carga contents y products
+
+
+    await this.productRepository$.manager.transaction( async ( entityManager ) => {
+
+      // Revertir inventario de contenidos actuales
+
+      if( updateTransactionDto.contents ) {
+
+        for( const content of transactionToUpdate.contents ) {
+
+          const product = await entityManager.findOneBy( Product, {id: content.id} ) ;
+
+          if( !product ) {
+            
+            this.errors.push( `Product #${content.product.id} no longer exists` ) ;
+            
+            throw new NotFoundException( this.errors ) ;
+
+          }
+
+          product.inventory = product.inventory + content.quantity ;  // devolver stock
+
+          await entityManager.save( product ) ;
+
+        }
+
+        // Elimir contenidos antiguos
+
+        await entityManager.remove( TransactionContents, transactionToUpdate.contents ) ;
+
+        // Crear nuevos contenidos y descontar inventarios
+
+        const newContentsUpdated : TransactionContents[] = [] ;
+
+        for ( const contentDto of updateTransactionDto.contents ) {
+
+          const product = await entityManager.findOneBy( Product, {id: contentDto.productId } ) ;
+
+          if( !product ) {
+
+            this.errors.push( `Product #${contentDto.productId} doesn't exist` );
+            throw new NotFoundException( this.errors )
+
+          }
+
+          if( contentDto.quantity > product.inventory ) {
+
+            this.errors.push( `${product.name} exceeds available stock` ) ;
+
+            throw new BadRequestException( this.errors )
+
+          }
+
+          product.inventory -= contentDto.quantity ;
+
+          await entityManager.save( product ) ;
+
+          
+          const newContent = new TransactionContents() ;
+
+          newContent.product = product ;
+
+          newContent.quantity = contentDto.quantity ;
+
+          newContent.priceAtTransactionDate = contentDto.priceAtTransactionDate ;
+
+          newContent.transaction = transactionToUpdate;
+
+          newContentsUpdated.push( newContent ) ;
+
+        }
+
+        await entityManager.save( newContentsUpdated )
+
+        // Recalcular total a pratir de los nuevos contenidos
+
+        transactionToUpdate.total = updateTransactionDto.contents.reduce(
+          ( sum, item ) => sum + (item.quantity*item.priceAtTransactionDate)
+        , 0)
+
+      }
+
+      // Si solo actualiza el total manualmente(sin contents)
+
+      if( updateTransactionDto.total !== undefined && !updateTransactionDto.contents ) {
+        transactionToUpdate.total = updateTransactionDto.total
+      }
+
+      await entityManager.save( transactionToUpdate ) ;
+    } )
+
+    return `Transaction #${id} updated successfully` ;
+
   }
 
 
