@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCuponDto } from './dto/create-cupon.dto';
 import { UpdateCuponDto } from './dto/update-cupon.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Cupon } from './entities/cupon.entity';
 
 @Injectable()
 export class CuponsService {
+
+  constructor( 
+    @InjectRepository( Cupon )
+    private readonly cuponRepository$ : Repository<Cupon> 
+  ) {}
+
+  errors : string[] = []
+
   create(createCuponDto: CreateCuponDto) {
-    return 'This action adds a new cupon';
+    return this.cuponRepository$.save( createCuponDto ) ;
   }
 
   findAll() {

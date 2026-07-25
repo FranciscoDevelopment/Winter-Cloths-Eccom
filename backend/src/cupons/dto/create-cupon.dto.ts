@@ -14,6 +14,6 @@ export class CreateCuponDto {
 
     @IsNotEmpty( {message: "The date is required" } )
     @IsDateString( {}, {message: "Invalid date"} )
-    expirationDate! : Date
+    expirationDate! : Date      // 2026-12-23
 
 }
