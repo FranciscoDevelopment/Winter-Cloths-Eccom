@@ -1,3 +1,4 @@
+import { name_CuponsSchema } from "src/cupons/schemas/cupons.schema";
 import { ColumnOptions } from "typeorm";
 
 export const total_TransactionsSchema : ColumnOptions = {
@@ -12,3 +13,18 @@ export const date_TransactionSchema : ColumnOptions = {
     default: () => "CURRENT_TIMESTAMP(6)"
 
 } as const 
+
+export const cupon_TransactionSchema : ColumnOptions = {
+    nullable: true,
+    ...name_CuponsSchema
+
+} as const
+
+export const discount_TransactionSchema : ColumnOptions = {
+
+    type: "decimal",
+    nullable: true,
+    default: 0
+
+} as const
+

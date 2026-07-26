@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, ValidateNested } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 
 export class TransactionContentsDto {
@@ -28,9 +28,8 @@ export class CreateTransactionDto {
     @IsNumber( {maxDecimalPlaces: 2}, {message: "The total value is not valid"} )
     total! : number
 
-    //IsString(  )
-
-    //transactionDate! : Date
+    @IsOptional()
+    cupon! : string
 
     @IsArray()
     @ArrayNotEmpty( {message: "The contents can not be empty"} )

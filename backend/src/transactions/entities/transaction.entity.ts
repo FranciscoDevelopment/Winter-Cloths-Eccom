@@ -1,7 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { date_TransactionSchema, total_TransactionsSchema } from "../schemas/transaction.schema";
+import { cupon_TransactionSchema, date_TransactionSchema, discount_TransactionSchema, total_TransactionsSchema } from "../schemas/transaction.schema";
 import { priceAtTransactionDate_TransactionContentsSchema, quantity_TransactionContentsSchema } from "../schemas/transaction-contents.schema";
 import { Product } from "src/products/entities/product.entity";
+import { name_CuponsSchema } from "src/cupons/schemas/cupons.schema";
 
 @Entity()
 export class Transaction {
@@ -11,6 +12,14 @@ export class Transaction {
 
     @Column( total_TransactionsSchema )
     total! : number
+
+    @Column( cupon_TransactionSchema )
+    cupon! : string ;
+
+    @Column( discount_TransactionSchema )
+    discount! : number
+
+
 
     @Column( date_TransactionSchema )
     transactionDate! : Date
