@@ -3,7 +3,7 @@ import { ColumnOptions } from "typeorm";
 export const name_CuponsSchema : ColumnOptions = {
 
     type: "varchar",
-    length: 10
+    length: 20
 
 } as const
 
