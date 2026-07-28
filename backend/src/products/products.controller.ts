@@ -1,17 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetProductsQueryDto } from './dto/get-product-byId.dto';
 import { PAGINATION_LIMIT, SKIP_DEFAULT } from './settings/pagination';
 import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
+import { Multer } from 'multer';
+import { uploadImageFileOptions } from './schemas/upload-file.schema';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
+  async create( 
+    @Body() createProductDto: CreateProductDto ,
+    @UploadedFile( uploadImageFileOptions ) file? : Express.Multer.File
+  ) {
     return this.productsService.create(createProductDto);
   }
 

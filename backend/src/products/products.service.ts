@@ -5,6 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { Category } from 'src/categories/entities/category.entity';
+import { S3_BUCKET, s3Client } from 'src/config/s3.config';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
+
 
 @Injectable()
 export class ProductsService {
@@ -18,7 +22,7 @@ export class ProductsService {
   ) {}
 
   
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, file? : Express.Multer.File ) {
 
     const category = await this.categoryRepository$.findOneBy( {id: createProductDto.categoryId } ) ;
 
@@ -31,14 +35,44 @@ export class ProductsService {
       throw new NotFoundException( errors )
 
     }
-    
 
-    return this.productsRepository$.save( 
+
+    // 1. Guardar producto sin imagen para obtener el id
+
+    const savedProduct = await this.productsRepository$.save( 
       {
         ...createProductDto,
         category: category,
       } 
     )
+
+    
+    // 2) Si hay imagen, subirla y actualizar
+
+    if( file ) {
+
+      const key = `products/${savedProduct.id}-${Date.now()}.${file.mimetype.split("/")[1]}` ;
+
+
+      await s3Client.send( new PutObjectCommand( {
+
+        Bucket: S3_BUCKET,
+        Key: key ,
+        Body: file.buffer,
+        ContentType: file.mimetype
+
+      } ) )
+
+      
+      const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazon.com/${key}`; 
+
+      savedProduct.image = imageUrl ;
+
+      await this.productsRepository$.save( savedProduct )
+
+    }
+
+    return savedProduct ;
 
   }
 
