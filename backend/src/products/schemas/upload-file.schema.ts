@@ -45,3 +45,25 @@ export const uploadImageFileOptions = new ParseFilePipe( {
     ],
    
 } )
+
+
+export const uploadImageFileOptionsRequired = new ParseFilePipe({
+    fileIsRequired: true,
+    validators: [
+        new ImageSizeValidator({}),
+        new ImageTypeValidator({})
+    ]
+})
+
+
+
+/*
+  @UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+        new FileTypeValidator({ fileType: /image\/(jpeg|png|jpg)/ }),
+      ],
+    })
+  ) file: Express.Multer.File
+*/

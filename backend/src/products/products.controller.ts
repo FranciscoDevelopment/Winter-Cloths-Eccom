@@ -1,12 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetProductsQueryDto } from './dto/get-product-byId.dto';
 import { PAGINATION_LIMIT, SKIP_DEFAULT } from './settings/pagination';
 import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
-import { Multer } from 'multer';
-import { uploadImageFileOptions } from './schemas/upload-file.schema';
+import { memoryStorage, Multer } from 'multer';
+import { uploadImageFileOptions, uploadImageFileOptionsRequired } from './schemas/upload-file.schema';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductsController {
@@ -17,7 +18,7 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto ,
     @UploadedFile( uploadImageFileOptions ) file? : Express.Multer.File
   ) {
-    return this.productsService.create(createProductDto);
+    return this.productsService.create(createProductDto, file);
   }
 
   @Get()
@@ -65,6 +66,16 @@ export class ProductsController {
     //const productToUpdate = await this.findOne( id )
     
     return await this.productsService.update( +id, updateProductDto )
+  }
+
+
+  @Patch(":id/image")
+  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  uploadImage(
+    @Param('id', IdValidationPipe) id : string,
+    @UploadedFile( uploadImageFileOptionsRequired ) file : Express.Multer.File
+  ) {
+    return this.productsService.uploadImage( +id, file )
   }
 
 

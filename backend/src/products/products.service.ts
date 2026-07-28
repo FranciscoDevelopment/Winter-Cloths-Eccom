@@ -8,6 +8,7 @@ import { Category } from 'src/categories/entities/category.entity';
 import { S3_BUCKET, s3Client } from 'src/config/s3.config';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { S3Client } from '@aws-sdk/client-s3';
+import * as fs from 'fs' ;
 
 
 @Injectable()
@@ -186,6 +187,28 @@ export class ProductsService {
 
     return `Product #${id} has been deleted`
   
+  }
+
+
+  async uploadImage ( productId : number, file : Express.Multer.File ) {
+
+    const key = `products/${productId}-${Date.now()}.${file.mimetype.split('/')[1]}` ;
+
+
+    await s3Client.send( new PutObjectCommand({
+      Bucket: S3_BUCKET,
+      Key: key,
+      Body: file.buffer ,
+      ContentType: file.mimetype
+    }) )
+
+    const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazon.com/${key}`;
+
+    await this.productsRepository$.update( productId, {image: imageUrl} )
+
+
+    return imageUrl
+
   }
 
   
