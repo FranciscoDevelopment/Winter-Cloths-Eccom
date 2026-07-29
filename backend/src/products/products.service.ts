@@ -65,7 +65,7 @@ export class ProductsService {
       } ) )
 
       
-      const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazon.com/${key}`; 
+      const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`; 
 
       savedProduct.image = imageUrl ;
 
@@ -202,7 +202,7 @@ export class ProductsService {
       ContentType: file.mimetype
     }) )
 
-    const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazon.com/${key}`;
+    const imageUrl = `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
     await this.productsRepository$.update( productId, {image: imageUrl} )
 

@@ -14,6 +14,7 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @UseInterceptors( FileInterceptor("file", {storage: memoryStorage() } ) )
   async create( 
     @Body() createProductDto: CreateProductDto ,
     @UploadedFile( uploadImageFileOptions ) file? : Express.Multer.File
