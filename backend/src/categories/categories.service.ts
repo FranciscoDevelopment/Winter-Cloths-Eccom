@@ -3,7 +3,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
@@ -37,9 +37,17 @@ export class CategoriesService {
   }
 
 
-  async findOne(id: number) {
+  async findOne(id: number , products? : string ) {
 
-    const category = await this.categoryRepository$.findOneBy( {id} ) ;
+    const optionsProductsEager : FindManyOptions<Category> = {
+      where: {id: id}
+    }
+
+    if( products === "true" ) {
+      optionsProductsEager.relations = {products: true }
+    }
+
+    const category = await this.categoryRepository$.findOne( optionsProductsEager ) ;
 
     if( !category )  throw new NotFoundException( "The category doesn't exist" )  //404 ; 
 

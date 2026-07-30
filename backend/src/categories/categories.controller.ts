@@ -29,11 +29,14 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne( @Param( 'id', IdValidationPipe ) id: string) {  // @Param('id') id : string ==== const id = req.params.id
-
+  findOne(
+    @Param( 'id', IdValidationPipe ) id: string ,   // @Param('id') id : string ==== const id = req.params.id
+    @Query("products") products? : string
+  ) {  
+    
     console.log( id )
 
-    return this.categoriesService.findOne(+id);
+    return this.categoriesService.findOne(+id, products);
   }
 
   @Patch(':id')
