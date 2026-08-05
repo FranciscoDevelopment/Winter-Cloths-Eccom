@@ -1,4 +1,4 @@
-import { CategoryWithProductsResponseSchema } from "@/app/src/schema";
+import { CategoryWithProductsResponseSchema } from "@/src/schema";
 import ProductCard from "@/components/products/ProductCard";
 
 type paramsT = Promise< {categoryId : string} > ;
@@ -31,18 +31,21 @@ export default async function StorePage ( {params} : paramsPropT ) {
     const { categoryId } = await params ;
 
 
-    const category = await getProducts( categoryId )
+    const data = await getProducts( categoryId )
 
-    console.log(category)
+    const products = await data.products
+
+    console.log(products)
 
     return(
     
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3" >
             
-            {category.products.map( (product) => (
+            {products.map( (product) => (
 
                 <ProductCard
                     key={product.id}
+                    product={ product }
 
                 />
 
