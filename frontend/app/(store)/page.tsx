@@ -1,22 +1,7 @@
-type paramsT = Promise< {categoryId : string} > ;
+import { redirect } from "next/navigation"
 
-type paramsPropT = {
-    params: paramsT
-}
+export default function Home () {
 
-export default async function StorePage ( {params} : paramsPropT ) {
+    redirect("/1")
 
-    const { categoryId } = await params ;
-
-    console.log( categoryId )
-
-    
-
-    return(
-    
-        <div>
-            Hi from StorePage
-        </div>
-    
-    )
 }
