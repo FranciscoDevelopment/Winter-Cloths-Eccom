@@ -1,14 +1,65 @@
+import { CategoriesResponseSchema } from "@/src/schema";
+import Logo from "./ui/Logo";
+import Link from "next/link";
+//import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation"
+
+const getCategories = async () => {
+
+    const url = `${process.env.API_URL}/categories`
+
+    const response = await fetch(url) ;
+
+
+    if( !response.ok ) redirect('/1') ;
+    
+
+
+    const data = await response.json() ;
+
+    console.log(data)
+
+    const categories = CategoriesResponseSchema.parse(data).map( (category) => {
+        return {
+            ...category,
+            name: category.name
+                                .split( " " )
+                                .map( (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() )
+                                .join( " " )
+        }
+    } ) ;
+
+    
+
+    console.log( "\n" + categories)
+
+    return categories
+
+}
+
 export default async function MainNav () {
+
+    const categories = await getCategories()
 
     return (
 
-        <header>
+        <header className="px-10 py-5 bg-gray-700 flex flex-col md:flex-row justify-between" >
             
-            <section className="px-10 py-5 bg-gray-700 flex flex-col md:flex-row justify-between" >
-
+            <section className="flex justify-center" >
+                <Logo/>
             </section>
         
-            <nav className="flex flex-col md:flex-row gap-2 items-center mt-5 md:mt-0" ></nav>
+            <nav className="flex flex-col md:flex-row gap-2 items-center mt-5 md:mt-0" >
+
+                {categories.map( (category) => (
+
+                    <Link key={category.id} href={ `${category.id}` } className="text-slate-200 hover:text-green-400 font-bold p-2">
+                        {category.name}
+                    </Link>
+
+                ) )}
+
+            </nav>
         
         </header>
 

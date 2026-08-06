@@ -24,5 +24,10 @@ export const CategoryWithProductsResponseSchema = CategorySchema.extend(
     }
 )
 
+export const CategoriesResponseSchema = z.array( CategorySchema )
+
+
 
 export type productT = z.infer< typeof ProductSchema >
+
+
