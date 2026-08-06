@@ -10,9 +10,7 @@ export default function ProductCard ( {product} : productPropsT ) {
 
     return(
     
-        <main
-            className='rounded bg-white shadow relative p-5'
-        >
+        <main className='rounded bg-white shadow relative p-5'>
             <section>
 
                 <Image src={product.image} alt={product.name} width={200} height={400} />
