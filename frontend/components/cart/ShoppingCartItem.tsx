@@ -1,25 +1,50 @@
-export default function ShoppingCartItem () {
+import { cartItemT } from "@/src/schema"
+import { FormatCurrency } from "@/src/utils"
+import Image from "next/image"
+
+type itemPropsT = {
+    item : cartItemT
+}
+
+export default function ShoppingCartItem ( {item} : itemPropsT ) {
 
     return(
     
         <li className="flex items-center space-x-6 py-6 relative">
 
-            <article className="h-24 w-24" ></article>
+            <article className="h-24 w-24" >
+
+                <Image 
+                    src={item.image} 
+                    alt={`Image for the Product: ${item.name}`}
+                    width={100}
+                    height={100}   
+                />
+            
+            </article>
 
             <article className="flex-auto space-y-2" >
 
-                <h3 className="text-gray-900" ></h3>
+                <h3 className="text-gray-900" > {item.name} </h3>
 
-                <p></p>
+                <p> { FormatCurrency(item.price) } </p>
 
                 <select 
                     className="w-32 text-center p-2 rounded-lg bg-white"
-                    name="" 
-                    id=""
-                    value={1}
+                    name={item.name} 
+                    id={item.name}
+                    value={ item.quantity }
                     onChange={ () => {} }
                 >
+                    { Array
+                        .from({length: item.inventory}, (_ , index ) => index + 1 ).map( (num) => (
+                        
+                            
+                        <option className="py-3" key={num} value={num} >
+                            {num}
+                        </option>
 
+                    ) ) }
                 </select>
 
             </article>

@@ -21,6 +21,7 @@ export default function ShoppingCart () {
 
                     <ShoppingCartItem
                         key={item.productId}
+                        item={ item }
                     />
 
                 ) ) }
