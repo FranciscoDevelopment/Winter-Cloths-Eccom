@@ -1,12 +1,44 @@
 import { cartItemT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
 import Image from "next/image"
+import { useStore } from "@/src/store-zustand"
+import { ChangeEvent } from "react"
+
 
 type itemPropsT = {
     item : cartItemT
 }
 
 export default function ShoppingCartItem ( {item} : itemPropsT ) {
+
+    const updateQuantity = useStore( (state) => state.updateQuantity ) ;
+
+    const removeFromCart = useStore( (state) => state.removeFromCart ) ;
+
+
+    const handleOnChangeUpdateQuantity = (e : ChangeEvent<HTMLSelectElement>) => {
+        updateQuantity( item.productId, +e.target.value )
+    }
+
+    const decreaseQuantity = () => {
+        
+        if( item.quantity <= 1 ) return ;
+        
+        updateQuantity( item.productId, item.quantity - 1 )
+    }
+
+    const increaseQuantity = () => {
+
+        if( item.quantity >= item.inventory ) return ;
+
+        updateQuantity( item.productId, item.quantity + 1 )
+
+    }
+
+    const handleOnRemoveItem = () => {
+        removeFromCart( item.productId )
+    }
+
 
     return(
     
@@ -28,13 +60,13 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
                 <h3 className="text-gray-900" > {item.name} </h3>
 
                 <p> { FormatCurrency(item.price) } </p>
-
+                {/*
                 <select 
-                    className="w-32 text-center p-2 rounded-lg bg-white"
+                    className="w-32 h-max-20 text-center p-2 rounded-lg bg-slate-200"
                     name={item.name} 
                     id={item.name}
                     value={ item.quantity }
-                    onChange={ () => {} }
+                    onChange={ handleOnChangeUpdateQuantity }
                 >
                     { Array
                         .from({length: item.inventory}, (_ , index ) => index + 1 ).map( (num) => (
@@ -46,6 +78,33 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
 
                     ) ) }
                 </select>
+                */}
+
+                <div className="w-32 flex items-center justify-between rounded-lg bg-slate-200 p-1">
+
+                    <button
+                        type="button"
+                        onClick={decreaseQuantity}
+                        disabled={item.quantity <= 1}
+                        className="w-8 h-8 rounded-md bg-white text-gray-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                        -
+                    </button>
+
+                    <span className="font-semibold">{item.quantity}</span>
+
+                    <button
+                        type="button"
+                        onClick={increaseQuantity}
+                        disabled={item.quantity >= item.inventory}
+                        className="w-8 h-8 rounded-md bg-white text-gray-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
 
             </article>
 

@@ -8,7 +8,11 @@ type storeT = {
 
     contents: shoppingCartT ,
 
-    addToCart : ( product : productT ) => void
+    addToCart : ( product : productT ) => void ,
+
+    updateQuantity: ( id : productT['id'], quantity : number ) => void
+
+    removeFromCart: ( id : productT['id'] ) => void
 
 }
 
@@ -51,13 +55,35 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 } ]
             }
 
-
-
             set( () => ({
                 contents
             }) )
 
+        },
+
+        updateQuantity: ( id, quantity ) => {
+            
+            console.log( id );
+            console.log(quantity)
+
+            const contents = get().contents.map( (item) => {
+
+                return item.productId === id
+                                        ? {...item, quantity }
+                                        : item
+
+            } )
+
+            set( () => ( {contents: contents } ) )
+
         }
+        ,
+
+        removeFromCart: (id) => {
+            console.log("Eliminando...", id)
+        }
+        
+
     }
 
 } ) )
