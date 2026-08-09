@@ -14,6 +14,8 @@ type storeT = {
 
     removeFromCart: ( id : productT['id'] ) => void
 
+    calculateTotal: () => void
+
 }
 
 export const useStore = create<storeT>()( devtools( ( set, get ) => {
@@ -59,6 +61,8 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 contents
             }) )
 
+            get().calculateTotal() ;
+
         },
 
         updateQuantity: ( id, quantity ) => {
@@ -86,7 +90,15 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
             }) )
 
         }
-        
+        ,
+
+        calculateTotal: () => {
+            
+            const currentTotal = get().contents.reduce( ( total, item ) => total + (item.quantity * item.price ), 0 ) ;
+
+            set( () => ( {total: currentTotal } ) ) ;
+
+        }
 
     }
 
