@@ -80,7 +80,11 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
         ,
 
         removeFromCart: (id) => {
-            console.log("Eliminando...", id)
+            
+            set( (state) => ({
+                contents: state.contents.filter( (item) => item.productId !== id )
+            }) )
+
         }
         
 
