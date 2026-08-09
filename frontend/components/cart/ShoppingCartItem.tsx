@@ -50,7 +50,8 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
                     src={item.image} 
                     alt={`Image for the Product: ${item.name}`}
                     width={100}
-                    height={100}   
+                    height={100}
+                    priority
                 />
             
             </article>
@@ -60,25 +61,6 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
                 <h3 className="text-gray-900" > {item.name} </h3>
 
                 <p> { FormatCurrency(item.price) } </p>
-                {/*
-                <select 
-                    className="w-32 h-max-20 text-center p-2 rounded-lg bg-slate-200"
-                    name={item.name} 
-                    id={item.name}
-                    value={ item.quantity }
-                    onChange={ handleOnChangeUpdateQuantity }
-                >
-                    { Array
-                        .from({length: item.inventory}, (_ , index ) => index + 1 ).map( (num) => (
-                        
-                            
-                        <option className="py-3" key={num} value={num} >
-                            {num}
-                        </option>
-
-                    ) ) }
-                </select>
-                */}
 
                 <div className="w-32 flex items-center justify-between rounded-lg bg-slate-200 p-1">
 

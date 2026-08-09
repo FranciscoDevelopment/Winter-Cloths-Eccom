@@ -15,7 +15,7 @@ export default function ProductCard ( {product} : productPropsT ) {
         <main className='rounded bg-white shadow relative p-5'>
             <section>
 
-                <Image src={product.image} alt={product.name} width={200} height={400} />
+                <Image src={product.image} alt={product.name} width={200} height={400} priority />
 
                 <article className="p-3 space-y-2">
                     <h3 className="text-xl font-bold text-gray-600"> {product.name} </h3>
