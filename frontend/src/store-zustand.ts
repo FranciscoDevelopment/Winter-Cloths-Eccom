@@ -78,7 +78,9 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
             } )
 
-            set( () => ( {contents: contents } ) )
+            set( () => ( {contents: contents } ) ) ;
+
+            get().calculateTotal() ;
 
         }
         ,
@@ -88,6 +90,8 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
             set( (state) => ({
                 contents: state.contents.filter( (item) => item.productId !== id )
             }) )
+
+            get().calculateTotal() ;
 
         }
         ,
