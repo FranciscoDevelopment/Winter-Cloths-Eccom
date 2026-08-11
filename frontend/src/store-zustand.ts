@@ -16,6 +16,8 @@ type storeT = {
 
     calculateTotal: () => void
 
+    applyCoupon: ( couponName : string ) => Promise<void>
+
 }
 
 export const useStore = create<storeT>()( devtools( ( set, get ) => {
@@ -103,7 +105,24 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
             set( () => ( {total: currentTotal } ) ) ;
 
         }
+        ,
+        applyCoupon: async ( couponName ) => {
+            console.log(couponName)
 
+            const response = await fetch( `/coupons/api`, {     // fetch interno en Next
+
+                method: "POST",
+                body: JSON.stringify({
+                    cupon_name: couponName
+                })
+
+            } )
+
+            const data = await response.json() ;
+
+            console.log(data)
+
+        }
     }
 
 } ) )

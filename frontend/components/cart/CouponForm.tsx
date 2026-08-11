@@ -1,8 +1,13 @@
+"use client"
+
 import { FormEvent } from "react"
+import { useStore } from "@/src/store-zustand";
 
 export default function CouponForm () {
 
-    const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
+    const applyCoupon = useStore( (state) => state.applyCoupon )
+
+    const handleSubmit = async (e : FormEvent<HTMLFormElement>) => {
 
         e.preventDefault() ;
 
@@ -10,7 +15,11 @@ export default function CouponForm () {
 
         console.log( formData.get( "coupon_name" ) )
 
-        const couponName = formData.get( "coupon_name" )
+        const couponName = formData.get( "coupon_name" )?.toString()
+
+        if( !couponName ) return ;
+
+        await applyCoupon( couponName )
 
     }
 
