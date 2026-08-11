@@ -5,6 +5,7 @@ import ShoppingCartItem from "./ShoppingCartItem"
 import Amount from "./Amount"
 import { useStore } from "@/src/store-zustand"
 import { FormatCurrency } from "@/src/utils"
+import CouponForm from "./CouponForm"
 
 
 
@@ -39,6 +40,8 @@ export default function ProductsInCartSection () {
             <dl className="space-y-6 border-t border-gray-300 py-6 text-sm font-medium text-slate-700" >
                 <Amount label="Total" amount={totalCurrency} />
             </dl>
+
+            <CouponForm/>
         
         </section>
     
