@@ -1,12 +1,16 @@
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import { productT, shoppingCartT } from "./schema"
+import { CouponResponseSchema, couponT, productT, shoppingCartT } from "./schema"
 
 type storeT = {
     
     total : number,
 
     contents: shoppingCartT ,
+
+    coupon : couponT ,
+    
+    discount : number,
 
     addToCart : ( product : productT ) => void ,
 
@@ -18,6 +22,8 @@ type storeT = {
 
     applyCoupon: ( couponName : string ) => Promise<void>
 
+    applyDiscount: () => void
+
 }
 
 export const useStore = create<storeT>()( devtools( ( set, get ) => {
@@ -26,6 +32,11 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
     return {
         total: 0,
         contents: [] ,
+        coupon: {
+            message: "",
+            cupon: {porcentage: 0, name: ""}
+        } ,
+        discount: 0 ,
 
         addToCart: ( product ) => {
             
@@ -104,6 +115,10 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
             set( () => ( {total: currentTotal } ) ) ;
 
+            if( get().coupon.cupon.porcentage ) {
+                get().applyDiscount()
+            }
+
         }
         ,
         applyCoupon: async ( couponName ) => {
@@ -120,9 +135,39 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
             const data = await response.json() ;
 
-            console.log(data)
+            
+
+            const coupon = CouponResponseSchema.parse(data) ;
+
+            console.log(coupon) ;
+
+            set( () => ({coupon }) )
+
+
+            if( coupon.cupon.porcentage ) get().applyDiscount() ;
+
+
+        },
+        applyDiscount: () => {
+            
+            const couponPorcentage = get().coupon.cupon.porcentage ;
+
+            const subTotalAmount = get().contents.reduce( (total, item) => total + (item.quantity * item.price), 0 ) ;
+
+            const discount = ( couponPorcentage / 100 ) * subTotalAmount ;
+
+            
+            const discountRounding = Number(discount.toFixed(2)) ;
+
+            const total = subTotalAmount - discountRounding ;
+
+
+            set( () => ({
+                discount: discountRounding,
+                total
+            }) )
 
         }
     }
 
-} ) )
+} ) ) 

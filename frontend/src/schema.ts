@@ -42,6 +42,17 @@ const ShoppingCartContentsSchema = ProductSchema.pick(
     }
 )
 
+export const CouponResponseSchema = z.object({
+
+    message: z.string() ,
+
+    cupon: z.object({
+        name: z.string().default(""),
+        porcentage: z.coerce.number().min(0).max(100).default(0)
+    })
+
+})
+
 
 export const ShoppingCartSchema = z.array( ShoppingCartContentsSchema )
 
@@ -51,3 +62,4 @@ export type shoppingCartT = z.infer<typeof ShoppingCartSchema>
 
 export type cartItemT = z.infer< typeof ShoppingCartContentsSchema >
 
+export type couponT = z.infer<typeof CouponResponseSchema> ;

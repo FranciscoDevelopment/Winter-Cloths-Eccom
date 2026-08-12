@@ -7,6 +7,8 @@ export default function CouponForm () {
 
     const applyCoupon = useStore( (state) => state.applyCoupon )
 
+    const currentCoupon = useStore( (state) => state.coupon ) ;
+
     const handleSubmit = async (e : FormEvent<HTMLFormElement>) => {
 
         e.preventDefault() ;
@@ -18,6 +20,8 @@ export default function CouponForm () {
         const couponName = formData.get( "coupon_name" )?.toString()
 
         if( !couponName ) return ;
+
+        if( !couponName.length ) return ;
 
         await applyCoupon( couponName )
 
@@ -48,6 +52,8 @@ export default function CouponForm () {
                 />
 
             </form>
+
+            { currentCoupon.message ? ( <p className="py-4 text-cyan-900 text-center text-sm font-extrabold" >{currentCoupon.message}</p> ) : null }
 
         </main>
     
