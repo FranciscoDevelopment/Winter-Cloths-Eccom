@@ -17,6 +17,11 @@ export default function ProductsInCartSection () {
 
     const totalCurrency = FormatCurrency(total)
 
+    const discount = useStore( (state) => state.discount ) ;
+
+    const discountCurrency = FormatCurrency( discount ) ;
+
+
     return(
     
         <section>
@@ -38,8 +43,15 @@ export default function ProductsInCartSection () {
             </ul>
 
             <dl className="space-y-6 border-t border-gray-300 py-6 text-sm font-medium text-slate-700" >
+                
+                {discount 
+                    ? (<Amount label="Discount" amount={"- "+discountCurrency} discount={true} />) 
+                    :  null
+                }
+
                 <Amount label="Total" amount={totalCurrency} />
             </dl>
+
 
             <CouponForm/>
         
