@@ -24,19 +24,31 @@ type storeT = {
 
     applyDiscount: () => void
 
+    clearOrder: () => void
+
 }
 
-export const useStore = create<storeT>()( devtools( ( set, get ) => {
+type storeAttributesT = Pick<storeT, "total" | "contents" | "coupon" | "discount" > 
 
+
+const initialState : storeAttributesT = {
+    total: 0,
+    contents: [] ,
+    coupon: {
+        message: "",
+        cupon: {porcentage: 0, name: ""}
+    } ,
+    discount: 0 ,
+}
+
+
+
+export const useStore = create<storeT>()( devtools( ( set, get ) => {
+    
 
     return {
-        total: 0,
-        contents: [] ,
-        coupon: {
-            message: "",
-            cupon: {porcentage: 0, name: ""}
-        } ,
-        discount: 0 ,
+
+        ...initialState,
 
         addToCart: ( product ) => {
             
@@ -104,6 +116,12 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 contents: state.contents.filter( (item) => item.productId !== id )
             }) )
 
+
+            if( !get().contents.length ) {
+                get().clearOrder()
+            }
+
+
             get().calculateTotal() ;
 
         }
@@ -167,7 +185,13 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 total
             }) )
 
+        },
+
+        clearOrder: () => {
+
+            set( () => ( {...initialState } ) )
         }
+
     }
 
 } ) ) 
