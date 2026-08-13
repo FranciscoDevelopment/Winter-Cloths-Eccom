@@ -1,8 +1,39 @@
+import { submitOrder } from "@/actions/submit-order-actions"
+import { useStore } from "@/src/store-zustand"
+import { useActionState } from "react"
+
+
+
 export default function SubmitOrderForm () {
+
+    const total = useStore( (state) => state.total ) ;
+
+    const couponName = useStore( (state) => state.coupon.cupon.name ) ;
+
+    const contents = useStore( (state) => state.contents ) ;
+
+    const orderFull = {
+        total,
+        coupon: couponName,
+        contents
+    }
+
+    console.log(orderFull)
+
+    const submitOrderWithData = submitOrder.bind(null, orderFull) ; 
+                                // bind le anula la posibilidad a la fn de pasarle argumentos cuando se la ejecuta, pero se los sobreescribe 
+
+    const [ state, dispatch ] = useActionState( submitOrderWithData , {
+        errors: [],
+        success: ""
+    } )
 
     return(
     
-        <form>
+        <form
+            action={dispatch}
+
+        >
 
             <input
                 type="submit" 

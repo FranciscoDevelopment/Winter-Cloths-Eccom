@@ -142,7 +142,7 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
         applyCoupon: async ( couponName ) => {
             console.log(couponName)
 
-            const response = await fetch( `/coupons/api`, {     // fetch interno en Next
+            const request = await fetch( `/coupons/api`, {     // fetch interno en Next
 
                 method: "POST",
                 body: JSON.stringify({
@@ -151,7 +151,7 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
             } )
 
-            const data = await response.json() ;
+            const data = await request.json() ;
 
             
 
