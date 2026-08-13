@@ -6,6 +6,7 @@ import Amount from "./Amount"
 import { useStore } from "@/src/store-zustand"
 import { FormatCurrency } from "@/src/utils"
 import CouponForm from "./CouponForm"
+import SubmitOrderForm from "./SubmitOrderForm"
 
 
 
@@ -54,6 +55,8 @@ export default function ProductsInCartSection () {
 
 
             <CouponForm/>
+
+            <SubmitOrderForm/>
         
         </section>
     
