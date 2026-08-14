@@ -3,7 +3,6 @@ import { useStore } from "@/src/store-zustand"
 import { useActionState } from "react"
 
 
-
 export default function SubmitOrderForm () {
 
     const total = useStore( (state) => state.total ) ;
@@ -12,10 +11,17 @@ export default function SubmitOrderForm () {
 
     const contents = useStore( (state) => state.contents ) ;
 
+    const orderFormatContents = contents.map( ( {price, ...item} ) => {
+        return {
+            ...item,
+            priceAtTransactionDate: price
+        }
+    } )
+
     const orderFull = {
         total,
         coupon: couponName,
-        contents
+        contents: orderFormatContents
     }
 
     console.log(orderFull)
@@ -27,6 +33,8 @@ export default function SubmitOrderForm () {
         errors: [],
         success: ""
     } )
+
+    console.log("\n", state) ;
 
     return(
     

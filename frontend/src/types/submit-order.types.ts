@@ -1,4 +1,4 @@
 export type orderToSubmitT = {
-    errors : [],
+    errors : [] | string[],
     success : string
 }

@@ -109,7 +109,9 @@ export class TransactionsService {
 
     } )
 
-    return "Sale successfully registered"
+    return {
+      message: "Purchase registered successfully"
+    }
 
   }
 
