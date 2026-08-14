@@ -1,5 +1,6 @@
 import ShoppingCart from "@/components/cart/ShoppingCart"
 import MainNav from "@/components/MainNav"
+import ToastNotification from "@/components/ui/ToastNotification"
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -26,6 +27,9 @@ export default function RootLayout( {children} : childrenProps ) {
 
 
             </section>
+
+            <ToastNotification/>
+
         </main>
 
     )
