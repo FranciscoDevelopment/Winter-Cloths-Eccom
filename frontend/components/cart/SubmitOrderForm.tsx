@@ -1,6 +1,7 @@
 import { submitOrder } from "@/actions/submit-order-actions"
 import { useStore } from "@/src/store-zustand"
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
+import { toast } from "react-toastify";
 
 
 export default function SubmitOrderForm () {
@@ -35,6 +36,19 @@ export default function SubmitOrderForm () {
     } )
 
     console.log("\n", state) ;
+
+
+    useEffect( () => {
+
+        if( state.errors ) {
+            state.errors.forEach( (error) => toast.error(error) )
+        }
+
+
+        if( state.success ) toast.success( state.success ) ;
+
+    }, [state] )
+
 
     return(
     
