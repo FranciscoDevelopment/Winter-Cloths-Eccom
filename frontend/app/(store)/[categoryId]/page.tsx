@@ -14,7 +14,13 @@ async function getProducts ( categoryId : string ) {
 
     console.log( url )
 
-    const response = await fetch( url ) ;
+    const response = await fetch( url, {
+        
+        next: {
+            tags: ["products-by-category"]
+        }
+    
+    } ) ;
 
     const data = await response.json() ;
 

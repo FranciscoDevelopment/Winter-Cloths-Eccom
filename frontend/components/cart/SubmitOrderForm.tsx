@@ -12,6 +12,8 @@ export default function SubmitOrderForm () {
 
     const contents = useStore( (state) => state.contents ) ;
 
+    const clearOrder = useStore( (state) => state.clearOrder ) ;
+
     const orderFormatContents = contents.map( ( {price, ...item} ) => {
         return {
             ...item,
@@ -45,7 +47,10 @@ export default function SubmitOrderForm () {
         }
 
 
-        if( state.success ) toast.success( state.success ) ;
+        if( state.success ) {
+            toast.success( state.success )
+            clearOrder() 
+        } ;
 
     }, [state] )
 

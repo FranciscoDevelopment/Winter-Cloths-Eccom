@@ -2,6 +2,7 @@
 
 import { ErrorResponseSchema, OrderSchema, SuccessResponseSchema } from "@/src/schema";
 import { orderToSubmitT } from "@/src/types/submit-order.types"
+import { revalidateTag } from "next/cache";
 
 
 export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
@@ -37,6 +38,8 @@ export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
 
     const success = SuccessResponseSchema.parse( responseData ) ;
 
+    // reactualiza render de stock on-live
+    revalidateTag("products-by-category") ;
 
     return {
         errors: [] ,
