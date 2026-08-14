@@ -45,6 +45,13 @@ export class CategoriesService {
 
     if( products === "true" ) {
       optionsProductsEager.relations = {products: true }
+
+      optionsProductsEager.order = {
+        products: {
+          id: "ASC"
+        }
+      }
+
     }
 
     const category = await this.categoryRepository$.findOne( optionsProductsEager ) ;
