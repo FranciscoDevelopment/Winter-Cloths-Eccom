@@ -17,7 +17,6 @@ const getCategories = async () => {
 
     const data = await response.json() ;
 
-    console.log(data)
 
     const categories = CategoriesResponseSchema.parse(data).map( (category) => {
         return {
@@ -29,9 +28,6 @@ const getCategories = async () => {
         }
     } ) ;
 
-    
-
-    console.log( "\n" + categories)
 
     return categories
 

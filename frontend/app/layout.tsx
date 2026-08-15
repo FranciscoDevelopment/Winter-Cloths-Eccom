@@ -6,6 +6,7 @@ import "./globals.css";
 // react-toastify does not provide TypeScript declarations for its CSS file.
 // @ts-expect-error CSS side-effect import
 import "react-toastify/dist/ReactToastify.css";
+import Providers from "./providers";
 
 const outfit = Outfit( {subsets: ["latin"] } )
 
@@ -37,7 +38,7 @@ export default function RootLayout({
       <body
         className={`${outfit.className} bg-gray-200`}
       >
-        {children}
+        <Providers>{children} </Providers>
       </body>
     </html>
   );

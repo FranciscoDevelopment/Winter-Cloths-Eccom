@@ -5,6 +5,8 @@ import Calendar from "react-calendar"
 // @ts-ignore: no type declarations available for this CSS module
 import "react-calendar/dist/Calendar.css"
 import { format } from "date-fns"
+import { useQuery } from "@tanstack/react-query"
+import { getSalesByDate } from "@/src/api-transactions"
 
 
 type valuePieceT = Date | null ;
@@ -16,7 +18,14 @@ export default function TransactionFilter () {
 
     const formattedDate = format( date?.toString() || new Date() , "yyyy-MM-dd") ;
 
-    console.log(date) ;
+
+    const { data, isLoading } = useQuery({
+        queryKey: ["sales", formattedDate],
+        queryFn: () => getSalesByDate(formattedDate)
+    })
+
+    console.log(data) ;
+    console.log(isLoading)
 
     return(
     
@@ -28,6 +37,7 @@ export default function TransactionFilter () {
                 
                 <Calendar
                     value={date}
+                    onChange={setDate}
                 />
             
             </section>

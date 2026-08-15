@@ -81,7 +81,23 @@ export const ErrorResponseSchema = z.object({
     statusCode: z.number()
 })
 
+export const ContentsSchemas = z.object({
+    id: z.number(),
+    quantity: z.number() ,
+    price: z.string(),
+    product: ProductSchema
+})
 
+export const TransactionResponseSchema = z.object({
+    id: z.number(),
+    total: z.string(),
+    transactionDate: z.string(),
+    discount: z.number(),
+    cupon: z.string() ,
+    contents: z.array( ContentsSchemas ) ,
+})
+
+export const TransactionsResponseSchema = z.array( TransactionResponseSchema ) ;
 
 export const ShoppingCartSchema = z.array( ShoppingCartContentsSchema )
 

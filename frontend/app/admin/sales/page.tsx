@@ -1,7 +1,21 @@
 import TransactionFilter from "@/components/sales/TransactionFilter";
 import Heading from "@/components/ui/Heading";
+import { getSalesByDate } from "@/src/api-transactions";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query"
+import { format } from "date-fns";
 
-export default function SalesPage () {
+export default async function SalesPage () {
+
+    const queryClient = new QueryClient() ;
+
+    const todayDate = new Date() ;
+    
+    const formattedDate = format( todayDate, "yyyy-MM-dd") ;
+
+    await queryClient.prefetchQuery({
+        queryKey: ["sales", formattedDate],
+        queryFn: () => getSalesByDate(formattedDate)
+    })
 
     return(
     
@@ -13,7 +27,10 @@ export default function SalesPage () {
                 In this section are the sales, use the calendar for filter by date 
             </p>
 
-            <TransactionFilter/>
+            <HydrationBoundary state={ dehydrate(queryClient) } >
+                <TransactionFilter/>
+            </HydrationBoundary>
+
 
         </main>
     
