@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getSalesByDate } from "@/src/api-transactions"
 import TransactionSummary from "./TransactionSummary"
 import { TransactionProvider } from "./transaction-context-provider"
+import { FormatCurrency } from "@/src/utils"
 
 
 type valuePieceT = Date | null ;
@@ -27,7 +28,9 @@ export default function TransactionFilter () {
     })
 
 
-    //if(isLoading) return "Loading..." ;
+    const totalOfTransaction = data?.reduce( (total, transaction) => total + transaction.total , 0 ) ?? 0 ;
+
+    const totalOfTransactionCurrency = FormatCurrency(totalOfTransaction) ;
 
 
     return (
@@ -62,6 +65,9 @@ export default function TransactionFilter () {
                             : <p className="text-lg text-center" >No sales for the date yet</p>
                     : null 
                 }
+                <p className="my-5 text-lg font-bold text-right" > Total of day: 
+                    <span> {totalOfTransactionCurrency}</span>
+                </p>
                     
             </section>
 
