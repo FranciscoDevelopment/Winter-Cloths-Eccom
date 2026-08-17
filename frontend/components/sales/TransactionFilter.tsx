@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css"
 import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"
 import { getSalesByDate } from "@/src/api-transactions"
+import TransactionSummary from "./TransactionSummary"
 
 
 type valuePieceT = Date | null ;
@@ -16,7 +17,7 @@ export default function TransactionFilter () {
 
     const [ date, setDate ] = useState<valueT>( new Date() )
 
-    const formattedDate = format( date?.toString() || new Date() , "yyyy-MM-dd") ;
+    const formattedDate = format( (date instanceof Date ? date : new Date()), "yyyy-MM-dd" ) ;
 
 
     const { data, isLoading } = useQuery({
@@ -24,10 +25,11 @@ export default function TransactionFilter () {
         queryFn: () => getSalesByDate(formattedDate)
     })
 
-    console.log(data) ;
-    console.log(isLoading)
 
-    return(
+    //if(isLoading) return "Loading..." ;
+
+
+    return (
     
         <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10" >
 
@@ -40,6 +42,27 @@ export default function TransactionFilter () {
                     onChange={setDate}
                 />
             
+            </section>
+
+            <section>
+                
+                {isLoading && "Loading..."}
+
+                { 
+                    data ? 
+                        data.length 
+                            ? data.map( (transaction) => (
+
+                                <TransactionSummary
+                                    key={transaction.id}
+                                    transaction={transaction}
+                                />
+
+                            ) )
+                            : <p className="text-lg text-center" >No sales for the date yet</p>
+                    : null 
+                }
+                    
             </section>
 
         </main>

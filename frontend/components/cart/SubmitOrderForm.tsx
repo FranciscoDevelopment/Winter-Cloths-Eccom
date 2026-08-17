@@ -27,7 +27,6 @@ export default function SubmitOrderForm () {
         contents: orderFormatContents
     }
 
-    console.log(orderFull)
 
     const submitOrderWithData = submitOrder.bind(null, orderFull) ; 
                                 // bind le anula la posibilidad a la fn de pasarle argumentos cuando se la ejecuta, pero se los sobreescribe 

@@ -6,7 +6,6 @@ export async function GET( request : NextRequest ) {
 
     const transactionDate = searchParams.get("transactionDate") ;
 
-    console.log( transactionDate )
 
     const url = `${process.env.API_URL}/transactions?transactionDate=${transactionDate}`
 
