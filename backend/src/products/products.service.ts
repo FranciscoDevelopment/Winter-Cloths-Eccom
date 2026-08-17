@@ -108,7 +108,7 @@ export class ProductsService {
 
     const whereClause = id ? {category: {id} } : {}  ;
 
-    const [ data, totalProducts ] = await this.productsRepository$.findAndCount(
+    const [ products, totalProducts ] = await this.productsRepository$.findAndCount(
 
       {
         where: whereClause,
@@ -121,7 +121,7 @@ export class ProductsService {
     )
 
     return {
-      data,
+      products: products,
       total: totalProducts
     }
 
