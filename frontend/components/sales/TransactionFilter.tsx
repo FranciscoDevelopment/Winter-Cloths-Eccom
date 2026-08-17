@@ -8,6 +8,7 @@ import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"
 import { getSalesByDate } from "@/src/api-transactions"
 import TransactionSummary from "./TransactionSummary"
+import { TransactionProvider } from "./transaction-context-provider"
 
 
 type valuePieceT = Date | null ;
@@ -53,10 +54,9 @@ export default function TransactionFilter () {
                         data.length 
                             ? data.map( (transaction) => (
 
-                                <TransactionSummary
-                                    key={transaction.id}
-                                    transaction={transaction}
-                                />
+                                <TransactionProvider key={transaction.id} transaction={transaction} >
+                                    <TransactionSummary />
+                                </TransactionProvider>
 
                             ) )
                             : <p className="text-lg text-center" >No sales for the date yet</p>

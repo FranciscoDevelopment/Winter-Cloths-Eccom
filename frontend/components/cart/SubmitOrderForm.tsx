@@ -23,7 +23,7 @@ export default function SubmitOrderForm () {
 
     const orderFull = {
         total,
-        coupon: couponName,
+        cupon: couponName,
         contents: orderFormatContents
     }
 

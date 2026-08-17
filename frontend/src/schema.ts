@@ -90,9 +90,9 @@ export const ContentsSchemas = z.object({
 
 export const TransactionResponseSchema = z.object({
     id: z.number(),
-    total: z.string(),
+    total: z.coerce.number(),
     transactionDate: z.string(),
-    discount: z.string(),
+    discount: z.coerce.number(),
     cupon: z.string().nullable().optional() ,
     contents: z.array( ContentsSchemas ) ,
 })

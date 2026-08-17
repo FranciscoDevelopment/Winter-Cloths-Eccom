@@ -1,53 +1,50 @@
+"use client"
+
 import { transactionT } from "@/src/schema"
+import { FormatCurrency } from "@/src/utils"
+import Image from "next/image"
+import TransactionDetails from "./TransactionDetails"
+import { useTransaction } from "./transaction-context-provider"
 
 type transactionSummaryPropsT = {
     transaction : transactionT
 }
 
-export default function TransactionSummary ( {transaction} : transactionSummaryPropsT ) {
+export default function TransactionSummary ( ) {
 
+    const transaction = useTransaction() ;
+
+    const transactionDiscountCurrency = FormatCurrency( transaction.discount ) ;
+    const transactionTotalCurrency = FormatCurrency( transaction.total ) ;
 
     return(
     
-        <section className='mt-6  text-sm font-medium text-gray-500 border border-gray-200'>
+        <section className='mb-6 bg-slate-300 text-sm font-medium text-teal-800 border border-gray-200'>
            
-            <p className='text-sm font-black text-gray-900 p-2 bg-gray-200 '>ID: {transaction.id} </p>
+            <p className='text-sm font-black text-teal-800 p-2 bg-gray-500 '>ID: {transaction.id} </p>
             <ul
                 role="list"
-                className="divide-y divide-gray-500 border-t border-gray-200 border-b"
+                className=" divide-y divide-slate-400 border-t border-gray-200 border-b"
             >
-            {transaction.contents.map((item) => (
-                <li className="p-5 ">
-                    <article className='flex items-center space-x-6 '>
-
-                        <div className='relative w-32 h-32'>
-
-                        </div>
-
-                        <div className="flex-auto space-y-1 ">
-                            <h3 className="text-gray-900">
-                                {item.product.name}
-                            </h3>
-                            <p className="text-lg font-extrabold  text-gray-900">{item.priceAtTransactionDate}</p>
-                            <p className="text-lg  text-gray-900">Quantity: {item.quantity}</p>
-                        </div>
-                    
-                    </article>
-                </li>
-            ))}
+                <TransactionDetails />
             </ul>
 
-            <dl className="space-y-6  text-sm font-medium text-gray-500 p-5">
+            <dl className="space-y-6  text-sm font-medium text-slate-800 p-5">
 
-                <article className="flex justify-between">
-                    <dt>Used Coupon</dt>
-                    <dd className="text-gray-900"></dd>
-                </article>
+                {transaction.cupon && (
+                    <aside>
+                        <article className="flex justify-between">
+                            <dt>Used Coupon:</dt>
+                            <dd className="text-emerald-900"> {transaction.cupon} </dd>
+                        </article>
 
-                <article className="flex justify-between">
-                    <dt>Discount</dt>
-                    <dd className="text-gray-900">-</dd>
-                </article>
+                        <article className="flex justify-between">
+                            <dt>Discount:</dt>
+                            <dd className="text-emerald-900">-{transactionDiscountCurrency}</dd>
+                        </article>
+                    </aside>
+                )}
+
 
                 <article className="flex justify-between">
                     <dt className="text-lg text-black font-black">Total</dt>
