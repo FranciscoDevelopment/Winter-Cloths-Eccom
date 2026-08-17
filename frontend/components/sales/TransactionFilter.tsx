@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Calendar from "react-calendar"
+//import Calendar from "react-calendar"
 // @ts-ignore: no type declarations available for this CSS module
 import "react-calendar/dist/Calendar.css"
 import { format } from "date-fns"
@@ -10,7 +10,12 @@ import { getSalesByDate } from "@/src/api-transactions"
 import TransactionSummary from "./TransactionSummary"
 import { TransactionProvider } from "./transaction-context-provider"
 import { FormatCurrency } from "@/src/utils"
+import dynamic from "next/dynamic"
 
+
+const Calendar = dynamic( () => import("react-calendar") , {
+    ssr: false
+} )
 
 type valuePieceT = Date | null ;
 type valueT = valuePieceT | [ valuePieceT, valuePieceT ] ;
@@ -35,9 +40,9 @@ export default function TransactionFilter () {
 
     return (
     
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10" >
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 relative items-start" >
 
-            <section>
+            <section className="lg:sticky lg:top-10" >
 
                 <br />
                 
