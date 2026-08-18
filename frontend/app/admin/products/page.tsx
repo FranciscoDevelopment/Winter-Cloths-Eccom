@@ -1,10 +1,19 @@
 import ProductsTable from "@/components/products/ProductsTable";
 import Heading from "@/components/ui/Heading";
 import { ProductsResponseSchema } from "@/src/schema";
+import { isValidPage } from "@/src/utils";
+import { redirect } from "next/navigation";
 
-async function getAllProducts () {
+type paginationT = Promise< {page : string} >
 
-    const urlAPI = `${process.env.API_URL}/products/length` ;
+type searchParamsT = {
+    searchParams : paginationT
+}
+
+
+async function getAllProducts ( take : number, skip : number ) {
+
+    const urlAPI = `${process.env.API_URL}/products/length?take=${take}&skip=${skip}` ;
 
     const req = await fetch(urlAPI) ;
 
@@ -21,9 +30,23 @@ async function getAllProducts () {
     }
 }
 
-export default async function ProductsPage () {
 
-    const { products, total } = await getAllProducts() ; 
+
+export default async function ProductsPage ( {searchParams} : searchParamsT ) {
+
+    const {page} = await searchParams ;
+
+    console.log(page)
+
+    if( !isValidPage( +page ) ) redirect( "/admin/products?page=1" )  ; 
+
+    
+    const PRODUCTS_PER_PAGE = 10 as const ;
+    
+    const skip = ( +page - 1 ) * PRODUCTS_PER_PAGE ;
+    
+    const { products, total } = await getAllProducts( PRODUCTS_PER_PAGE, skip ) ; 
+
 
     return(
     
