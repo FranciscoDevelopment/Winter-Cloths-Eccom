@@ -64,7 +64,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                             <div className='flex gap-3 p-3 justify-end items-center'>
                                 <Link 
                                     className="text-indigo-600 hover:text-indigo-800"
-                                    href={`admin/products/${product.id}/edit`}
+                                    href={`/admin/products/${product.id}/edit`}
                                 >
                                     Edit <span className="sr-only">{product.name}</span>
                                 </Link>
