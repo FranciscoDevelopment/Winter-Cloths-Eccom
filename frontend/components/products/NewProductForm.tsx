@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react"
 import ProductForm from "./ProductForm"
 import { addNewProduct } from "@/actions/add-product-action"
 import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -15,6 +16,8 @@ const initialState = {
 
 export default function NewProductForm ( {children} : childrenProps ) {
 
+    const theRouter = useRouter() ;
+
     const [ state, dispatch ] = useActionState( addNewProduct, initialState ) ;
 
     useEffect( () => {
@@ -22,6 +25,14 @@ export default function NewProductForm ( {children} : childrenProps ) {
         if(state.errors) {
             state.errors.forEach( (error) => toast.error(error) )
         }
+
+        if( state.success ) {
+            
+            toast.success( state.success ) 
+            
+            theRouter.push("/admin/products")
+        }
+
 
     }, [state] )
 
