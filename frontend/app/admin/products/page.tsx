@@ -3,6 +3,7 @@ import Heading from "@/components/ui/Heading";
 import Pagination from "@/components/ui/Pagination";
 import { ProductsResponseSchema } from "@/src/schema";
 import { isValidPage } from "@/src/utils";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type paginationT = Promise< {page : string} >
@@ -60,6 +61,13 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
     
         <section>
             
+            <Link
+                href='/admin/products/new'
+                className="rounded bg-lime-400 font-bold py-2 px-10 text-cyan-900"
+            >
+                New Product
+            </Link>
+
             <Heading>
                 Admin products
             </Heading>
