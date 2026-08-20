@@ -1,4 +1,8 @@
-import { CategoriesResponseSchema } from "@/src/schema";
+import { CategoriesResponseSchema, productT } from "@/src/schema";
+
+type productFormPropsT = {
+    product? : productT
+}
 
 async function getCategories () {
 
@@ -14,7 +18,7 @@ async function getCategories () {
 
 }
 
-export default async function ProductForm() {
+export default async function ProductForm( {product} : productFormPropsT ) {
 
     const categories = await getCategories() ;
 
@@ -28,7 +32,7 @@ export default async function ProductForm() {
                     htmlFor="name"
                     className="block"
                 >
-                    Nombre Producto
+                    Name of Product
                 </label>
 
                 <input
@@ -37,6 +41,7 @@ export default async function ProductForm() {
                     placeholder="Nombre Producto"
                     className="border border-gray-300 w-full p-2"
                     name="name"
+                    defaultValue={product?.name}
                 />
 
             </article>
@@ -47,7 +52,7 @@ export default async function ProductForm() {
                     htmlFor="price"
                     className="block"
                 >
-                    Precio
+                    Price
                 </label>
 
                 <input
@@ -57,6 +62,7 @@ export default async function ProductForm() {
                     className="border border-gray-300 w-full p-2"
                     name="price"
                     min={0}
+                    defaultValue={product?.price}
                 />
             </article>
 
@@ -66,7 +72,7 @@ export default async function ProductForm() {
                     htmlFor="inventory"
                     className="block"
                 >
-                    Inventario
+                    Stock inventory
                 </label>
 
                 <input
@@ -76,6 +82,7 @@ export default async function ProductForm() {
                     className="border border-gray-300 w-full p-2"
                     name="inventory"
                     min={0}
+                    defaultValue={product?.inventory}
                 />
             </article>
 
@@ -85,15 +92,16 @@ export default async function ProductForm() {
                     htmlFor="categoryId"
                     className="block"
                 >
-                    Categoría
+                    Category
                 </label>
 
                 <select
                     id="categoryId"
                     className="border border-gray-300 w-full p-2 bg-white"
-                    name="categoryId" 
+                    name="categoryId"
+                    defaultValue={product?.categoryId}
                 >
-                <option value="">Seleccionar Categoría</option>
+                <option value="">Select Category</option>
                 
                 {
                     categories.map( (category) => (

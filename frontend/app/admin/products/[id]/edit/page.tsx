@@ -1,9 +1,41 @@
 import EditProductForm from "@/components/products/EditProductForm";
 import ProductForm from "@/components/products/ProductForm";
 import Heading from "@/components/ui/Heading";
+import { ProductSchema } from "@/src/schema";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default function EditProductPage () {
+type paramsT = Promise< {id : string } >
+
+type editProductPagePropsT = {
+    params: paramsT
+}
+
+async function getProduct ( id : string | number ) {
+
+    const url = `${process.env.API_URL}/products/${id}` ;
+
+    // console.log(url)
+
+    const request = await fetch( url ) ;
+
+    const response = await request.json() ;
+
+    if( !request.ok ) {
+        notFound()
+    }
+
+    const product = ProductSchema.parse(response) ;
+
+    return product
+
+} 
+
+export default async function EditProductPage ( {params} : editProductPagePropsT ) {
+
+    const { id } = await params ;
+
+    const product = await getProduct( id ) ;
 
     return(
     
@@ -17,11 +49,11 @@ export default function EditProductPage () {
             </Link>
 
             <Heading>
-                Edit the Product: {}
+                Edit the Product: {product.name}
             </Heading>
 
             <EditProductForm>
-                <ProductForm/>
+                <ProductForm product={product} />
             </EditProductForm>
 
 
