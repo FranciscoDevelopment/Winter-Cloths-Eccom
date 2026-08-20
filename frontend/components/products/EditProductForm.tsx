@@ -26,8 +26,6 @@ export default function EditProductForm ( {children} : childrenProps ) {
 
     const updateProductWithId = updateProduct.bind(  null  , +id ) ;
 
-    console.log(params.id) ;
-
     const [state, dispatch] = useActionState( updateProductWithId, initialState )
 
 
@@ -55,7 +53,6 @@ export default function EditProductForm ( {children} : childrenProps ) {
                 className="rounded bg-lime-400 font-bold py-2 w-full cursor-pointer"
                 value="Edit Product"
             />
-
 
         </form>
     
