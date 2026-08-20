@@ -9,8 +9,6 @@ type actionStateT = {
 
 export async function updateProduct ( productId : productT['id'], prevState : actionStateT, formData : FormData ) {
 
-    console.log( "from addProduct action functionality" ) ;
-
     const product = ProductFormSchema.safeParse(
         {
             name: formData.get("name"),
@@ -64,6 +62,5 @@ export async function updateProduct ( productId : productT['id'], prevState : ac
         errors: [] ,
         success: "Product updated correctly"
     }
-
 
 }

@@ -9,8 +9,6 @@ type actionStateT = {
 
 export async function addNewProduct( prevState : actionStateT , formData : FormData ) {
 
-    console.log("from addProduct action functionality")
-
     const product = ProductFormSchema.safeParse({
 
         name: formData.get("name") ,

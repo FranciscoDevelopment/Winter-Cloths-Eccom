@@ -1,7 +1,6 @@
 "use client"
 
 import { useActionState, useEffect } from "react"
-import ProductForm from "./ProductForm"
 import { addNewProduct } from "@/actions/add-product-action"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
@@ -48,7 +47,6 @@ export default function NewProductForm ( {children} : childrenProps ) {
                 value="Add Product"
 
             />
-
 
         </form>
     
