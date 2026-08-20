@@ -1,5 +1,6 @@
 import { CategoryWithProductsResponseSchema } from "@/src/schema";
 import ProductCard from "@/components/products/ProductCard";
+import { notFound } from "next/navigation";
 
 type paramsT = Promise< {categoryId : string} > ;
 
@@ -23,6 +24,8 @@ async function getProducts ( categoryId : string ) {
     } ) ;
 
     const data = await response.json() ;
+
+    if( !response.ok ) notFound() ;
 
     const products = CategoryWithProductsResponseSchema.parse( data ) ;
     
