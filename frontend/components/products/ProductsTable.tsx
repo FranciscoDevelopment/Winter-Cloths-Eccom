@@ -1,7 +1,10 @@
+// Componente de servidor
+
 import { productT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
 import Image from "next/image"
 import Link from "next/link"
+import DeleteProductForm from "./DeleteProductForm"
 
 type productsTablePropsT = {
     products : productT[]
@@ -19,20 +22,20 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                 <thead>
                     <tr>
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                        Imagen
+                        Image
                     </th>
 
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                        Producto
+                        Product
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                        Precio
+                        Price
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                        Inventario
+                        Stock Inventory
                     </th>
                     <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                        <span className="sr-only">Acciones</span>
+                        <span className="sr-only">Actions</span>
                     </th>
                     </tr>
                 </thead>
@@ -69,13 +72,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                                     Edit <span className="sr-only">{product.name}</span>
                                 </Link>
                                 
-                                <form>
-                                    <input 
-                                        type="submit" 
-                                        className="text-red-600 hover:text-red-800 cursor-pointer"
-                                        value="Delete" 
-                                    />
-                                </form>
+                                <DeleteProductForm productId={product.id} />
 
                             </div>
                         </td>

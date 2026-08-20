@@ -185,7 +185,7 @@ export class ProductsService {
 
     await this.productsRepository$.remove( productToDelete ) ;
 
-    return `Product #${id} has been deleted`
+    return {message: `Product #${id} has been deleted`}
   
   }
 
