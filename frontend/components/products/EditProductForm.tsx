@@ -5,6 +5,8 @@ import ProductForm from "./ProductForm"
 import { addNewProduct } from "@/actions/add-product-action"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
+import { updateProduct } from "@/actions/update-product.action"
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -18,29 +20,33 @@ export default function EditProductForm ( {children} : childrenProps ) {
 
     const theRouter = useRouter() ;
 
-    //const [ state, dispatch ] = useActionState( addNewProduct, initialState ) ;
+    const params = useParams<{id: string}>();
+    
+    const {id} = params
 
-    /*useEffect( () => {
+    const updateProductWithId = updateProduct.bind(  null  , +id ) ;
 
-        if(state.errors) {
-            state.errors.forEach( (error) => toast.error(error) )
-        }
+    console.log(params.id) ;
+
+    const [state, dispatch] = useActionState( updateProductWithId, initialState )
+
+
+    useEffect( () => {
+
+        if(state.errors) state.errors.forEach( (error) => toast.error(error) ) ;
 
         if( state.success ) {
-            
-            toast.success( state.success ) 
-            
-            theRouter.push("/admin/products")
-        }
 
+            toast.success( state.success ) ;
+
+            theRouter.push( "/admin/products" )
+        }
 
     }, [state] )
 
-    */
-
     return (
 
-        <form className="space-y-5" >
+        <form className="space-y-5" action={dispatch} >
 
             {children}
 
@@ -48,7 +54,6 @@ export default function EditProductForm ( {children} : childrenProps ) {
                 type="submit"
                 className="rounded bg-lime-400 font-bold py-2 w-full cursor-pointer"
                 value="Edit Product"
-                
             />
 
 
