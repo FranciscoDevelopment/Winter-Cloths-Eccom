@@ -9,7 +9,6 @@ import CouponForm from "./CouponForm"
 import SubmitOrderForm from "./SubmitOrderForm"
 
 
-
 export default function ProductsInCartSection () {
 
     const contents = useStore( (state) => state.contents )
@@ -27,7 +26,7 @@ export default function ProductsInCartSection () {
     
         <section>
             <h2 className="text-4xl font-bold text-grey-900">
-                Resumen de Venta
+                Sales Summary
             </h2>
 
             <ul role="list" className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500" >
