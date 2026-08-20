@@ -2,7 +2,14 @@ import { TransactionsResponseSchema } from "./schema";
 
 export async function getSalesByDate(date: string) {
 
-    const url = `${process.env.NEXT_PUBLIC_TRANSACTION_DOMAIN}${date}`
+    const API_DIRECTION = `${process.env.API_URL}/transactions?transactionDate=${date}` as const ;
+
+    const NEXT_DIRECTION = `${process.env.NEXT_PUBLIC_TRANSACTION_DOMAIN}${date}` as const ;
+
+
+    const isServer = typeof window === "undefined" ;
+    
+    const url = isServer ? API_DIRECTION : NEXT_DIRECTION ;
 
     
     const req = await fetch(url) ;
