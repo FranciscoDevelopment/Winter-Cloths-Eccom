@@ -86,6 +86,7 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
                             alt="Image Uploaded"
                             className="object-cover"
                             fill
+                            priority
                         />
                     </aside>
 
