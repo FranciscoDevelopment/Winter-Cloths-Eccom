@@ -118,7 +118,9 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
             </article>
 
-            <UploadProductImage/>
+            <UploadProductImage
+                currentImage={product?.image}
+            />
 
         </section>
     )

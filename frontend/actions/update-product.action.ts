@@ -17,7 +17,9 @@ export async function updateProduct ( productId : productT['id'], prevState : ac
 
             inventory: formData.get("inventory") ,
 
-            categoryId: formData.get("categoryId")
+            categoryId: formData.get("categoryId"),
+
+            imageUrl: formData.get("image") || undefined
         }
     )
 

@@ -5,8 +5,11 @@ import Image from "next/image";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone" ;
 
+type uploadProductImagePropsT = {
+    currentImage? : string
+}
 
-export default function UploadProductImage () {
+export default function UploadProductImage ( {currentImage} : uploadProductImagePropsT ) {
 
     const [ imageUrl, setImageUrl ] = useState("")
 
@@ -88,11 +91,31 @@ export default function UploadProductImage () {
 
                 </article>
             )}
+
+
+
+            {currentImage && !imageUrl && (
+                <article className="py-5 space-y-3" >
+
+                    <p className="font-bold">Current Image</p>
+                    <aside className="w-[200px] h-[320px] relative">
+                        <Image
+                            src={currentImage}
+                            alt="Image Uploaded"
+                            className="object-cover"
+                            fill
+                        />
+                    </aside>
+
+                </article>
+            )}
+
+
     
             <input
                 type="hidden"
                 name="image"
-                defaultValue={imageUrl}
+                defaultValue={imageUrl ? imageUrl : currentImage }
             />
 
         </main>
