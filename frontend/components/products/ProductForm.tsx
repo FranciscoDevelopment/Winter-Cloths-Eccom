@@ -1,4 +1,5 @@
 import { CategoriesResponseSchema, productT } from "@/src/schema";
+import UploadProductImage from "./UploadProductImage";
 
 type productFormPropsT = {
     product? : productT
@@ -113,10 +114,11 @@ export default async function ProductForm( {product} : productFormPropsT ) {
                     ) )
                 
                 }
-
                 </select>
 
             </article>
+
+            <UploadProductImage/>
 
         </section>
     )
