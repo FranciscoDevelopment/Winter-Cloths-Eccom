@@ -8,6 +8,8 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { ProductsModule } from './products/products.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CuponsModule } from './cupons/cupons.module';
+import { S3UploadService } from './s3-upload/s3-upload/s3-upload.service';
+import { S3UploadService } from './s3-upload/s3-upload.service';
 
 @Module({
   imports: [
@@ -33,6 +35,6 @@ import { CuponsModule } from './cupons/cupons.module';
   
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, S3UploadService],
 })
 export class AppModule {}

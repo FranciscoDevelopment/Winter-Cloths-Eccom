@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -59,14 +59,28 @@ export class ProductsController {
     return this.productsService.findOne(+id);
   }
 
+
   @Patch(':id')
   async update(
     @Param('id', IdValidationPipe) id: string,
     @Body() updateProductDto: UpdateProductDto
   ) {
-    //const productToUpdate = await this.findOne( id )
-    
+
     return await this.productsService.update( +id, updateProductDto )
+  }
+
+
+  @Post(":id/image")
+  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  uploadImagePost(
+    @Param('id', IdValidationPipe) id : string,
+    @UploadedFile( uploadImageFileOptions ) file : Express.Multer.File
+  ) {
+    if( !file ) {
+      throw new BadRequestException("The image is required for this request")
+    }
+    return this.productsService.uploadImage( +id, file )
+
   }
 
 
@@ -76,6 +90,9 @@ export class ProductsController {
     @Param('id', IdValidationPipe) id : string,
     @UploadedFile( uploadImageFileOptionsRequired ) file : Express.Multer.File
   ) {
+    if( !file ) {
+      throw new BadRequestException("The image is required for this request")
+    }
     return this.productsService.uploadImage( +id, file )
   }
 
