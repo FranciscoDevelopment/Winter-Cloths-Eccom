@@ -142,6 +142,10 @@ export class ProductsService {
 
     Object.assign( product, updateProductDto )
 
+    if( updateProductDto.imageUrl ) {
+      product.image = updateProductDto.imageUrl
+    }
+
     if( updateProductDto.categoryId ) {
 
       const categoryToUpdate = await this.categoryRepository$.findOneBy(
