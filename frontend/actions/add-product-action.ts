@@ -17,7 +17,9 @@ export async function addNewProduct( prevState : actionStateT , formData : FormD
 
         inventory: formData.get("inventory") ,
 
-        categoryId: formData.get("categoryId")
+        categoryId: formData.get("categoryId"),
+
+        imageUrl: formData.get("image")
 
     })
 

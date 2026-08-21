@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateProductDto {
 
@@ -21,5 +21,9 @@ export class CreateProductDto {
     @IsInt( {message: "The category is invalid"} )
     @Type( () => Number )
     categoryId! : number ;
+
+    @IsOptional()
+    @IsString()
+    imageUrl? : string
 
 }

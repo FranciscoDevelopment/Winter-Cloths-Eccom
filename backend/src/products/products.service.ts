@@ -55,6 +55,13 @@ export class ProductsService {
 
       await this.productsRepository$.save( savedProduct )
 
+    } 
+    else if( createProductDto.imageUrl ) {
+
+      savedProduct.image = createProductDto.imageUrl ;
+
+      await this.productsRepository$.save( savedProduct )
+
     }
 
     return savedProduct ;
@@ -182,8 +189,15 @@ export class ProductsService {
 
 
     return imageUrl
+  }
+
+
+  uploadImageStandalone ( file : Express.Multer.File ) : Promise<string> {
+
+    return this.s3UploadService.uploadFile( file, "products" ) ;
+
 
   }
 
-  
+
 }

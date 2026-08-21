@@ -97,8 +97,22 @@ export class ProductsController {
   }
 
 
+  @Post("upload-only-image")
+  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  uploadImageStandalone(
+    @UploadedFile(uploadImageFileOptionsRequired) file : Express.Multer.File 
+  ) {
+    
+    if( !file ) throw new BadRequestException("Image is required") ;
+
+    return this.productsService.uploadImageStandalone( file )
+  
+  }
+
+
   @Delete(':id')
   remove(@Param('id', IdValidationPipe ) id: string) {
     return this.productsService.remove(+id);
   }
+
 }

@@ -23,7 +23,8 @@ export const ProductFormSchema = z.object({
     name: z.string().min(1, {message: 'El Nombre del Producto no puede ir vacio'}),
     price: z.coerce.number({message: 'Precio no válido'}).min(1, {message: 'El Precio debe ser mayor a 0'}),
     inventory: z.coerce.number({message: 'Inventario no válido'}).min(1, {message: 'El inventario debe ser mayor a 0'}),
-    categoryId: z.coerce.number({message: 'La Categoria no es válida'})
+    categoryId: z.coerce.number({message: 'La Categoria no es válida'}),
+    imageUrl: z.string()
 })
 
 export const CategorySchema = z.object(

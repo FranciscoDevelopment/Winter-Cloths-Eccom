@@ -17,3 +17,15 @@ export function isValidPage ( value : number ) {
     return true
 
 }
+
+export function getImagePath ( imageUrl : string ) {
+
+    const aws_s3Bucket = process.env.AWS_S3_BUCKET!;
+
+    const s3BaseUrl = `https://${aws_s3Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com`
+
+    if( imageUrl.startsWith( s3BaseUrl ) ) {
+        return imageUrl
+    }
+    
+}

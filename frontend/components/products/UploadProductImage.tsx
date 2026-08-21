@@ -1,10 +1,14 @@
 "use client"
 
-import { useCallback } from "react";
+import { uploadImage } from "@/actions/upload-image-action";
+import Image from "next/image";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone" ;
 
 
 export default function UploadProductImage () {
+
+    const [ imageUrl, setImageUrl ] = useState("")
 
     const handleOnDrop = useCallback( async ( files : File[] ) => {
 
@@ -18,6 +22,11 @@ export default function UploadProductImage () {
 
         } )
 
+        const image = await uploadImage( formData ) ;
+
+        console.log(image);
+
+        setImageUrl(image)
 
     }, [] )
 
@@ -63,7 +72,29 @@ export default function UploadProductImage () {
                 {!isDragActive && (<p>Drag and drop an image here</p>)}
             
             </article>
+
+            {imageUrl && (
+                <article className="py-5 space-y-3" >
+
+                    <p className="font-bold">ProductImage</p>
+                    <aside className="w-[200px] h-[320px] relative">
+                        <Image
+                            src={imageUrl}
+                            alt="Image Uploaded"
+                            className="object-cover"
+                            fill
+                        />
+                    </aside>
+
+                </article>
+            )}
     
+            <input
+                type="hidden"
+                name="image"
+                defaultValue={imageUrl}
+            />
+
         </main>
     
     )
