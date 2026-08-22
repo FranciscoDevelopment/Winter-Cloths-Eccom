@@ -4,9 +4,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
-import { Between, Entity, FindManyOptions, Repository } from 'typeorm';
+import { Between, FindManyOptions, Repository } from 'typeorm';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
-import { ProductsController } from 'src/products/products.controller';
 import { CuponsService } from 'src/cupons/cupons.service';
 
 @Injectable()
@@ -29,8 +28,6 @@ export class TransactionsService {
   errors : string[] = []
 
   async create(createTransactionDto: CreateTransactionDto) {
-  
-    // first of all , the global repository manager
 
     await this.productRepository$.manager.transaction( async ( transactionEntityManager ) => {
 
@@ -46,8 +43,6 @@ export class TransactionsService {
         
         const discount = ( cuponResponse.cupon.porcentage / 100 ) * totalPrice ;
 
-        console.log( discount )
-
         transaction.discount = discount ;
 
         transaction.cupon = cuponResponse.cupon.name ;
@@ -55,9 +50,7 @@ export class TransactionsService {
         transaction.total -= discount
 
       }
-  
-      //await transactionEntityManager.save( transaction )
-  
+    
   
       for( const contents of createTransactionDto.contents ) {
   
@@ -72,15 +65,13 @@ export class TransactionsService {
         }
 
         
-
         if( contents.quantity > productToBuy.inventory ) {
 
           this.errors.push( `The article ${productToBuy.name} exceeds in quantity the available in stock` )
 
           throw new BadRequestException( this.errors ) ;
         } 
-          
-  
+        
         productToBuy.inventory -= contents.quantity ;     // productToBuy.inventory = productToBuy.inventory - contents.quantity
         
 
@@ -95,17 +86,7 @@ export class TransactionsService {
 
         await transactionEntityManager.save( transactionContent ) ;
 
-        /* equivalente a await transactionEntityManager.save( transactionContent ) ;
-        await this.transactionContentsRepository$.save(
-          {
-            ...contents,
-            transaction,
-            product: productToBuy
-          }
-        )
-        */
       }
-
 
     } )
 
@@ -124,16 +105,12 @@ export class TransactionsService {
 
     if( transactionDate ) {
       const formattedDate : Date = parseISO(  transactionDate) ;
-      console.log( formattedDate  )
 
       if( !isValid(formattedDate) ) throw new BadRequestException( "Invalid date" ) ;
 
       const startOfTheDay = startOfDay( formattedDate )
 
       const endOfTheDay = endOfDay( formattedDate ) ;
-
-      console.log( startOfTheDay )
-      console.log( endOfTheDay )
 
 
       options.where = {
@@ -142,7 +119,6 @@ export class TransactionsService {
       
 
     }
-
 
     return this.transactionRepository$.find( options ) ;
 
@@ -172,7 +148,6 @@ export class TransactionsService {
 
     await this.productRepository$.manager.transaction( async ( entityManager ) => {
 
-      // Revertir inventario de contenidos actuales
 
       if( updateTransactionDto.contents ) {
 
@@ -188,17 +163,14 @@ export class TransactionsService {
 
           }
 
-          product.inventory = product.inventory + content.quantity ;  // devolver stock
+          product.inventory = product.inventory + content.quantity ;
 
           await entityManager.save( product ) ;
 
         }
 
-        // Elimir contenidos antiguos
-
         await entityManager.remove( TransactionContents, transactionToUpdate.contents ) ;
 
-        // Crear nuevos contenidos y descontar inventarios
 
         const newContentsUpdated : TransactionContents[] = [] ;
 
@@ -242,15 +214,12 @@ export class TransactionsService {
 
         await entityManager.save( newContentsUpdated )
 
-        // Recalcular total a pratir de los nuevos contenidos
-
         transactionToUpdate.total = updateTransactionDto.contents.reduce(
           ( sum, item ) => sum + (item.quantity*item.priceAtTransactionDate)
         , 0)
 
       }
 
-      // Si solo actualiza el total manualmente(sin contents)
 
       if( updateTransactionDto.total !== undefined && !updateTransactionDto.contents ) {
         transactionToUpdate.total = updateTransactionDto.total

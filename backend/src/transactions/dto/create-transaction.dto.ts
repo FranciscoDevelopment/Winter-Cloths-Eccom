@@ -7,8 +7,6 @@ export class TransactionContentsDto {
     @IsNotEmpty( {message: "The product ID is required"} )
     @IsInt( {message: "Product id invalid"} )
     productId! : number
-    
-    //@IsInt( {message: "Quantity not valid"} )
 
     @IsNotEmpty( {message: "Quantity is required"} )
     @IsInt( {message: "Invalid quantity"} )
