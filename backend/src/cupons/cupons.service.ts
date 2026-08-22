@@ -56,14 +56,11 @@ export class CuponsService {
 
 
   async applyCupon ( cuponName : string ) {
-    console.log( cuponName )
 
     const cupon = await this.cuponRepository$.findOneBy( {name: cuponName} ) ;
 
 
     if( !cupon ) throw new NotFoundException( `The cupon doesn't exist` ) ;
-
-    console.log(  )
 
 
     const currentDate = new Date() 

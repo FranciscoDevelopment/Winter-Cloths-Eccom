@@ -43,12 +43,8 @@ export class CuponsController {
   @HttpCode( HttpStatus.OK )  // 200
   applyCupon( @Body() applyCuponDto : ApplyCuponDto ) {
 
-
-    console.log( applyCuponDto )
-
     return this.cuponsService.applyCupon( applyCuponDto.cupon_name )
 
   }
-
 
 }
