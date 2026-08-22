@@ -31,14 +31,12 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
 
         setImageUrl(image)
 
-    }, [] )
-
-    // la importancia useCallback para persistir tras re-renders
+    }, [imageUrl] )
 
     const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
 
         accept: {
-            "image/jpeg": [".jpeg"],    // SIEMPRE LO + IMPORTANTE EL Mind-Type image/jpeg 
+            "image/jpeg": [".jpeg"],
             "image/jpg": [".jpg"],
             "image/png": [".png"]
         },
@@ -93,8 +91,6 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
                 </article>
             )}
 
-
-
             {currentImage && !imageUrl && (
                 <article className="py-5 space-y-3" >
 
@@ -111,8 +107,6 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
                 </article>
             )}
 
-
-    
             <input
                 type="hidden"
                 name="image"
