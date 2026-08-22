@@ -2,9 +2,7 @@ import { DataSource } from "typeorm";
 import { join } from "path";
 import * as dotenv from 'dotenv'
 
-// Lee el .env manualmente
 dotenv.config()
-
 
 export const appDataSourceForTypeOrmCliCommands = new DataSource( {
 

@@ -16,12 +16,9 @@ export const typeOrmConfig = ( configService : ConfigService ) : TypeOrmModuleOp
 
         entities: [ join(__dirname + '../../**/*.entity.{js,ts}') ],
 
-        synchronize: true,      // Be carefully
+        synchronize: true,
 
         migrationsRun: false ,
-
-        // migrations lo agregas cuando tengas archivos generados:
-        //migrations: [ join(__dirname, '../../**/*.entity.{js,ts}') ],
 
     }   
 
