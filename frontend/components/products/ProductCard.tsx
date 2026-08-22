@@ -1,5 +1,5 @@
 import { productT } from "@/src/schema";
-import { FormatCurrency } from "@/src/utils";
+import { FormatCurrency, isAvailableByStock } from "@/src/utils";
 import Image from "next/image";
 import AddProductButton from "./AddProductButton";
 
@@ -10,10 +10,13 @@ type productPropsT = {
 
 export default function ProductCard ( {product} : productPropsT ) {
 
+    const isOutOfStock = isAvailableByStock( product.inventory ) ;
+
     return(
     
         <main className='rounded bg-white shadow relative p-5'>
-            <section>
+            
+            <section className={!isOutOfStock ? "opacity-40" : "" } >
 
                 <Image src={product.image} alt={product.name} width={200} height={400} priority />
 
@@ -25,7 +28,12 @@ export default function ProductCard ( {product} : productPropsT ) {
 
             </section>
 
-            <AddProductButton product={product} />
+            {
+                isOutOfStock 
+                    ? ( <AddProductButton product={product} /> )
+                    : ( <p className="out-stock">Out Of Stock</p> )
+            }
+
 
         </main>
     

@@ -29,3 +29,6 @@ export function getImagePath ( imageUrl : string ) {
     }
     
 }
+
+
+export const isAvailableByStock = (inventory : number) => inventory > 0 ;
