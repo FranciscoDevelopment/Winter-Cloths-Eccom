@@ -38,7 +38,7 @@ export class CuponsService {
     
     const cupon = await this.findOne(id) ;
 
-    cupon.porcentage = updateCuponDto.porcentage  // Only update the porcentage
+    cupon.porcentage = updateCuponDto.porcentage
 
     return await this.cuponRepository$.save( cupon )
 
