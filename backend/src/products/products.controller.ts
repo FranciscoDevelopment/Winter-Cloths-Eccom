@@ -25,9 +25,6 @@ export class ProductsController {
   @Get()
   findAll( @Query() query : GetProductsQueryDto ) {
 
-    console.log( query )
-
-
     const categoryId = query.category_id ?? null
 
     const take = query.take ?? PAGINATION_LIMIT ;
@@ -40,8 +37,6 @@ export class ProductsController {
 
   @Get( "length" )
   findAllAndLength ( @Query() query : GetProductsQueryDto ) {
-
-    console.log( query )
 
     const categoryId = query.category_id ?? null ;
 

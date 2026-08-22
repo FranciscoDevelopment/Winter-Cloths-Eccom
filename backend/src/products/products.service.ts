@@ -36,9 +36,6 @@ export class ProductsService {
 
     }
 
-
-    // 1. Guardar producto sin imagen para obtener el id
-
     const savedProduct = await this.productsRepository$.save( 
       {
         ...createProductDto,
@@ -46,8 +43,6 @@ export class ProductsService {
       } 
     )
 
-    
-    // 2) Si hay imagen, subirla y actualizar
 
     if( file ) {
 
@@ -85,7 +80,7 @@ export class ProductsService {
 
     return this.productsRepository$.find(
       {
-        relations: {category: true },       // Equivalente en product.entity     @ManyToOne( () => Category, {eager: true} )
+        relations: {category: true },
         order: {id: "DESC" },
         take: take,
         skip
@@ -168,7 +163,6 @@ export class ProductsService {
 
     }
 
-
     return await this.productsRepository$.save( product ) ;
     
   }
@@ -200,8 +194,6 @@ export class ProductsService {
 
     return this.s3UploadService.uploadFile( file, "products" ) ;
 
-
   }
-
 
 }
