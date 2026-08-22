@@ -72,7 +72,7 @@ export class TransactionsService {
           throw new BadRequestException( this.errors ) ;
         } 
         
-        productToBuy.inventory -= contents.quantity ;     // productToBuy.inventory = productToBuy.inventory - contents.quantity
+        productToBuy.inventory -= contents.quantity ;
         
 
         const transactionContent = new TransactionContents() ;
