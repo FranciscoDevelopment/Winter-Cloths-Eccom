@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 
-export class CreateCategoryDto {        // equivalente a un req.body global
+export class CreateCategoryDto {
 
     @IsNotEmpty({
         message: "The name field can not be empty"
