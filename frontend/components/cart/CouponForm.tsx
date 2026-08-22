@@ -15,7 +15,6 @@ export default function CouponForm () {
 
         const formData = new FormData( e.currentTarget )
 
-        console.log( formData.get( "coupon_name" ) )
 
         const couponName = formData.get( "coupon_name" )?.toString()
 

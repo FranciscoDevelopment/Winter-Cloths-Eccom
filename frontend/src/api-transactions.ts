@@ -18,8 +18,7 @@ export async function getSalesByDate(date: string) {
 
     
     const transactions = TransactionsResponseSchema.parse( response )
-    
-    console.log(transactions)
+
     
     return transactions
 

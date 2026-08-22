@@ -11,8 +11,6 @@ export default function AddProductButton ( {product} : productPropsT ) {
 
     const addToCart = useStore( (state) => state.addToCart )
 
-    console.log( "desde addProduct button" )
-
     const handleOnClick = () => addToCart(product)
 
     return(

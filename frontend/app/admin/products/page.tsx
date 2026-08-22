@@ -21,8 +21,6 @@ async function getAllProducts ( take : number, skip : number ) {
 
     const response = await req.json()
 
-    //console.log(data) ;
-
     const data = ProductsResponseSchema.parse(response) ;
 
 
@@ -38,8 +36,6 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
 
     const {page} = await searchParams ;
 
-    console.log(page)
-
     if( !isValidPage( +page ) ) redirect( "/admin/products?page=1" )  ; 
 
     
@@ -52,7 +48,6 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
 
     const totalPages = Math.ceil( total / PRODUCTS_PER_PAGE )
 
-    console.log(totalPages) ;
 
     if( +page > totalPages ) redirect( "/admin/products?page=1" )  ;
 

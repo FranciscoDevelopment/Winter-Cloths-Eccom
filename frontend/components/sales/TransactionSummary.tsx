@@ -15,7 +15,6 @@ export default function TransactionSummary ( ) {
     const transaction = useTransaction() ;
 
     const transactionDiscountCurrency = FormatCurrency( transaction.discount ) ;
-    const transactionTotalCurrency = FormatCurrency( transaction.total ) ;
 
     return(
     

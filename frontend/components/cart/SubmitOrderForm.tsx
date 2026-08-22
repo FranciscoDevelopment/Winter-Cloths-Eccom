@@ -29,14 +29,11 @@ export default function SubmitOrderForm () {
 
 
     const submitOrderWithData = submitOrder.bind(null, orderFull) ; 
-                                // bind le anula la posibilidad a la fn de pasarle argumentos cuando se la ejecuta, pero se los sobreescribe 
 
     const [ state, dispatch ] = useActionState( submitOrderWithData , {
         errors: [],
         success: ""
     } )
-
-    console.log("\n", state) ;
 
 
     useEffect( () => {
@@ -56,10 +53,7 @@ export default function SubmitOrderForm () {
 
     return(
     
-        <form
-            action={dispatch}
-
-        >
+        <form action={dispatch}>
 
             <input
                 type="submit" 

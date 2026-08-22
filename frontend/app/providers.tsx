@@ -10,7 +10,6 @@ function makeQueryClient () {
         {
             defaultOptions: {
                 queries: {
-                    // Mayor a 0 para evitar volver a obtener los datos inmediatamente en el cliente.
                     staleTime: 60 * 1000,
                 }
             }
@@ -23,10 +22,9 @@ let browserQueryClient : QueryClient | undefined = undefined ;
 
 function getQueryClient () {
 
-    if(isServer) return makeQueryClient() ;     // Servidor: siempre generar un Query Client
+    if(isServer) return makeQueryClient() ;
 
     else {
-            // Cliente: Solo genera el QueryClient si no tenemos uno
         if( !browserQueryClient ) browserQueryClient = makeQueryClient() ;
 
         return browserQueryClient 

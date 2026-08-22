@@ -13,8 +13,6 @@ async function getProducts ( categoryId : string ) {
 
     const url = `${process.env.API_URL}/categories/${categoryId}?products=true` ;
 
-    console.log( url )
-
     const response = await fetch( url, {
         
         next: {
@@ -44,7 +42,6 @@ export default async function StorePage ( {params} : paramsPropT ) {
 
     const products = await data.products
 
-    console.log(products)
 
     return(
     

@@ -11,8 +11,6 @@ export default function Pagination ( {currentPage, totalPages, baseUrl} : pagina
 
     const pages = Array.from( {length: totalPages}, ( _ , i ) => i + 1 )
 
-    console.log(pages)
-
     return(
     
         <nav className="flex justify-center py-10" >

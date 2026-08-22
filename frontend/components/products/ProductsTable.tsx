@@ -1,5 +1,3 @@
-// Componente de servidor
-
 import { productT } from "@/src/schema"
 import { FormatCurrency, isAvailableByStock } from "@/src/utils"
 import Image from "next/image"
@@ -15,7 +13,6 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
 
     const outStockStylingClass = "bg-rose-800 rounded-lg px-3 py-1 text-white text-center text-sm uppercase font-semibold"
 
-    //const isOutOfStock = isAvailableByStock( )
 
     return (
         <main className="px-4 sm:px-6 lg:px-8 mt-10">

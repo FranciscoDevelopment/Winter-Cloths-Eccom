@@ -38,7 +38,6 @@ export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
 
     const success = SuccessResponseSchema.parse( responseData ) ;
 
-    // reactualiza render de stock on-live
     revalidateTag("products-by-category") ;
 
     return {

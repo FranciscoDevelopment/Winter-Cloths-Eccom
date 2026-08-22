@@ -14,7 +14,6 @@ const getCategories = async () => {
     if( !response.ok ) redirect('/1') ;
     
 
-
     const data = await response.json() ;
 
 

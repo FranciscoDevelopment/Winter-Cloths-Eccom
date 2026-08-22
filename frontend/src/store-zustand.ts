@@ -25,7 +25,6 @@ type storeT = {
     applyDiscount: () => void
 
     clearOrder: () => void
-
 }
 
 type storeAttributesT = Pick<storeT, "total" | "contents" | "coupon" | "discount" > 
@@ -51,17 +50,12 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
         ...initialState,
 
         addToCart: ( product ) => {
-            
-            console.log( product )
 
             const { id: productId, categoryId, ...data } = product ;
-            // const productId = product.id
 
             let contents : shoppingCartT = [] ;
 
             const duplicated = get().contents.findIndex( (item) => item.productId === productId )
-
-            console.log(duplicated) ;
 
             if( duplicated >= 0 ) {
 
@@ -91,9 +85,6 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
         },
 
         updateQuantity: ( id, quantity ) => {
-            
-            console.log( id );
-            console.log(quantity)
 
             const contents = get().contents.map( (item) => {
 
@@ -140,9 +131,8 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
         }
         ,
         applyCoupon: async ( couponName ) => {
-            console.log(couponName)
 
-            const request = await fetch( `/coupons/api`, {     // fetch interno en Next
+            const request = await fetch( `/coupons/api`, {
 
                 method: "POST",
                 body: JSON.stringify({
@@ -153,11 +143,8 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
             const data = await request.json() ;
 
-            
 
             const coupon = CouponResponseSchema.parse(data) ;
-
-            console.log(coupon) ;
 
             set( () => ({coupon }) )
 

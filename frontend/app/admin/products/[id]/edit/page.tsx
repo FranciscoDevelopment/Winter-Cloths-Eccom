@@ -15,8 +15,6 @@ async function getProduct ( id : string | number ) {
 
     const url = `${process.env.API_URL}/products/${id}` ;
 
-    // console.log(url)
-
     const request = await fetch( url ) ;
 
     const response = await request.json() ;

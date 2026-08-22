@@ -15,8 +15,6 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
 
     const handleOnDrop = useCallback( async ( files : File[] ) => {
 
-        console.log("Drop done...\n" + files ) ;
-
         const formData = new FormData() ;
 
         files.forEach( (file) => {
@@ -26,8 +24,6 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
         } )
 
         const image = await uploadImage( formData ) ;
-
-        console.log(image);
 
         setImageUrl(image)
 
