@@ -11,7 +11,7 @@ export const typeOrmConfig = ( configService : ConfigService ) : TypeOrmModuleOp
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASS') ,
         database: configService.get('DATABASE_NAME'),
-        ssl: configService.get('NODE_ENV') === 'production',
+        ssl: configService.get('NODE_ENV') === 'production' ? {rejectUnauthorized: false} : false ,
         logging: true ,
 
         entities: [ join(__dirname + '../../**/*.entity.{js,ts}') ],
