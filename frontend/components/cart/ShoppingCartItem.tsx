@@ -15,11 +15,6 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
 
     const removeFromCart = useStore( (state) => state.removeFromCart ) ;
 
-
-    const handleOnChangeUpdateQuantity = (e : ChangeEvent<HTMLSelectElement>) => {
-        updateQuantity( item.productId, +e.target.value )
-    }
-
     const decreaseQuantity = () => {
         
         if( item.quantity <= 1 ) return ;

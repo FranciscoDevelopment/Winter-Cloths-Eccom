@@ -1,6 +1,5 @@
 "use client"
 
-import { cartContentsT } from "@/src/types/CartContents.type"
 import ShoppingCartItem from "./ShoppingCartItem"
 import Amount from "./Amount"
 import { useStore } from "@/src/store-zustand"

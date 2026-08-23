@@ -27,7 +27,7 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
 
         setImageUrl(image)
 
-    }, [imageUrl] )
+    }, [] )
 
     const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
 
