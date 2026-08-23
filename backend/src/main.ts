@@ -6,6 +6,8 @@ import * as dotenv from 'dotenv'
 
 dotenv.config();
 
+const port = Number( process.env.PORT ) || Number( process.env.API_REST_PORT_SOURCE ) || Number( 3001 )
+
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -20,6 +22,6 @@ async function bootstrap() {
   
   )
 
-  await app.listen(  Number(process.env.SERVER_PORT) ?? Number(3001) ) ;
+  await app.listen(port) ;
 }
 bootstrap();
