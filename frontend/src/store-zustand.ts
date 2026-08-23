@@ -51,7 +51,7 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
         addToCart: ( product ) => {
 
-            const { id: productId, categoryId, ...data } = product ;
+            const { id: productId, ...data } = product ;
 
             let contents : shoppingCartT = [] ;
 

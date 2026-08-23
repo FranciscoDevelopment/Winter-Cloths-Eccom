@@ -1,14 +1,15 @@
 "use client"
 
-import { transactionT } from "@/src/schema"
+//import { transactionT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
-import Image from "next/image"
 import TransactionDetails from "./TransactionDetails"
 import { useTransaction } from "./transaction-context-provider"
 
+/*
 type transactionSummaryPropsT = {
     transaction : transactionT
 }
+*/
 
 export default function TransactionSummary ( ) {
 
