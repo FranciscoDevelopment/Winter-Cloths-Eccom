@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import localFont from "next/font/local";
 import { Outfit } from "next/font/google"
+// @ts-expect-error CSS side-effect import
 import "./globals.css";
 // react-toastify does not provide TypeScript declarations for its CSS file.
 // @ts-expect-error CSS side-effect import

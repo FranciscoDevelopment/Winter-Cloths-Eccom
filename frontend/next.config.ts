@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         hostname: "clothes-eccom-nest-images.s3.us-east-2.amazonaws.com",
         pathname: "/products/**"
       },
+
+      {
+        protocol: "https",
+        hostname: "https://winter-cloths-eccom.onrender.com",
+      }
       // duda?¿
       /*
       {
