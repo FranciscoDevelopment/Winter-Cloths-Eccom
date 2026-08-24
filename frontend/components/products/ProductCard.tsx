@@ -14,7 +14,7 @@ export default function ProductCard ( {product} : productPropsT ) {
 
     return(
     
-        <main className='rounded bg-stone-200 shadow relative p-5'>
+        <main className='rounded bg-stone-100 shadow relative p-5'>
             
             <section className={!isOutOfStock ? "opacity-40" : "" } >
 
