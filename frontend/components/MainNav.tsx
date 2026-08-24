@@ -48,7 +48,7 @@ export default async function MainNav () {
 
                 {categories.map( (category) => (
 
-                    <Link key={category.id} href={ `${category.id}` } className="text-slate-200 hover:text-green-400 font-bold p-2">
+                    <Link key={category.id} href={ `${category.id}` } className="text-slate-100 hover:text-green-400 font-bold p-2">
                         {category.name}
                     </Link>
 
