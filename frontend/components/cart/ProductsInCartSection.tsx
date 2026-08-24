@@ -23,8 +23,8 @@ export default function ProductsInCartSection () {
 
     return(
     
-        <section>
-            <h2 className="text-4xl font-bold text-grey-900">
+        <section className="bg-slate-100" >
+            <h2 className="text-lg font-bold text-grey-900">
                 Sales Summary
             </h2>
 
