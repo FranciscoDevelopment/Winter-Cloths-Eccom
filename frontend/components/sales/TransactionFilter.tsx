@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-//import Calendar from "react-calendar"
-// @ts-ignore: no type declarations available for this CSS module
+
 import "react-calendar/dist/Calendar.css"
 import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"

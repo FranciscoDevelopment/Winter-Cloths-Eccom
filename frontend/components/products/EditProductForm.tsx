@@ -38,7 +38,7 @@ export default function EditProductForm ( {children} : childrenProps ) {
             theRouter.push( "/admin/products" )
         }
 
-    }, [state] )
+    }, [state, theRouter] )
 
     return (
 

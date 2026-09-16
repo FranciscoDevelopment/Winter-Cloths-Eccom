@@ -48,7 +48,7 @@ export default function SubmitOrderForm () {
             clearOrder() 
         } ;
 
-    }, [state] )
+    }, [state, clearOrder] )
 
 
     return(

@@ -2,7 +2,6 @@ import { cartItemT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
 import Image from "next/image"
 import { useStore } from "@/src/store-zustand"
-import { ChangeEvent } from "react"
 
 
 type itemPropsT = {
@@ -14,11 +13,6 @@ export default function ShoppingCartItem ( {item} : itemPropsT ) {
     const updateQuantity = useStore( (state) => state.updateQuantity ) ;
 
     const removeFromCart = useStore( (state) => state.removeFromCart ) ;
-
-
-    const handleOnChangeUpdateQuantity = (e : ChangeEvent<HTMLSelectElement>) => {
-        updateQuantity( item.productId, +e.target.value )
-    }
 
     const decreaseQuantity = () => {
         

@@ -11,7 +11,7 @@
   "dependencies": {
     "@tanstack/react-query": "5.101.4",
     "date-fns": "4.4.0",
-    "next": "15.0.2",
+    "next": "15.0.7",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-calendar": "5.1.0",
     "react-dom": "19.0.0-rc-02c0e824-20241028",

@@ -1,20 +1,28 @@
 "use client"
 
-import { transactionT } from "@/src/schema"
+//import { transactionT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
-import Image from "next/image"
 import TransactionDetails from "./TransactionDetails"
 import { useTransaction } from "./transaction-context-provider"
 
+/*
 type transactionSummaryPropsT = {
     transaction : transactionT
 }
+*/
 
 export default function TransactionSummary ( ) {
 
     const transaction = useTransaction() ;
 
     const transactionDiscountCurrency = FormatCurrency( transaction.discount ) ;
+
+    const transactionTotalCurrency = FormatCurrency( transaction.total ) ;
+    
+    
+    //const totalOfTransaction = data?.reduce( (total, transaction) => total + transaction.total , 0 ) ?? 0 ;
+    
+    //const totalOfTransactionCurrency = FormatCurrency(totalOfTransaction) ;
 
     return(
     
@@ -47,7 +55,7 @@ export default function TransactionSummary ( ) {
 
                 <article className="flex justify-between">
                     <dt className="text-lg text-black font-black">Total</dt>
-                    <dd className="text-lg text-black font-black"></dd>
+                    <dd className="text-lg text-black font-black">{transactionTotalCurrency}</dd>
                 </article>
             </dl>
 

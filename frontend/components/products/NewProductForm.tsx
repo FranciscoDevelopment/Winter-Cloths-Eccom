@@ -33,7 +33,7 @@ export default function NewProductForm ( {children} : childrenProps ) {
         }
 
 
-    }, [state] )
+    }, [state, theRouter] )
 
     return(
 
