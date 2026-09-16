@@ -6,7 +6,7 @@ import * as dotenv from 'dotenv'
 
 dotenv.config();
 
-const port = Number( process.env.PORT ) || Number( process.env.API_REST_PORT_SOURCE ) || Number( 3001 )
+const port = Number( process.env.API_REST_PORT_SOURCE )  || Number( process.env.PORT ) || Number( 3001 )
 
 async function bootstrap() {
 
