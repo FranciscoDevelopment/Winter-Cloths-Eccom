@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CuponsModule } from './cupons/cupons.module';
 import { S3UploadService } from './s3-upload/s3-upload.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -30,7 +31,9 @@ import { S3UploadService } from './s3-upload/s3-upload.service';
   
     TransactionsModule,
   
-    CuponsModule
+    CuponsModule,
+  
+    UsersModule
   
   ],
   controllers: [AppController],
