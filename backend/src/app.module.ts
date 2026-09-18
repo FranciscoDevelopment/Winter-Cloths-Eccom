@@ -10,6 +10,7 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { CuponsModule } from './cupons/cupons.module';
 import { S3UploadService } from './s3-upload/s3-upload.service';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -33,7 +34,9 @@ import { UsersModule } from './users/users.module';
   
     CuponsModule,
   
-    UsersModule
+    UsersModule,
+  
+    AuthModule
   
   ],
   controllers: [AppController],
