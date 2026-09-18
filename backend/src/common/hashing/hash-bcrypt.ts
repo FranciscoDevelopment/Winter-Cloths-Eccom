@@ -10,6 +10,7 @@ export const hashingKey = async ( key : string ) => {
 }
 
 
+// return Promise<boolean>
 export const checkTheRespectiveKey = async ( inputKey : string, respectiveRegisteredKey : string ) => {
 
     return await bcrypt.compare( inputKey, respectiveRegisteredKey )
