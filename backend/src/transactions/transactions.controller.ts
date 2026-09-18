@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { TrimPipe } from 'src/common/pipes/trim-param/trim.pipe';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -15,7 +16,7 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll( @Query("transactionDate") transactionDate : string ) {
+  findAll( @Query("transactionDate", TrimPipe) transactionDate : string ) {
 
     return this.transactionsService.findAll( transactionDate ) ;
   
