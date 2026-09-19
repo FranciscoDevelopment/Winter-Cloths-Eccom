@@ -1,10 +1,12 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { hashingKey } from 'src/common/hashing/hash-bcrypt';
+import { JwtPayloadT } from 'src/common/types/jwt.types';
+import { RoleEnum } from 'src/common/types/role.types';
 
 
 const SELECT_PUBLIC = {
@@ -138,14 +140,63 @@ export class UsersService {
   }
 
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto , requester : JwtPayloadT ) {
   
+
+    const isSelf = requester.sub === id ;
+
+    const isAdmin = ( requester.role as RoleEnum ) === RoleEnum.ADMIN ;
+
+
+    if( !isSelf && !isAdmin ) {
+
+      throw new ForbiddenException('Only can edit your own profile')
+
+    }
+
+
+    await this.findOne(id)
+
+
+    if( updateUserDto.email ) {
+
+      const inUsing = await this.userRepository$.findOne(
+        {
+          where: {email: updateUserDto.email},
+          select: {id: true}
+        }
+      )
+
+
+      if( inUsing && inUsing.id !== id ) throw new ConflictException( 'Already exist an user with that email' ) ;
+      
+    }
+
+
+    if( updateUserDto.password ) {
+
+      updateUserDto.password = await hashingKey( updateUserDto.password )
+
+    }
+
+
+
+    await this.userRepository$.update( id, updateUserDto )
+
+
+    return this.findOne(id)
   
   }
 
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    
+    const userToDelete = await this.findOne(id) ;
+
+    await this.userRepository$.remove( userToDelete ) ;
+
+    return {message: `User #${id} has been deleted`}
+
   }
 
   
