@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { emailUserSchema, hashedRefreshTokenUserSchema, nameUserSchema, passwordUserSchema, roleUserSchema } from "../schemas/user.schema"
 import { Role } from "../enums/role.enum"
+import { Exclude } from "class-transformer"
 
 @Entity("users")
 export class User {
@@ -14,6 +15,7 @@ export class User {
 
 
     @Column( passwordUserSchema )
+    @Exclude()
     password! : string
 
 
@@ -26,6 +28,7 @@ export class User {
 
 
     @Column( hashedRefreshTokenUserSchema )
+    @Exclude()
     hashedRefreshToken! : string | null
 
 
