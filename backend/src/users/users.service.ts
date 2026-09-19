@@ -112,7 +112,7 @@ export class UsersService {
   }
 
 
-  protected async findByEmailWithPassword ( email : string) {
+  async findByEmailWithPassword ( email : string) {
 
     return await this.userRepository$.findOne(
       {
@@ -123,7 +123,7 @@ export class UsersService {
   }
 
 
-  protected async findByIdWithRefreshToken( id : string ) {
+  async findByIdWithRefreshToken( id : string ) {
 
     return await this.userRepository$.findOne(
       {
