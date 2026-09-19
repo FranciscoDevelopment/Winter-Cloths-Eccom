@@ -92,16 +92,61 @@ export class UsersService {
 
     if( !user ) throw new NotFoundException('User not founded') ;
 
-    
+
     return user
 
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+
+  async findByEmail ( email : string ) {
+
+    return await this.userRepository$.findOne(
+      {
+        where: {email},
+
+        select: SELECT_PUBLIC
+        
+      }
+    )
+
   }
+
+
+  protected async findByEmailWithPassword ( email : string) {
+
+    return await this.userRepository$.findOne(
+      {
+        where: {email},
+      }
+    )
+
+  }
+
+
+  protected async findByIdWithRefreshToken( id : string ) {
+
+    return await this.userRepository$.findOne(
+      {
+        where: {id},
+        select: {
+          ...SELECT_PUBLIC,
+          hashedRefreshToken: true
+        }
+      }
+    )
+
+  }
+
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+  
+  
+  }
+
 
   remove(id: string) {
     return `This action removes a #${id} user`;
   }
+
+  
 }
