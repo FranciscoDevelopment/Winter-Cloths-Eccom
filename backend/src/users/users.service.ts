@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -81,9 +81,19 @@ export class UsersService {
   
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     
+    const user = await this.userRepository$.findOne(
+      {
+        where: {id},
+        select: SELECT_PUBLIC
+      }
+    )
+
+    if( !user ) throw new NotFoundException('User not founded') ;
+
     
+    return user
 
   }
 
