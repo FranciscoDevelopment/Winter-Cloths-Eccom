@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as dotenv from 'dotenv'
+import { ConfigService } from '@nestjs/config';
+import helmet from 'helmet'
+
 
 dotenv.config();
 
@@ -11,6 +14,18 @@ const port = Number( process.env.API_REST_PORT_SOURCE )  || Number( process.env.
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+
+  const config = app.get( ConfigService )
+
+  app.use( helmet() )
+
+  app.enableCors({
+    origin: config.get<string>('CORS_ORIGIN'),
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true
+  }) ;
+
 
   app.useGlobalPipes( 
     new ValidationPipe(
@@ -26,7 +41,7 @@ async function bootstrap() {
   
   )
 
-  app.enableCors() ;
+
 
   await app.listen(port) ;
 }
