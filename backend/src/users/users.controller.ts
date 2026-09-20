@@ -4,6 +4,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { RoleEnum } from 'src/common/types/role.types';
+import { Auth } from 'src/common/decorators/auth.decorator';
+import type { JwtPayloadT } from 'src/common/types/jwt.types';
 
 @UseInterceptors( ClassSerializerInterceptor )
 @Controller('users')
@@ -46,17 +49,28 @@ export class UsersController {
 
   }
 
-  /*
+  
+  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Auth( RoleEnum.ADMIN )
+  async update(
+    @Param('id', ParseUUIDPipe) id : string,
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() user : JwtPayloadT
+  ) {
+
+    const userUpdate = await this.usersService.update( id, updateUserDto, user )
+
+    return new User( userUpdate )
+  
   }
-  */
+  
 
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @Auth( RoleEnum.ADMIN )
+  async remove(@Param('id', ParseUUIDPipe) id : string) {
+    return await this.usersService.remove(id) 
   }
 
 
