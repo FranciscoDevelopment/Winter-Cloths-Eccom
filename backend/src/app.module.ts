@@ -11,9 +11,21 @@ import { CuponsModule } from './cupons/cupons.module';
 import { S3UploadService } from './s3-upload/s3-upload.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { APP_GUARD } from '@nestjs/core';
+
 
 @Module({
   imports: [
+
+    ThrottlerModule.forRoot(
+      [
+        {
+          ttl: 60000,
+          limit: 10
+        }
+      ]
+    ) ,
     
     ConfigModule.forRoot({
       isGlobal: true
@@ -40,6 +52,10 @@ import { AuthModule } from './auth/auth.module';
   
   ],
   controllers: [AppController],
-  providers: [AppService, S3UploadService],
+  providers: [
+    {provide: APP_GUARD, useClass: ThrottlerGuard},
+    AppService,
+    S3UploadService
+  ],
 })
 export class AppModule {}
