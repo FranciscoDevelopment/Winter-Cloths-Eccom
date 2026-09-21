@@ -5,3 +5,9 @@ export type JwtPayloadT = {
   iat : number;
   exp : number;
 }
+
+
+export type tokensT = {
+  access_token: string;
+  refresh_token: string;
+}
