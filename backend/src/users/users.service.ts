@@ -189,6 +189,14 @@ export class UsersService {
   }
 
 
+  async updateRefreshToken( userId : string, hashedRefreshToken : string | null ) {
+
+    await this.userRepository$.update(userId, {hashedRefreshToken} )
+
+  }
+
+
+
   async remove(id: string) {
     
     const userToDelete = await this.findOne(id) ;
