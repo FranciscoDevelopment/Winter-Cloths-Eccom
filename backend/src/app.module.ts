@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/role/roles.guard';
 
 
 @Module({
@@ -60,6 +61,7 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     {provide: APP_GUARD, useClass: ThrottlerGuard},
+    {provide: APP_GUARD, useClass: RolesGuard },
     AppService,
     S3UploadService
   ],
