@@ -9,6 +9,7 @@ import { checkTheRespectiveKey, hashingKey } from 'src/common/hashing/hash-bcryp
 import { createHash } from 'node:crypto';
 import { User } from 'src/users/entities/user.entity';
 import { LoginDto } from './dto/login-user.dto';
+import { tokensT } from 'src/common/types/jwt.types';
 
 
 @Injectable()
@@ -86,7 +87,7 @@ export class AuthService {
   }
 
   
-  private async generateTokens( userId : string, email : string, role : string ) {
+  private async generateTokens( userId : string, email : string, role : string ) : Promise<tokensT> {
 
     const payload = {sub: userId, email, role} ;
 
