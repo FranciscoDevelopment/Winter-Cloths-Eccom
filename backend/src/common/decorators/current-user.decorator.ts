@@ -11,10 +11,10 @@ export const CurrentUser = createParamDecorator(
 
         const request = context.switchToHttp().getRequest<userPayloadT>() ;
 
-        const user = request.user
+        const tokenPayload = request.user
 
 
-        return data  ?  user?.[data]  :  user   
+        return data  ?  tokenPayload?.[data]  :  tokenPayload   
 
     }
 
