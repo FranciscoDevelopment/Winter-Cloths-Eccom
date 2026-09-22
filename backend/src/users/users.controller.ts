@@ -7,10 +7,12 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { RoleEnum } from 'src/common/types/role.types';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import type { JwtPayloadT } from 'src/common/types/jwt.types';
+import { Roles } from 'src/common/decorators/role.decorator';
 
 @UseInterceptors( ClassSerializerInterceptor )
 @Controller('users')
 export class UsersController {
+  
   constructor(private readonly usersService: UsersService) {}
 
   /*
@@ -20,7 +22,9 @@ export class UsersController {
   }
   */
 
-  @Get()
+ @Auth( RoleEnum.ADMIN )
+ @Roles( RoleEnum.ADMIN )
+ @Get()
   async findAll() {
 
     const users = await this.usersService.findAll() ;
@@ -30,6 +34,7 @@ export class UsersController {
   }
 
 
+  @Auth( RoleEnum.MODERATOR )
   @Get('me')
   async getMe( @CurrentUser('sub') userId : string ) {
 
@@ -40,6 +45,19 @@ export class UsersController {
   }
 
 
+  @Auth( RoleEnum.USER, RoleEnum.ADMIN )
+  @Patch('me')
+  async updateMe( @CurrentUser() user : JwtPayloadT, @Body() updateUserDto : UpdateUserDto ) {
+    
+    const updatedUser = await this.usersService.update( user.sub, updateUserDto, user ) ;
+
+    return new User( updatedUser )
+
+  }
+
+
+  @Auth( RoleEnum.ADMIN )
+  @Roles( RoleEnum.ADMIN )
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
   
@@ -51,8 +69,9 @@ export class UsersController {
 
   
   
-  @Patch(':id')
   @Auth( RoleEnum.ADMIN )
+  @Roles( RoleEnum.ADMIN )
+  @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id : string,
     @Body() updateUserDto: UpdateUserDto,
@@ -67,8 +86,8 @@ export class UsersController {
   
 
 
-  @Delete(':id')
   @Auth( RoleEnum.ADMIN )
+  @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id : string) {
     return await this.usersService.remove(id) 
   }

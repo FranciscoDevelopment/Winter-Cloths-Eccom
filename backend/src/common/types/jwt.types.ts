@@ -1,5 +1,5 @@
 export type JwtPayloadT = {
-  sub : string; // id del usuario
+  sub : string; // el subject, a quien identifica el toke, gralmente equivale al id del user
   email : string;
   role : string;
   iat : number;
