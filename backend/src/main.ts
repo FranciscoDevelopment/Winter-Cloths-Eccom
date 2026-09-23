@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as dotenv from 'dotenv'
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet'
+import { AllExeptionsFilter } from './common/filters/all-expetions.filter';
 
 
 dotenv.config();
@@ -41,7 +42,7 @@ async function bootstrap() {
   
   )
 
-
+  app.useGlobalFilters( new AllExeptionsFilter )
 
   await app.listen(port) ;
 }
