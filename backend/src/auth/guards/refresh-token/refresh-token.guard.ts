@@ -26,6 +26,7 @@ export class RefreshTokenGuard implements CanActivate {
 
     if( type !== 'Bearer' || !token ) throw new UnauthorizedException('Refresh Token is required') ;
 
+    
     try{
         
       const payload = await this.jwtService.verifyAsync<JwtPayloadT>( token, {
