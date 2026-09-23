@@ -8,6 +8,7 @@ import { RoleEnum } from 'src/common/types/role.types';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import type { JwtPayloadT } from 'src/common/types/jwt.types';
 import { Roles } from 'src/common/decorators/role.decorator';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 
 @UseInterceptors( ClassSerializerInterceptor )
 @Controller('users')
@@ -24,6 +25,7 @@ export class UsersController {
 
  @Auth( RoleEnum.ADMIN )
  @Roles( RoleEnum.ADMIN )
+ @UseInterceptors( new TransformInterceptor<User[]>() )
  @Get()
   async findAll() {
 
@@ -34,7 +36,9 @@ export class UsersController {
   }
 
 
-  @Auth( RoleEnum.MODERATOR )
+
+  @Auth( RoleEnum.ADMIN, RoleEnum.USER )
+  @UseInterceptors( new TransformInterceptor<User>() )
   @Get('me')
   async getMe( @CurrentUser('sub') userId : string ) {
 
@@ -46,6 +50,7 @@ export class UsersController {
 
 
   @Auth( RoleEnum.USER, RoleEnum.ADMIN )
+  @UseInterceptors( new TransformInterceptor<User>() )
   @Patch('me')
   async updateMe( @CurrentUser() user : JwtPayloadT, @Body() updateUserDto : UpdateUserDto ) {
     
@@ -58,6 +63,7 @@ export class UsersController {
 
   @Auth( RoleEnum.ADMIN )
   @Roles( RoleEnum.ADMIN )
+  @UseInterceptors( new TransformInterceptor<User>() )
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
   
@@ -71,6 +77,7 @@ export class UsersController {
   
   @Auth( RoleEnum.ADMIN )
   @Roles( RoleEnum.ADMIN )
+  @UseInterceptors( new TransformInterceptor<User>() )
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id : string,
@@ -87,6 +94,7 @@ export class UsersController {
 
 
   @Auth( RoleEnum.ADMIN )
+  @UseInterceptors( new TransformInterceptor<{message: string}>() )
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id : string) {
     return await this.usersService.remove(id) 
