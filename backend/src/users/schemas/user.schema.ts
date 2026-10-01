@@ -1,5 +1,6 @@
 import { ColumnOptions } from "typeorm"
 import { Role } from "../enums/role.enum"
+import { RoleEnum } from "src/common/types/role.types"
 
 export const emailUserSchema : ColumnOptions = {
 
@@ -34,6 +35,6 @@ export const hashedRefreshTokenUserSchema : ColumnOptions = {
 
 export const roleUserSchema : ColumnOptions = {
     type: "enum",
-    enum: Role,
-    default: Role.USER
+    enum: RoleEnum,
+    default: RoleEnum.USER
 } as const

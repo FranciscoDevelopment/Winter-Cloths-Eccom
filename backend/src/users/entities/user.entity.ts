@@ -1,8 +1,8 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { emailUserSchema, hashedRefreshTokenUserSchema, nameUserSchema, passwordUserSchema, roleUserSchema } from "../schemas/user.schema"
-import { Role } from "../enums/role.enum"
 import { Exclude } from "class-transformer"
 import { Transaction } from "src/transactions/entities/transaction.entity"
+import { RoleEnum } from "src/common/types/role.types"
 
 @Entity("users")
 export class User {
@@ -25,7 +25,7 @@ export class User {
 
 
     @Column( roleUserSchema )
-    role! : Role
+    role! : RoleEnum
 
 
     @Column( hashedRefreshTokenUserSchema )
