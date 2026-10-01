@@ -5,8 +5,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TrimPipe } from 'src/common/pipes/trim-param/trim.pipe';
 import { RoleEnum } from 'src/common/types/role.types';
 import { Auth } from 'src/common/decorators/auth.decorator';
-import { Public } from 'src/common/decorators/public.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import type { JwtPayloadT } from 'src/common/types/jwt.types';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -14,13 +14,10 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
 
-  @Auth( RoleEnum.ADMIN )
+  @Auth()
   @Post()
-  create(
-    @CurrentUser('sub')
-    @Body() createTransactionDto: CreateTransactionDto
-  ) {
-    return this.transactionsService.create(createTransactionDto);
+  create( @CurrentUser('sub') userId : string , @Body() createTransactionDto: CreateTransactionDto ) {
+    return this.transactionsService.create(createTransactionDto, userId);
   }
 
 
@@ -32,18 +29,26 @@ export class TransactionsController {
   
   }
 
+  @Auth()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.transactionsService.findOne(+id);
+  findOne( @Param('id') id : string, @CurrentUser() requester : JwtPayloadT ) {
+    return this.transactionsService.findOne(+id, requester);
   }
 
+  @Auth( RoleEnum.ADMIN )
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
-    return this.transactionsService.update(+id, updateTransactionDto);
+  update(
+    @Param('id') id: string, 
+    @Body() updateTransactionDto: UpdateTransactionDto,
+    @CurrentUser() requester : JwtPayloadT
+  ) {
+    return this.transactionsService.update(+id, updateTransactionDto, requester);
   }
 
+  @Auth( RoleEnum.ADMIN )
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transactionsService.remove(+id);
+  remove(@Param('id') id: string, @CurrentUser() requester : JwtPayloadT ) {
+    return this.transactionsService.remove(+id, requester);
   }
+
 }
