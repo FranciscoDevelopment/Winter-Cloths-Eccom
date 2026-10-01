@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { emailUserSchema, hashedRefreshTokenUserSchema, nameUserSchema, passwordUserSchema, roleUserSchema } from "../schemas/user.schema"
 import { Role } from "../enums/role.enum"
 import { Exclude } from "class-transformer"
+import { Transaction } from "src/transactions/entities/transaction.entity"
 
 @Entity("users")
 export class User {
@@ -39,6 +40,9 @@ export class User {
     @UpdateDateColumn()
     updatedAt! : Date
 
+
+    @OneToMany( () => Transaction, (transaction) => transaction.user )
+    transactions! : Transaction[]
 
 
     constructor( partial : Partial<User> ) {
