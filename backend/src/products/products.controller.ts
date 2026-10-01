@@ -8,11 +8,17 @@ import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.p
 import { memoryStorage, Multer } from 'multer';
 import { uploadImageFileOptions, uploadImageFileOptionsRequired } from './schemas/upload-file.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Auth } from 'src/common/decorators/auth.decorator';
+import { RoleEnum } from 'src/common/types/role.types';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('products')
 export class ProductsController {
+  
   constructor(private readonly productsService: ProductsService) {}
 
+
+  @Auth( RoleEnum.ADMIN )
   @Post()
   @UseInterceptors( FileInterceptor("file", {storage: memoryStorage() } ) )
   async create( 
@@ -22,6 +28,8 @@ export class ProductsController {
     return this.productsService.create(createProductDto, file);
   }
 
+
+  @Public()
   @Get()
   findAll( @Query() query : GetProductsQueryDto ) {
 
@@ -35,6 +43,7 @@ export class ProductsController {
   }
 
 
+  @Public()
   @Get( "length" )
   findAllAndLength ( @Query() query : GetProductsQueryDto ) {
 
@@ -49,12 +58,14 @@ export class ProductsController {
   }
 
 
+  @Public()
   @Get(':id')
   findOne(@Param('id', IdValidationPipe) id: string) {
     return this.productsService.findOne(+id);
   }
 
 
+  @Auth(RoleEnum.ADMIN)
   @Patch(':id')
   async update(
     @Param('id', IdValidationPipe) id: string,
@@ -65,6 +76,7 @@ export class ProductsController {
   }
 
 
+  @Auth(RoleEnum.ADMIN)
   @Post(":id/image")
   @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
   uploadImagePost(
@@ -79,6 +91,7 @@ export class ProductsController {
   }
 
 
+  @Auth(RoleEnum.ADMIN)
   @Patch(":id/image")
   @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
   uploadImage(
@@ -92,6 +105,7 @@ export class ProductsController {
   }
 
 
+  @Auth(RoleEnum.ADMIN)
   @Post("upload-only-image")
   @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
   uploadImageStandalone(
@@ -105,6 +119,7 @@ export class ProductsController {
   }
 
 
+  @Auth(RoleEnum.ADMIN)
   @Delete(':id')
   remove(@Param('id', IdValidationPipe ) id: string) {
     return this.productsService.remove(+id);
