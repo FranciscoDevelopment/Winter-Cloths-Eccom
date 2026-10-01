@@ -1,5 +1,5 @@
 import { name_CuponsSchema } from "src/cupons/schemas/cupons.schema";
-import { ColumnOptions } from "typeorm";
+import { ColumnOptions, RelationOptions } from "typeorm";
 
 export const total_TransactionsSchema : ColumnOptions = {
 
@@ -28,3 +28,9 @@ export const discount_TransactionSchema : ColumnOptions = {
 
 } as const
 
+export const user_TransactionSchema : RelationOptions = {
+
+    onDelete: 'CASCADE',
+    eager: false
+
+}
