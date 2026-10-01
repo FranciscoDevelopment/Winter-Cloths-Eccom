@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,9 @@ import { Transaction, TransactionContents } from './entities/transaction.entity'
 import { Between, FindManyOptions, Repository } from 'typeorm';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 import { CuponsService } from 'src/cupons/cupons.service';
+import { JwtPayloadT } from 'src/common/types/jwt.types';
+import { RoleEnum } from 'src/common/types/role.types';
+
 
 @Injectable()
 export class TransactionsService {
@@ -27,12 +30,14 @@ export class TransactionsService {
 
   errors : string[] = []
 
-  async create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto, userId : string) {
 
     await this.productRepository$.manager.transaction( async ( transactionEntityManager ) => {
 
       const transaction = new Transaction() ;
       
+      transaction.userId = userId ;
+
       const totalPrice = createTransactionDto.contents.reduce( (total, item) => total + (item.quantity * item.priceAtTransactionDate) , 0)
 
       transaction.total = totalPrice ;
@@ -125,25 +130,36 @@ export class TransactionsService {
   }
 
 
-  async findOne(id: number) {
-  
-    const options : FindManyOptions<Transaction> = {
-      where: {id: id} ,
-      relations: {contents: {product: true } }
-    }
+  async findOne(id: number, requester : JwtPayloadT) {
+    
 
-    const transaction = await this.transactionRepository$.findOne( options )
+    const transaction = await this.transactionRepository$.findOne(
+      {
+        where: {id},
+        relations: { contents: {product: true} }
+      }
+    )
 
     if( !transaction ) throw new NotFoundException( `Transaction #${id} not founded`) ;
 
-    return transaction
+
+    const isOwner = transaction.userId === requester.sub ;
+
+
+    const isAdmin = requester.role === RoleEnum.ADMIN ;
+
+
+    if( !isOwner && !isAdmin ) throw new ForbiddenException( 'Access denied for this transaction' ) ;
+
+
+    return transaction ;
 
   }
 
 
-  async update(id: number, updateTransactionDto: UpdateTransactionDto) {
+  async update(id: number, updateTransactionDto: UpdateTransactionDto, requester : JwtPayloadT) {
 
-    const transactionToUpdate = await this.findOne( id ) ;  // ya carga contents y products
+    const transactionToUpdate = await this.findOne( id, requester ) ;  // ya carga contents y products
 
 
     await this.productRepository$.manager.transaction( async ( entityManager ) => {
@@ -233,9 +249,9 @@ export class TransactionsService {
   }
 
 
-  async remove(id: number) {
+  async remove(id: number, requester : JwtPayloadT) {
     
-    const transaction = await this.findOne( id ) ;
+    const transaction = await this.findOne( id, requester ) ;
 
     for( const contents of transaction.contents ) {
 
