@@ -169,7 +169,7 @@ export class TransactionsService {
 
         for( const content of transactionToUpdate.contents ) {
 
-          const product = await entityManager.findOneBy( Product, {id: content.id} ) ;
+          const product = await entityManager.findOneBy( Product, {id: content.product.id} ) ;
 
           if( !product ) {
             
