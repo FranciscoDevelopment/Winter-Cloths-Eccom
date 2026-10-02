@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react";
-import { useAuthStore } from "../store-auth-zustand";
+import { useAuthStore } from "../store-zustand/store-auth-zustand";
 
 export function useAuthBootstrap () {
 

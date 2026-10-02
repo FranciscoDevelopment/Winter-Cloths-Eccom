@@ -1,6 +1,6 @@
 "use client"
 
-import {useStore} from "@/src/store-zustand"
+import {useStore} from "@/src/store-zustand/store-zustand"
 import ProductsInCartSection from "./ProductsInCartSection"
 
 export default function ShoppingCart () {

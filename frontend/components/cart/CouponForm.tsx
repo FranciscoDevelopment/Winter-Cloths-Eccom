@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent } from "react"
-import { useStore } from "@/src/store-zustand";
+import { useStore } from "@/src/store-zustand/store-zustand";
 
 export default function CouponForm () {
 

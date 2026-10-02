@@ -1,7 +1,7 @@
 import { cartItemT } from "@/src/schema"
 import { FormatCurrency } from "@/src/utils"
 import Image from "next/image"
-import { useStore } from "@/src/store-zustand"
+import { useStore } from "@/src/store-zustand/store-zustand"
 
 
 type itemPropsT = {
