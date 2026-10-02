@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import { CouponResponseSchema, couponT, productT, shoppingCartT } from "./schema"
+import { CouponResponseSchema, couponT, productT, shoppingCartT } from "../schema"
 
 type storeT = {
     

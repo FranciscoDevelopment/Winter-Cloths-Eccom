@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { UserT } from "./types/auth-responses.type"
+import type { UserT } from "../types/auth-responses.type"
 import { devtools } from "zustand/middleware"
 
 type authStoreT = {
