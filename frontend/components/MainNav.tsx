@@ -3,6 +3,7 @@ import Logo from "./ui/Logo";
 import Link from "next/link";
 //import { redirect } from "next/dist/server/api-utils";
 import { redirect } from "next/navigation"
+import AuthNavButton from "./ui/AuthNavButton";
 
 const getCategories = async () => {
 
@@ -53,6 +54,8 @@ export default async function MainNav () {
                     </Link>
 
                 ) )}
+
+                <AuthNavButton/>
 
             </nav>
         
