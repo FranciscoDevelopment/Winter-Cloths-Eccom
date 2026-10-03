@@ -2,6 +2,7 @@
 
 import { FormEvent } from "react"
 import { useStore } from "@/src/store-zustand/store-zustand";
+import { toast } from "react-toastify";
 
 export default function CouponForm () {
 
@@ -22,7 +23,13 @@ export default function CouponForm () {
 
         if( !couponName.length ) return ;
 
-        await applyCoupon( couponName )
+        
+        try {
+            await applyCoupon( couponName )
+        } catch (error) {
+            toast.error((error as string) + "\n Invalid Coupon!")
+        }
+        
 
     }
 
