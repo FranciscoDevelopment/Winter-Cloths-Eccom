@@ -90,11 +90,26 @@ export const SuccessResponseSchema = z.object({
     message: z.string()
 })
 
+/*
 export const ErrorResponseSchema = z.object({
     message: z.array( z.string() ),
     error: z.string() ,
     statusCode: z.number()
 })
+*/
+
+// schema.ts
+export const ErrorResponseSchema = z.object({
+    statusCode: z.number(),
+    path: z.string(),
+    timestamp: z.string(),
+    message: z.object({
+        statusCode: z.number(),
+        message: z.union([ z.string(), z.array(z.string()) ]),
+        error: z.string()
+    })
+})
+
 
 export const ContentsSchemas = z.object({
     id: z.number(),
