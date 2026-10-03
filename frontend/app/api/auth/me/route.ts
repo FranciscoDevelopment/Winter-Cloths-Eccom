@@ -17,8 +17,14 @@ export async function GET ( request : NextRequest ) {
 
     } );
 
+    const responseBody = await response.json()
 
-    const data : UserT | ErrorResponseT = await response.json() ;
+
+    if( !response.ok ) {
+        return NextResponse.json( responseBody, {status: response.status} )
+    }
+
+    const data : UserT | ErrorResponseT = responseBody.data ;
 
     
     return NextResponse.json( data, {status: response.status} )
