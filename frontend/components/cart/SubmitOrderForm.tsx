@@ -21,6 +21,7 @@ export default function SubmitOrderForm () {
 
     const hasHydrated = useAuthStore( (state) => state.hasHydrated ) ;
 
+    const accessToken = useAuthStore( (state) => state.accessToken )
 
     const orderFormatContents = contents.map( ( {price, ...item} ) => {
         return {
@@ -36,7 +37,7 @@ export default function SubmitOrderForm () {
     }
 
 
-    const submitOrderWithData = submitOrder.bind(null, orderFull) ; 
+    const submitOrderWithData = submitOrder.bind(null, orderFull, accessToken) ; 
 
     const [ state, dispatch ] = useActionState( submitOrderWithData , {
         errors: [],

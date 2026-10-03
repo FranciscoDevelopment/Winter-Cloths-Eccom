@@ -5,7 +5,7 @@ import { orderToSubmitT } from "@/src/types/submit-order.types"
 import { revalidateTag } from "next/cache";
 
 
-export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
+export async function submitOrder ( data : unknown, accessToken : string | null ) : Promise<orderToSubmitT> {
 
     const order = OrderSchema.parse(data) ;
 
@@ -17,7 +17,8 @@ export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
 
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`
         },
         body: orderToJson
     } )
@@ -27,12 +28,18 @@ export async function submitOrder ( data : unknown ) : Promise<orderToSubmitT> {
 
 
     if( !request.ok ) {
-        const errors = ErrorResponseSchema.parse( responseData ) ;
+
+        const errorBody = ErrorResponseSchema.parse( responseData ) ;
+
+        const messages = Array.isArray(errorBody.message.message)
+            ? errorBody.message.message
+            : [errorBody.message.message]
 
         return {
-            errors: errors.message.map( (issue) => issue ),
-            success: ""
+            errors: messages, 
+            success: "" 
         }
+
     } ;
 
 
