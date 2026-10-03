@@ -25,12 +25,12 @@ import { AuthGuard } from './auth/guards/auth/auth.guard';
         {
           name: 'long',
           ttl: 120000,
-          limit: 10
+          limit: 300
         },
         {
           name: 'short',
           ttl: 1000,
-          limit: 3
+          limit: 200   // 100 requests por minuto, generoso para navegación normal
         }
       ]
     ) ,
