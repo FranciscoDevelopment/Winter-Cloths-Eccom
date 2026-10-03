@@ -12,7 +12,7 @@ export default function AuthNavButton () {
     const hasHydrated = useAuthStore( (state) => state.hasHydrated ) ;
 
 
-    if( !hasHydrated ) return null ; // evita el parpadeo mientras el bootstrap todavía está chequeando
+    if( !hasHydrated ) return <div className="w-9 h-9 rounded-full bg-slate-600 animate-pulse" />; // evita el parpadeo mientras el bootstrap todavía está chequeando
 
 
     if( !user ) {
