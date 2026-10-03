@@ -52,7 +52,7 @@ export class CuponsController {
   }
 
 
-  @Auth()
+  @Public()
   @Post( '/apply-cupon' )   // cupons/apply-cupon
   @HttpCode( HttpStatus.OK )  // 200
   applyCupon( @Body() applyCuponDto : ApplyCuponDto ) {
