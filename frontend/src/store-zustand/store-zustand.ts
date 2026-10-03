@@ -135,13 +135,18 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
             const request = await fetch( `/coupons/api`, {
 
                 method: "POST",
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     cupon_name: couponName
                 })
 
             } )
-
+            
             const data = await request.json() ;
+            
+            if( !request.ok ) {
+                throw new Error( "Invalid Coupon" )
+            }
 
 
             const coupon = CouponResponseSchema.parse(data) ;
