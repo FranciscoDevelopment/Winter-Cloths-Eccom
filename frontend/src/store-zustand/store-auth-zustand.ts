@@ -55,7 +55,9 @@ export const useAuthStore = create<authStoreT>()( devtools( ( set ) => {
 
             set( () => {
                 return {
-                    ...initialState
+                    user: null,
+                    accessToken: null
+                    // hasHydrated NO se resetea: ya sabemos con certeza que no hay sesión
                 }
             } )
 
