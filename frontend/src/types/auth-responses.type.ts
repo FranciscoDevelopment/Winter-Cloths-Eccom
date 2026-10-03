@@ -48,3 +48,6 @@ export type ErrorResponseT = {
         error: string;
     };
 };
+
+
+export type SessionResponseT = Omit<AuthResponseT, "refresh_token">;
