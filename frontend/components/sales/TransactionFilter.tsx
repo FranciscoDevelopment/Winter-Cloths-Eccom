@@ -26,13 +26,14 @@ export default function TransactionFilter () {
 
     const formattedDate = format( (date instanceof Date ? date : new Date()), "yyyy-MM-dd" ) ;
 
-    
+
     const accessToken = useAuthStore( (state) => state.accessToken ) ;
 
 
     const { data, isLoading } = useQuery({
-        queryKey: ["sales", formattedDate],
-        queryFn: () => getSalesByDate(formattedDate)
+        queryKey: ["sales", formattedDate, accessToken],
+        queryFn: () => getSalesByDate(formattedDate, accessToken),
+        enabled: !!accessToken
     })
 
 
