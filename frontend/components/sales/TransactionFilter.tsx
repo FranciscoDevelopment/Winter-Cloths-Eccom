@@ -44,11 +44,10 @@ export default function TransactionFilter () {
 
     return (
     
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 relative items-start" >
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-2 relative items-start" >
 
             <section className="lg:sticky lg:top-10" >
 
-                <br />
                 
                 <Calendar
                     value={date}
