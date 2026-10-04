@@ -10,6 +10,7 @@ import TransactionSummary from "./TransactionSummary"
 import { TransactionProvider } from "./transaction-context-provider"
 import { FormatCurrency } from "@/src/utils"
 import dynamic from "next/dynamic"
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 
 
 const Calendar = dynamic( () => import("react-calendar") , {
@@ -24,6 +25,9 @@ export default function TransactionFilter () {
     const [ date, setDate ] = useState<valueT>( new Date() )
 
     const formattedDate = format( (date instanceof Date ? date : new Date()), "yyyy-MM-dd" ) ;
+
+    
+    const accessToken = useAuthStore( (state) => state.accessToken ) ;
 
 
     const { data, isLoading } = useQuery({
