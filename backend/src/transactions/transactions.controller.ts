@@ -21,11 +21,11 @@ export class TransactionsController {
   }
 
 
-  @Auth( RoleEnum.ADMIN )
+  @Auth( )
   @Get()
-  findAll( @Query("transactionDate", TrimPipe) transactionDate : string ) {
+  findAll( @Query("transactionDate", TrimPipe) transactionDate : string , @CurrentUser() requester : JwtPayloadT ) {
 
-    return this.transactionsService.findAll( transactionDate ) ;
+    return this.transactionsService.findAll( transactionDate, requester ) ;
   
   }
 

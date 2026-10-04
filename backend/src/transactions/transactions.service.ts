@@ -4,7 +4,7 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
-import { Between, FindManyOptions, Repository } from 'typeorm';
+import { Between, FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 import { CuponsService } from 'src/cupons/cupons.service';
 import { JwtPayloadT } from 'src/common/types/jwt.types';
@@ -102,10 +102,16 @@ export class TransactionsService {
   }
 
 
-  findAll( transactionDate? : string ) {
+  findAll( transactionDate? : string, requester? : JwtPayloadT ) {
     
     const options : FindManyOptions<Transaction> = {
-      relations: {contents: {product: true} }
+      relations: {contents: {product: true} },
+    }
+
+    const where : FindOptionsWhere<Transaction> = {} ;
+
+    if( requester && requester.role !== RoleEnum.ADMIN ) {
+      where.userId = requester.sub
     }
 
     if( transactionDate ) {
@@ -124,6 +130,8 @@ export class TransactionsService {
       
 
     }
+
+    if( Object.keys( where ).length ) options.where = where
 
     return this.transactionRepository$.find( options ) ;
 
