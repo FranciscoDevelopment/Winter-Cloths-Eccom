@@ -39,7 +39,7 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
     if( !isValidPage( +page ) ) redirect( "/admin/products?page=1" )  ; 
 
     
-    const PRODUCTS_PER_PAGE = 2 as const ;
+    const PRODUCTS_PER_PAGE = 5 as const ;
     
     const skip = ( +page - 1 ) * PRODUCTS_PER_PAGE ;
     
