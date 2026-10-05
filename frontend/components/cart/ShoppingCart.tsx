@@ -20,9 +20,9 @@ export default function ShoppingCart () {
 
     if( isOrdersRoute ) {
         return (
-            <main className="flex items-center justify-center gap-2 text-gray-900">
+            <main className="flex items-center justify-center gap-2 text-gray-900" title="Products in current cart">
                 <ShoppingCartIcon className="w-8 h-8" />
-                <span className="text-lg font-bold rounded-full border border-gray-800">{contents.length}</span>
+                <span className="text-md font-bold rounded-full p-2 border border-gray-800">{contents.length}</span>
             </main>
         )
     }
