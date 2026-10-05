@@ -3,6 +3,7 @@ import { FormatCurrency, isAvailableByStock } from "@/src/utils"
 import Image from "next/image"
 import Link from "next/link"
 import DeleteProductForm from "./DeleteProductForm"
+import ProductActionMenu from "./ProductsActionsMenu"
 
 type productsTablePropsT = {
     products : productT[]
@@ -21,7 +22,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
 
                 <article className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     
-                    <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8 bg-white p-5 ">
+                    <aside className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8 bg-white p-5 ">
 
                         <table className="min-w-full divide-y divide-gray-300 ">
 
@@ -48,51 +49,50 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                             <tbody className="divide-y divide-gray-200">
                                 {products.map(product => (
                                     <tr key={product.id} >
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-
-                                        <Image
-                                            src={product.image}
-                                            alt={`Image for the product ${product.name}`}
-                                            width={120}
-                                            height={120}
-                                            priority
-                                        />
-
-                                    </td>
-
-                                    <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                                        {product.name}
-                                    </td>
-                                    <td className="px-3 py-4 text-sm font-semibold text-gray-500">
-                                        {FormatCurrency(product.price)}
-                                    </td>
-                                    <td className="px-3 py-4 text-sm text-gray-500">
-                                        {   
-                                            isAvailableByStock( product.inventory ) 
-                                                ? ( <p className="font-semibold text-center" >{product.inventory}</p>)  
-                                                : <p className={outStockStylingClass} >Out of stock</p> }
                                         
-                                    </td>
-                                    <td className="relative py-4 pl-3 pr-4  text-right text-sm font-medium sm:pr-0 bg-amber-100">
-                                        <div className='flex gap-3 p-3 justify-end items-center'>
-                                            <Link 
-                                                className="text-indigo-600 hover:text-indigo-800"
-                                                href={`/admin/products/${product.id}/edit`}
-                                            >
-                                                Edit <span className="sr-only">{product.name}</span>
-                                            </Link>
-                                            
-                                            <DeleteProductForm productId={product.id} />
+                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 
-                                        </div>
-                                    </td>
+                                            <Image
+                                                src={product.image}
+                                                alt={`Image for the product ${product.name}`}
+                                                width={120}
+                                                height={120}
+                                                priority
+                                            />
+
+                                        </td>
+
+                                        <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                            {product.name}
+                                        </td>
+
+                                        <td className="px-3 py-4 text-sm font-semibold text-gray-500">
+                                            {FormatCurrency(product.price)}
+                                        </td>
+
+                                        <td className="px-3 py-4 text-sm text-gray-500">
+                                            {   
+                                                isAvailableByStock( product.inventory ) 
+                                                    ? ( <p className="font-semibold text-center" >{product.inventory}</p>)  
+                                                    : <p className={outStockStylingClass} >Out of stock</p> }
+                                            
+                                        </td>
+
+                                        <td className="relative py-4 pl-3 pr-4  text-right text-sm font-medium sm:pr-0 bg-amber-100">
+                                            <menu className='flex p-3 justify-end items-center'>
+
+                                                <ProductActionMenu productId={product.id} productName={product.name} />
+
+                                            </menu>
+                                        </td>
+
                                     </tr>
                                 ))}
                             </tbody>
                     
                         </table>
                     
-                    </div>
+                    </aside>
 
                 </article>
 

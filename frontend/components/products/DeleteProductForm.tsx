@@ -1,30 +1,16 @@
+import { deleteProduct } from "@/actions/delete-product-action"
 import { productT } from "@/src/schema"
 import { revalidatePath } from "next/cache"
 
 type productDeleteFormPropsT = {
-    productId : productT['id']
+    productId : productT['id'],
+    accessToken : string | null
 }
 
-export default function DeleteProductForm ( {productId} : productDeleteFormPropsT ) {
+export default function DeleteProductForm ( {productId, accessToken} : productDeleteFormPropsT  ) {
 
-    const handleDeleteProduct = async () => {
-        "use server"
-
-        const id = productId ;
-
-        const url = `${process.env.API_URL}/products/${id}`
-
-        const request = await fetch(url, {
-            
-            method: "DELETE",
-        
-        })
-
-        await request.json() ;
-
-        revalidatePath("admin/products")
-
-    }
+    const handleDeleteProduct = deleteProduct.bind( null, productId, accessToken )
+    // (...restoDeArgumentos) => deleteProduct( productId, accessToken, ...restoDeArgumentos )
 
 
     return(
@@ -33,7 +19,7 @@ export default function DeleteProductForm ( {productId} : productDeleteFormProps
 
             <input 
                 type="submit" 
-                className="text-red-600 hover:text-red-800 cursor-pointer"
+                className="text-red-700 hover:text-red-800 cursor-pointer my-2 p-2 bg-pink-50 text-md font-semibold"
                 value="Delete"
                 
             />
