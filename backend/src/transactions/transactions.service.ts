@@ -124,9 +124,7 @@ export class TransactionsService {
       const endOfTheDay = endOfDay( formattedDate ) ;
 
 
-      options.where = {
-        transactionDate: Between( startOfTheDay, endOfTheDay )
-      } 
+      where.transactionDate = Between( startOfTheDay, endOfTheDay );
       
 
     }
