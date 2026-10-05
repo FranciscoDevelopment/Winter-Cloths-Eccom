@@ -97,11 +97,39 @@ export default function AuthNavButton () {
 
             <article
                 className={`
-                    absolute top-full left-0 mt-2 w-28 bg-teal-50 rounded-lg shadow-lg py-1 z-50 origin-top
-                    transition-all duration-700 ease-out
+                    absolute top-full left-0 mt-2 w-32 bg-teal-50 rounded-lg shadow-lg z-50 origin-top overflow-hidden
+                    transition-all duration-700 ease-out divide-y divide-slate-300/70
                     ${ isOpen ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-1 pointer-events-none" }
                 `}
             >
+
+                {
+                    user.role === "ADMIN" && (
+
+                        <div className="divide-y divide-slate-300/70" >
+                            
+                            <Link
+                                href="/admin/products"
+                                onClick={ () => setIsOpen(false) }
+                                className="block px-4 py-2 text-sm text-slate-800 hover:bg-amber-300"
+                            >
+                                <span className="font-semibold">Admin: </span> Edit Products
+                            </Link>
+
+
+                            <Link
+                                href="/admin/sales"
+                                onClick={ () => setIsOpen(false) }
+                                className="block px-4 py-2 text-sm text-slate-800 hover:bg-amber-300"
+                            >
+                                <span className="font-semibold">Admin: </span>View All Orders
+                            </Link>
+
+                        </div>
+
+                    )
+                }
+
 
                 <Link
                     href="/account/orders"
