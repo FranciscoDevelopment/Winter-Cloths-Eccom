@@ -1,9 +1,11 @@
 "use client"
 
 import { uploadImage } from "@/actions/upload-image-action";
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone" ;
+import { toast } from "react-toastify";
 
 type uploadProductImagePropsT = {
     currentImage? : string
@@ -11,7 +13,9 @@ type uploadProductImagePropsT = {
 
 export default function UploadProductImage ( {currentImage} : uploadProductImagePropsT ) {
 
-    const [ imageUrl, setImageUrl ] = useState("")
+    const [ imageUrl, setImageUrl ] = useState("") ;
+
+    const accessToken = useAuthStore( (state) => state.accessToken ) ;
 
     const handleOnDrop = useCallback( async ( files : File[] ) => {
 
@@ -23,11 +27,20 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
 
         } )
 
-        const image = await uploadImage( formData ) ;
+        try {
 
-        setImageUrl(image)
+            const image = await uploadImage( formData, accessToken ) ;
+    
+            setImageUrl(image)
+            
+        } catch {
+            
+            toast.error( "Can't upload the image" )
+            
+        }
 
-    }, [] )
+
+    }, [accessToken] )
 
     const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
 
