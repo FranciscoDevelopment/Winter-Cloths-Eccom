@@ -51,13 +51,13 @@ export default function StoreContent  ( {children} : childrenProps ) {
 
     return (
         
-        <section className="lg:flex lg:h-screen lg:overflow-y-hidden" >
+        <section className="md:grid md:grid-cols-[minmax(0,1fr)_24rem] md:h-screen md:overflow-hidden" >
 
-            <article className="md:flex-1 md:h-screen md:overflow-y-scroll pt-10 pb-32 px-10" >
+            <article className="md:h-screen md:overflow-y-scroll pt-10 pb-32 px-10" >
                 {children}
             </article>
-        
-            <aside className="md:w-96 md:h-screen md:overflow-y-scroll pt-10 pb-32 px-5 bg-stone-100" >
+
+            <aside className="md:h-screen md:overflow-y-scroll pt-10 pb-32 px-5 bg-stone-100" >
                 <ShoppingCart/>
             </aside>
 
