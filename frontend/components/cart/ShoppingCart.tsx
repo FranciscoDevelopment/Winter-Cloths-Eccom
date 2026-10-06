@@ -15,7 +15,7 @@ export default function ShoppingCart () {
 
 
     if( contents.length === 0 ) {
-        return ( <main> <p className="text-xl text-center text-gray-900">The cart is empty</p> </main> ) ;
+        return ( <main>  <p className="text-xl text-center text-gray-900">The cart is empty</p></main> ) ;
     }
 
     if( isOrdersRoute ) {
