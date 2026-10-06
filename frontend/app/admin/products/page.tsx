@@ -1,5 +1,4 @@
 import ProductsTable from "@/components/products/ProductsTable";
-import Heading from "@/components/ui/Heading";
 import Pagination from "@/components/ui/Pagination";
 import { ProductsResponseSchema } from "@/src/schema";
 import { isValidPage } from "@/src/utils";
@@ -55,18 +54,20 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
     return(
     
         <section>
-            
-            <Link
-                href='/admin/products/new'
-                className="rounded bg-lime-400 font-bold py-2 px-10 text-cyan-900"
-            >
-                New Product
-            </Link>
 
-            <Heading>
-                Admin products
-            </Heading>
-        
+            <div className="flex justify-between items-center gap-1 my-2">
+
+                <h1 className="text-xl px-2 underline ">Admin Products</h1>
+
+                <Link
+                    href='/admin/products/new'
+                    className="rounded text-base bg-lime-400 font-bold py-2 px-10 text-cyan-900"
+                >
+                    New Product
+                </Link>
+
+            </div>
+
             <ProductsTable
                 products={products}
             />
