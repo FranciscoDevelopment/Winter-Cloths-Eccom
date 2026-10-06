@@ -21,7 +21,7 @@ export default async function SalesPage () {
     
         <main>
 
-            <Heading>Ventas</Heading>
+            <Heading>Sales</Heading>
 
             <p className="text-lg" >
                 In this section are the sales, use the calendar for filter by date 

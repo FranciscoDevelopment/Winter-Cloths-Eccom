@@ -47,7 +47,7 @@ export default async function EditProductPage ( {params} : editProductPagePropsT
             </Link>
 
             <Heading>
-                Edit the Product: {product.name}
+                <span className=" underline " >Edit the Product:</span> #{product.id} <span className="font-bold" > {product.name}</span>
             </Heading>
 
             <EditProductForm>

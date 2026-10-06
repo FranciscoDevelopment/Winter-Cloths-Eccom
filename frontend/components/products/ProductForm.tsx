@@ -31,7 +31,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="name"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Name of Product
                 </label>
@@ -51,7 +51,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="price"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Price
                 </label>
@@ -71,7 +71,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="inventory"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Stock inventory
                 </label>
@@ -91,7 +91,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="categoryId"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Category
                 </label>
