@@ -7,7 +7,7 @@ type actionStateT = {
     success : string
 }
 
-export async function updateProduct ( productId : productT['id'], prevState : actionStateT, formData : FormData ) {
+export async function updateProduct ( productId : productT['id'], accessToken : string | null , prevState : actionStateT, formData : FormData ) {
 
     const product = ProductFormSchema.safeParse(
         {
@@ -40,7 +40,8 @@ export async function updateProduct ( productId : productT['id'], prevState : ac
         method: "PATCH",
 
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...(accessToken  ?  {Authorization: `Bearer ${accessToken}`}  :  {} )
         },
         
         body: productJson
@@ -54,8 +55,13 @@ export async function updateProduct ( productId : productT['id'], prevState : ac
 
         const errors = ErrorResponseSchema.parse(response) ;
 
+        const messages = Array.isArray( errors.message.message ) 
+                        ? errors.message.message
+                        : [errors.message.message]
+        ;
+
         return {
-            errors: errors.message.map( (issue) => issue ),
+            errors: messages ,
             success: ""
         }
     }

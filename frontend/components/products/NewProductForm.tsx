@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react"
 import { addNewProduct } from "@/actions/add-product-action"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -17,7 +18,13 @@ export default function NewProductForm ( {children} : childrenProps ) {
 
     const theRouter = useRouter() ;
 
-    const [ state, dispatch ] = useActionState( addNewProduct, initialState ) ;
+    const accessToken = useAuthStore( (state) => state.accessToken ) ;
+
+    
+    const addNewProductWithToken = addNewProduct.bind(null, accessToken) ;
+
+    const [ state, dispatch ] = useActionState( addNewProductWithToken, initialState ) ;
+
 
     useEffect( () => {
 

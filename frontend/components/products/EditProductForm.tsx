@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
 import { updateProduct } from "@/actions/update-product.action"
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -22,7 +23,9 @@ export default function EditProductForm ( {children} : childrenProps ) {
     
     const {id} = params
 
-    const updateProductWithId = updateProduct.bind(  null  , +id ) ;
+    const accessToken = useAuthStore( (state) => state.accessToken ) ;
+
+    const updateProductWithId = updateProduct.bind(  null  , +id , accessToken) ;
 
     const [state, dispatch] = useActionState( updateProductWithId, initialState )
 

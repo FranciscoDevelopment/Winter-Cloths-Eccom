@@ -60,7 +60,7 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
     
         <main className="space-y-1">
                 
-            <label className="block text-sm font-medium leading-6 text-gray-900">
+            <label className="block text-md leading-6 text-stone-800 font-semibold">
                 Product Image
             </label>
 
@@ -103,7 +103,7 @@ export default function UploadProductImage ( {currentImage} : uploadProductImage
             {currentImage && !imageUrl && (
                 <article className="py-5 space-y-3" >
 
-                    <p className="font-bold">Current Image</p>
+                    <p className="font-bold text-teal-950">Current Image</p>
                     <aside className="w-[200px] h-[320px] relative">
                         <Image
                             src={currentImage}
