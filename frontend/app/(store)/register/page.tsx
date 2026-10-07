@@ -121,10 +121,10 @@ function RegisterForm() {
             </button>
 
 
-            <p className="text-sm text-center" >
+            <p className="text-md text-center" >
 
                 Already have an account?
-                <Link href="/login" className="text-indigo-500 font-bold" >
+                <Link href="/login" className="text-indigo-500 text-lg font-bold mx-2" >
                     Sign in
                 </Link>
 

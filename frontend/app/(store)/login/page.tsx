@@ -120,12 +120,12 @@ function LoginForm() {
             </button>
 
 
-            <p className="text-sm text-center" >
+            <p className="text-md text-center" >
 
                 Don't have an account?
                 <Link
                     href="/register"
-                    className="text-indigo-500 font-bold"
+                    className="text-indigo-500 font-bold m-2"
                 >
                     Register
                 </Link>
