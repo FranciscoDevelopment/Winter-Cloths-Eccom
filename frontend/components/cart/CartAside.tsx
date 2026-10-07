@@ -1,6 +1,5 @@
 "use client"
 
-import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation"
 import ShoppingCart from "./ShoppingCart";
 import React from "react";
