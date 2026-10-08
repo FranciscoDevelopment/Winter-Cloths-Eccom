@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/src/store-zustand/store-auth-zustand";
-import type { AuthResponseT, ErrorResponseT, LoginCredentialsT, RegisterCredentialsT, SessionResponseT } from "@/src/types/auth-responses.type"
+import type { ErrorResponseT, RegisterCredentialsT, SessionResponseT } from "@/src/types/auth-responses.type"
 
 
 function RegisterForm() {
