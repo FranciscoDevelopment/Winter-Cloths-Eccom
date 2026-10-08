@@ -22,7 +22,7 @@ export class ProductsService {
   ) {}
 
   
-  async create(createProductDto: CreateProductDto, file? : Express.Multer.File ) {
+  async create(createProductDto: CreateProductDto, files? : Express.Multer.File[] ) {
 
     const category = await this.categoryRepository$.findOneBy( {id: createProductDto.categoryId } ) ;
 
@@ -36,24 +36,24 @@ export class ProductsService {
 
     }
 
-    const savedProduct = await this.productsRepository$.save( 
+    const savedProduct = await this.productsRepository$.save(
       {
         ...createProductDto,
         category: category,
-      } 
+      }
     )
 
 
-    if( file ) {
+    if( files?.length ) {
 
-      savedProduct.image = await this.s3UploadService.uploadFile( file, "products", savedProduct.id ) ;
+      savedProduct.images = await this.s3UploadService.uploadFiles( files, "products", savedProduct.id ) ;
 
       await this.productsRepository$.save( savedProduct )
 
-    } 
-    else if( createProductDto.imageUrl ) {
+    }
+    else if( createProductDto.images?.length ) {
 
-      savedProduct.image = createProductDto.imageUrl ;
+      savedProduct.images = createProductDto.images ;
 
       await this.productsRepository$.save( savedProduct )
 
@@ -137,8 +137,8 @@ export class ProductsService {
 
     Object.assign( product, updateProductDto )
 
-    if( updateProductDto.imageUrl ) {
-      product.image = updateProductDto.imageUrl
+    if( updateProductDto.images?.length ) {
+      product.images = updateProductDto.images
     }
 
     if( updateProductDto.categoryId ) {
@@ -178,21 +178,21 @@ export class ProductsService {
   }
 
 
-  async uploadImage ( productId : number, file : Express.Multer.File ) {
+  async uploadImage ( productId : number, files : Express.Multer.File[] ) {
 
-    const imageUrl = await this.s3UploadService.uploadFile( file, "products", productId ) ;
-
-
-    await this.productsRepository$.update( productId, {image: imageUrl} )
+    const imageUrls = await this.s3UploadService.uploadFiles( files, "products", productId ) ;
 
 
-    return imageUrl
+    await this.productsRepository$.update( productId, {images: imageUrls} )
+
+
+    return imageUrls
   }
 
 
-  uploadImageStandalone ( file : Express.Multer.File ) : Promise<string> {
+  uploadImageStandalone ( files : Express.Multer.File[] ) : Promise<string[]> {
 
-    return this.s3UploadService.uploadFile( file, "products" ) ;
+    return this.s3UploadService.uploadFiles( files, "products" ) ;
 
   }
 

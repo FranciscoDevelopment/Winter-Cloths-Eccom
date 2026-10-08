@@ -1,31 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, ParseFilePipe, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFiles, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetProductsQueryDto } from './dto/get-product-byId.dto';
 import { PAGINATION_LIMIT, SKIP_DEFAULT } from './settings/pagination';
 import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
-import { memoryStorage, Multer } from 'multer';
+import { memoryStorage } from 'multer';
 import { uploadImageFileOptions, uploadImageFileOptionsRequired } from './schemas/upload-file.schema';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import { RoleEnum } from 'src/common/types/role.types';
 import { Public } from 'src/common/decorators/public.decorator';
 
+const MAX_PRODUCT_IMAGES = 3 as const ;
+
 @Controller('products')
 export class ProductsController {
-  
+
   constructor(private readonly productsService: ProductsService) {}
 
 
   @Auth( RoleEnum.ADMIN )
   @Post()
-  @UseInterceptors( FileInterceptor("file", {storage: memoryStorage() } ) )
-  async create( 
+  @UseInterceptors( FilesInterceptor("files", MAX_PRODUCT_IMAGES, {storage: memoryStorage() } ) )
+  async create(
     @Body() createProductDto: CreateProductDto ,
-    @UploadedFile( uploadImageFileOptions ) file? : Express.Multer.File
+    @UploadedFiles( uploadImageFileOptions ) files? : Express.Multer.File[]
   ) {
-    return this.productsService.create(createProductDto, file);
+    return this.productsService.create(createProductDto, files);
   }
 
 
@@ -53,7 +55,7 @@ export class ProductsController {
 
     const skip = query.skip ?? SKIP_DEFAULT ;
 
-    return this.productsService.findAllAndLength( categoryId, take, skip ) 
+    return this.productsService.findAllAndLength( categoryId, take, skip )
 
   }
 
@@ -78,44 +80,44 @@ export class ProductsController {
 
   @Auth(RoleEnum.ADMIN)
   @Post(":id/image")
-  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  @UseInterceptors( FilesInterceptor( "files", MAX_PRODUCT_IMAGES, {storage: memoryStorage() } ) )
   uploadImagePost(
     @Param('id', IdValidationPipe) id : string,
-    @UploadedFile( uploadImageFileOptions ) file : Express.Multer.File
+    @UploadedFiles( uploadImageFileOptions ) files : Express.Multer.File[]
   ) {
-    if( !file ) {
-      throw new BadRequestException("The image is required for this request")
+    if( !files?.length ) {
+      throw new BadRequestException("At least one image is required for this request")
     }
-    return this.productsService.uploadImage( +id, file )
+    return this.productsService.uploadImage( +id, files )
 
   }
 
 
   @Auth(RoleEnum.ADMIN)
   @Patch(":id/image")
-  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  @UseInterceptors( FilesInterceptor( "files", MAX_PRODUCT_IMAGES, {storage: memoryStorage() } ) )
   uploadImage(
     @Param('id', IdValidationPipe) id : string,
-    @UploadedFile( uploadImageFileOptionsRequired ) file : Express.Multer.File
+    @UploadedFiles( uploadImageFileOptionsRequired ) files : Express.Multer.File[]
   ) {
-    if( !file ) {
-      throw new BadRequestException("The image is required for this request")
+    if( !files?.length ) {
+      throw new BadRequestException("At least one image is required for this request")
     }
-    return this.productsService.uploadImage( +id, file )
+    return this.productsService.uploadImage( +id, files )
   }
 
 
   @Auth(RoleEnum.ADMIN)
   @Post("upload-only-image")
-  @UseInterceptors( FileInterceptor( "file", {storage: memoryStorage() } ) )
+  @UseInterceptors( FilesInterceptor( "files", MAX_PRODUCT_IMAGES, {storage: memoryStorage() } ) )
   uploadImageStandalone(
-    @UploadedFile(uploadImageFileOptionsRequired) file : Express.Multer.File 
+    @UploadedFiles(uploadImageFileOptionsRequired) files : Express.Multer.File[]
   ) {
-    
-    if( !file ) throw new BadRequestException("Image is required") ;
 
-    return this.productsService.uploadImageStandalone( file )
-  
+    if( !files?.length ) throw new BadRequestException("At least one image is required") ;
+
+    return this.productsService.uploadImageStandalone( files )
+
   }
 
 

@@ -9,7 +9,9 @@ export class S3UploadService {
 
         const prefix = entityId ?? Date.now() ;
 
-        const key = `${folder}/${prefix}-${Date.now()}.${file.mimetype.split('/')[1]}` ;
+        const uniqueSuffix = `${Date.now()}-${Math.round( Math.random() * 1e9 )}` ;
+
+        const key = `${folder}/${prefix}-${uniqueSuffix}.${file.mimetype.split('/')[1]}` ;
 
 
         await s3Client.send( new PutObjectCommand( {
@@ -26,6 +28,13 @@ export class S3UploadService {
 
 
         return `https://${S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`
+
+    }
+
+
+    uploadFiles( files : Express.Multer.File[], folder : string, entityId? : number ) : Promise<string[]> {
+
+        return Promise.all( files.map( (file) => this.uploadFile( file, folder, entityId ) ) )
 
     }
 
