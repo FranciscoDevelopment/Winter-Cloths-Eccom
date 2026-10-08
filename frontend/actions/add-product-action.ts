@@ -21,7 +21,9 @@ export async function addNewProduct( accessToken : string | null , prevState : a
 
         categoryId: formData.get("categoryId"),
 
-        imageUrl: formData.get("image")
+        images: formData.getAll("images"),
+
+        description: formData.get("description") || undefined
 
     })
 

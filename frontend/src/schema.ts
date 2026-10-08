@@ -4,7 +4,8 @@ export const ProductSchema = z.object(
     {
         id: z.number(),
         name: z.string(),
-        image: z.string(),
+        images: z.array( z.string() ).max(3),
+        description: z.string().nullable().optional(),
         price: z.coerce.number(),
         inventory: z.number(),
         categoryId: z.number()
@@ -24,7 +25,8 @@ export const ProductFormSchema = z.object({
     price: z.coerce.number({message: 'Precio no válido'}).min(1, {message: 'El Precio debe ser mayor a 0'}),
     inventory: z.coerce.number({message: 'Inventario no válido'}).min(1, {message: 'El inventario debe ser mayor a 0'}),
     categoryId: z.coerce.number({message: 'La Categoria no es válida'}),
-    imageUrl: z.string().optional()
+    images: z.array( z.string() ).min(1, {message: 'Subí al menos una imagen'}).max(3, {message: 'Como máximo 3 imágenes'}),
+    description: z.string().max(500, {message: 'La descripción es muy larga'}).optional()
 })
 
 export const CategorySchema = z.object(
@@ -46,13 +48,13 @@ export const CategoriesResponseSchema = z.array( CategorySchema )
 const ShoppingCartContentsSchema = ProductSchema.pick(
     {
         name: true,
-        image: true,
         price: true,
         inventory: true,
 
     }
 ).extend(
     {
+        image: z.string(),
         productId: z.number(),
         quantity: z.number()
     }

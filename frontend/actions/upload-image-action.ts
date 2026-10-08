@@ -1,6 +1,6 @@
 "use server"
 
-export async function uploadImage ( formData : FormData, accessToken : string | null ) : Promise<string> {
+export async function uploadImage ( formData : FormData, accessToken : string | null ) : Promise<string[]> {
 
     const url = `${process.env.API_URL}/products/upload-only-image`
 
@@ -15,11 +15,11 @@ export async function uploadImage ( formData : FormData, accessToken : string | 
     } ) ;
 
 
-    if( !request.ok ) throw new Error("Can't upload the image")
+    if( !request.ok ) throw new Error("Can't upload the images")
 
-    
-    const image = await request.text() ;
 
-    return image
+    const images : string[] = await request.json() ;
+
+    return images
 
 }

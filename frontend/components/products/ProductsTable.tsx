@@ -53,7 +53,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 
                                             <Image
-                                                src={product.image}
+                                                src={product.images[0]}
                                                 alt={`Image for the product ${product.name}`}
                                                 width={120}
                                                 height={120}

@@ -19,7 +19,9 @@ export async function updateProduct ( productId : productT['id'], accessToken : 
 
             categoryId: formData.get("categoryId"),
 
-            imageUrl: formData.get("image") || undefined
+            images: formData.getAll("images"),
+
+            description: formData.get("description") || undefined
         }
     )
 
