@@ -129,6 +129,13 @@ export const TransactionResponseSchema = z.object({
     contents: z.array( ContentsSchemas ) ,
 })
 
+
+export const CategoryFormSchema = z.object({
+    name: z.string().min(1, {message: 'El Nombre de la Categoría no puede ir vacío'})
+})
+
+
+
 export const TransactionsResponseSchema = z.array( TransactionResponseSchema ) ;
 
 export const ShoppingCartSchema = z.array( ShoppingCartContentsSchema )

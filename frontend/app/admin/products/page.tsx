@@ -59,12 +59,24 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
 
                 <h1 className="text-xl px-2 underline ">Admin Products</h1>
 
-                <Link
-                    href='/admin/products/new'
-                    className="rounded text-base bg-lime-400 font-bold py-2 px-10 text-cyan-900"
-                >
-                    New Product
-                </Link>
+                <div className="flex gap-3">
+
+                    <Link
+                        href='/admin/categories/new'
+                        className="rounded  text-base bg-green-200 font-bold py-2 px-8 text-teal-800"
+                    >
+                        Add Category
+                    </Link>
+
+
+                    <Link
+                        href='/admin/products/new'
+                        className="rounded text-base bg-lime-400 font-bold py-2 px-10 text-cyan-900"
+                    >
+                        New Product
+                    </Link>
+
+                </div>
 
             </div>
 
