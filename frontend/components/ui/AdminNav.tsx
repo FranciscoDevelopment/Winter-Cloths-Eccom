@@ -11,24 +11,24 @@ export default function AdminNav () {
                 <Logo/> 
             </article>
         
-            <section className="flex gap-2 items-center" >
+            <section className="flex gap-4 items-center" >
 
                 <Link
-                    className="rounded text-white font-bold p-2"
+                    className="rounded text-white font-bold py-2 px-4 bg-gray-600/65 transition-all duration-300 hover:bg-gray-500/35 hover:shadow-inner"
                     href={'/admin/products'}
                 >
                     Products
                 </Link>
 
                 <Link
-                    className="rounded text-white font-bold p-2"
+                    className="rounded text-white font-bold py-2 px-4 bg-gray-600/65 transition-all duration-300 hover:bg-gray-500/35 hover:shadow-inner"
                     href={'/admin/sales'}
                 >
                     Sales
                 </Link>
-                
+
                 <Link
-                    className="rounded bg-green-400 text-slate-800 font-bold py-2 px-10"
+                    className="rounded bg-green-400 text-slate-800 font-bold py-2 px-8 transition-all duration-300 hover:bg-green-300/90"
                     href={'/'}
                 >
                     Shop Main

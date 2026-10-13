@@ -63,7 +63,7 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
 
                     <Link
                         href='/admin/categories/new'
-                        className="rounded  text-base bg-green-200 font-bold py-2 px-8 text-teal-800"
+                        className="rounded  text-base bg-emerald-200/90 font-bold py-2 px-6 text-teal-800 transition-all duration-300 hover:bg-emerald-300/85 hover:shadow-md"
                     >
                         Add Category
                     </Link>
@@ -71,9 +71,9 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
 
                     <Link
                         href='/admin/products/new'
-                        className="rounded text-base bg-lime-400 font-bold py-2 px-10 text-cyan-900"
+                        className="rounded text-base bg-lime-400 font-bold py-2 px-6 text-cyan-900 transition-all duration-300 hover:bg-lime-400/75 hover:shadow-md"
                     >
-                        New Product
+                        Add New Product
                     </Link>
 
                 </div>
