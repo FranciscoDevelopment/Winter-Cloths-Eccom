@@ -51,7 +51,7 @@ export default function NewCategoryForm ( {children} : childrenProps ) {
 
             <input
                 type="submit"
-                className="rounded bg-lime-400 font-bold py-2 w-full cursor-pointer"
+                className="rounded font-bold py-2 w-1/2 cursor-pointer block ml-auto bg-emerald-200/90 px-6 text-teal-800 transition-all duration-300 hover:bg-emerald-300/85 hover:shadow-md"
                 value="Add Category"
             />
 
