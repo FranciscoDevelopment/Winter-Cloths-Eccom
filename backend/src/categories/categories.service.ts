@@ -39,6 +39,7 @@ export class CategoriesService {
 
   async findOne(id: number , products? : string ) {
 
+    /*
     const optionsProductsEager : FindManyOptions<Category> = {
       where: {id: id}
     }
@@ -53,8 +54,26 @@ export class CategoriesService {
       }
 
     }
+    */
 
-    const category = await this.categoryRepository$.findOne( optionsProductsEager ) ;
+
+    if( products === "true" ) {
+
+      const categoryFiltered = await this.categoryRepository$
+        .createQueryBuilder("categ")
+        .leftJoinAndSelect("categ.products", "products", "products.isActivate = :isActive", {isActive: true})
+        .where('categ.id = :id', {id})
+        .orderBy('products.id', "ASC")
+        .getOne()
+      ;
+
+      if( !categoryFiltered ) throw new NotFoundException( "The category doesn't exist" ) ;
+
+      return categoryFiltered
+
+    }
+
+    const category = await this.categoryRepository$.findOne( {where: {id}} ) ;
 
     if( !category )  throw new NotFoundException( "The category doesn't exist" )  //404 ; 
 
