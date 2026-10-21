@@ -34,3 +34,12 @@ export const inventoryProductSchema : ColumnOptions = {
 export const categoryIdProductSchema : ColumnOptions = {
     type: "int"
 } as const
+
+
+export const isActiveProductSchema : ColumnOptions = {
+
+    type: "boolean" ,
+
+    default: true
+
+} as const
