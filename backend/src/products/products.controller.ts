@@ -79,6 +79,15 @@ export class ProductsController {
 
 
   @Auth(RoleEnum.ADMIN)
+  @Patch( ":id/deactivate" )
+  deactivate( @Param( "id", IdValidationPipe ) id : string ) {
+
+    return this.productsService.deactivate(+id)
+
+  }
+
+
+  @Auth(RoleEnum.ADMIN)
   @Post(":id/image")
   @UseInterceptors( FilesInterceptor( "files", MAX_PRODUCT_IMAGES, {storage: memoryStorage() } ) )
   uploadImagePost(
