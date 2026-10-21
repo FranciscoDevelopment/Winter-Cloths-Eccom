@@ -8,7 +8,9 @@ export const ProductSchema = z.object(
         description: z.string().nullable().optional(),
         price: z.coerce.number(),
         inventory: z.number(),
-        categoryId: z.number()
+        categoryId: z.number(),
+        isActive: z.boolean(),
+        canDelete: z.boolean().optional() // solo admin
     }
 )
 
