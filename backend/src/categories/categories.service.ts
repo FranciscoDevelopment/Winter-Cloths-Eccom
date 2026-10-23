@@ -61,7 +61,7 @@ export class CategoriesService {
 
       const categoryFiltered = await this.categoryRepository$
         .createQueryBuilder("categ")
-        .leftJoinAndSelect("categ.products", "products", "products.isActivate = :isActive", {isActive: true})
+        .leftJoinAndSelect("categ.products", "products", "products.isActive = :isActive", {isActive: true})
         .where('categ.id = :id', {id})
         .orderBy('products.id', "ASC")
         .getOne()

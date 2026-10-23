@@ -21,6 +21,7 @@ export class ProductsService {
 
     private readonly s3UploadService : S3UploadService,
 
+    @InjectRepository( TransactionContents )
     private readonly transactionContentsRepository$ : Repository<TransactionContents>
   ) {}
 
