@@ -6,17 +6,20 @@ import { productT } from "@/src/schema"
 import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 import DeleteProductForm from "./DeleteProductForm"
 import { Inter } from "next/font/google"
+import DeactivateProductForm from "./DeactivateProductForm"
 
 type productActionsMenuPropsT = {
 
     productId : productT['id']
     
-    productName : productT['name']
+    productName : productT['name'] ,
+
+    canDelete : boolean
 
 }
 const inter = Inter( { subsets: ["latin"] } )
 
-export default function ProductActionMenu ( {productId, productName} : productActionsMenuPropsT ) {
+export default function ProductActionMenu ( {productId, productName, canDelete} : productActionsMenuPropsT ) {
 
     const accessToken = useAuthStore( (state) => state.accessToken ) ;
 
@@ -61,7 +64,9 @@ export default function ProductActionMenu ( {productId, productName} : productAc
                 Edit <span className="sr-only">{productName}</span>
             </Link>
 
-            <DeleteProductForm productId={productId} accessToken={accessToken} />
+            <DeactivateProductForm productId={productId} accessToken={accessToken} />
+
+            <DeleteProductForm productId={productId} accessToken={accessToken} canDelete={canDelete} />
 
         </main>
 
