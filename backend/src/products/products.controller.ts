@@ -79,6 +79,15 @@ export class ProductsController {
 
 
   @Auth(RoleEnum.ADMIN)
+  @Patch( ":id/activate" )
+  activate( @Param( "id", IdValidationPipe ) id : string ) {
+
+    return this.productsService.activate(+id)
+
+  }
+
+
+  @Auth(RoleEnum.ADMIN)
   @Patch( ":id/deactivate" )
   deactivate( @Param( "id", IdValidationPipe ) id : string ) {
 

@@ -195,6 +195,19 @@ export class ProductsService {
   }
 
 
+  async activate ( id : number ) {
+
+    await this.findOne(id) ;
+
+    await this.productsRepository$.update( id, {isActive: true} )
+
+    return {
+      message: `Product #${id} is visible on the storefront again`
+    }
+
+  }
+
+
   async deactivate ( id : number ) {
 
     await this.findOne(id) ;

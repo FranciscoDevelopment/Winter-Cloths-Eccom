@@ -81,7 +81,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                                         <td className="relative py-4 pl-3 pr-4  text-right text-sm font-medium sm:pr-0 bg-amber-100">
                                             <menu className='flex p-3 justify-end items-center'>
 
-                                                <ProductActionMenu productId={product.id} productName={product.name} />
+                                                <ProductActionMenu productId={product.id} productName={product.name} canDelete={!!product.canDelete} isActive={product.isActive} />
 
                                             </menu>
                                         </td>

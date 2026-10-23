@@ -11,15 +11,17 @@ import DeactivateProductForm from "./DeactivateProductForm"
 type productActionsMenuPropsT = {
 
     productId : productT['id']
-    
+
     productName : productT['name'] ,
 
-    canDelete : boolean
+    canDelete : boolean ,
+
+    isActive : boolean
 
 }
 const inter = Inter( { subsets: ["latin"] } )
 
-export default function ProductActionMenu ( {productId, productName, canDelete} : productActionsMenuPropsT ) {
+export default function ProductActionMenu ( {productId, productName, canDelete, isActive} : productActionsMenuPropsT ) {
 
     const accessToken = useAuthStore( (state) => state.accessToken ) ;
 
@@ -64,7 +66,7 @@ export default function ProductActionMenu ( {productId, productName, canDelete} 
                 Edit <span className="sr-only">{productName}</span>
             </Link>
 
-            <DeactivateProductForm productId={productId} accessToken={accessToken} />
+            <DeactivateProductForm productId={productId} accessToken={accessToken} isActive={isActive} />
 
             <DeleteProductForm productId={productId} accessToken={accessToken} canDelete={canDelete} />
 
