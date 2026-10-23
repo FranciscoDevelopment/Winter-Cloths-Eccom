@@ -12,7 +12,7 @@ type productsTablePropsT = {
 
 export default function ProductsTable( {products} : productsTablePropsT ) {
 
-    const outStockStylingClass = "bg-rose-800 rounded-lg px-3 py-1 text-white text-center text-sm uppercase font-semibold"
+    const outStockStylingClass = "bg-rose-800 rounded-lg px-3 py-1 text-white text-center text-md uppercase font-semibold"
 
 
     return (
@@ -28,20 +28,20 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
 
                             <thead>
                                 <tr>
-                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-900 sm:pl-0">
                                     Image
                                 </th>
 
-                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-900 sm:pl-0">
                                     Product
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                <th scope="col" className="px-3 py-3.5 text-left text-md font-semibold text-gray-900">
                                     Price
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                <th scope="col" className="w-px whitespace-nowrap px-3 py-3.5 text-left text-md font-semibold text-gray-900">
                                     Stock Inventory
                                 </th>
-                                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                                <th scope="col" className="relative w-px whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                                     <span className="sr-only">Actions</span>
                                 </th>
                                 </tr>
@@ -50,7 +50,7 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                                 {products.map(product => (
                                     <tr key={product.id} >
                                         
-                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">
 
                                             <Image
                                                 src={product.images[0]}
@@ -60,26 +60,31 @@ export default function ProductsTable( {products} : productsTablePropsT ) {
                                                 priority
                                             />
 
+                                            {
+                                                !product.isActive &&
+                                                    ( <p className="mt-1 rounded-lg px-2 py-0.5 text-amber-700 bg-amber-50 text-xs font-semibold text-center">Disabled</p> )
+                                            }
+
                                         </td>
 
-                                        <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                        <td className="py-4 pl-4 pr-3 text-md font-medium text-gray-900 sm:pl-0">
                                             {product.name}
                                         </td>
 
-                                        <td className="px-3 py-4 text-sm font-semibold text-gray-500">
+                                        <td className="px-3 py-4 text-md font-semibold text-gray-500">
                                             {FormatCurrency(product.price)}
                                         </td>
 
-                                        <td className="px-3 py-4 text-sm text-gray-500">
-                                            {   
-                                                isAvailableByStock( product.inventory ) 
+                                        <td className="w-px whitespace-nowrap px-3 py-4 text-md text-gray-500">
+                                            {
+                                                isAvailableByStock( product.inventory )
                                                     ? ( <p className="font-semibold text-center" >{product.inventory}</p>)  
                                                     : <p className={outStockStylingClass} >Out of stock</p> }
                                             
                                         </td>
 
-                                        <td className="relative py-4 pl-3 pr-4  text-right text-sm font-medium sm:pr-0 bg-amber-100">
-                                            <menu className='flex p-3 justify-end items-center'>
+                                        <td className="relative w-px whitespace-nowrap py-4 pl-3 pr-4 text-right text-md font-medium sm:pr-0 bg-amber-100">
+                                            <menu className='flex p-1 justify-end items-center'>
 
                                                 <ProductActionMenu productId={product.id} productName={product.name} canDelete={!!product.canDelete} isActive={product.isActive} />
 

@@ -23,7 +23,7 @@ export default function DeactivateProductForm ( {productId, accessToken, isActiv
 
             <input
                 type="submit"
-                className="rounded-xl text-amber-700 hover:text-amber-800 cursor-pointer my-2 p-2 bg-amber-50 text-md font-semibold"
+                className="rounded-xl text-amber-700 hover:text-amber-800 cursor-pointer p-2 bg-amber-50 text-md font-semibold"
                 value={isActive ? "Disable" : "Enable"}
             />
 

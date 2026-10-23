@@ -45,7 +45,7 @@ export default function DeleteProductForm ( {productId, accessToken, canDelete} 
                 onClick={ () => canDelete && setIsOpen(true) }
                 disabled={ !canDelete }
                 title={ !canDelete ? "Can't delete: this product has purchases history. Disableit instead." : undefined }
-                className="text-red-700 hover:text-red-800 cursor-pointer my-2 p-2 bg-pink-50 text-md font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-red-700 hover:text-red-800 cursor-pointer p-2 bg-pink-50 text-md font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
             >
                 Delete
             </button>

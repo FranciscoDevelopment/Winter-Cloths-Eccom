@@ -57,11 +57,11 @@ export default function ProductActionMenu ( {productId, productName, canDelete, 
     return (
 
 
-        <main className={`${inter.className} flex flex-col gap-1 justify-center items-start divide-y divide-slate-400/70`}>
+        <main className={`${inter.className} flex flex-col gap-4 justify-center items-start `}>
 
             <Link
                 href={`/admin/products/${productId}/edit`}
-                className="text-indigo-700 hover:text-indigo-800 rounded-xl p-2 my-2 bg-green-50 text-lg font-semibold"
+                className="text-indigo-700 hover:text-indigo-800 rounded-xl p-2 mb-2 bg-green-50 text-lg font-semibold"
             >
                 Edit <span className="sr-only">{productName}</span>
             </Link>
