@@ -1,7 +1,6 @@
 "use server"
 
 import { ErrorResponseSchema, CategoryFormSchema, categoryT } from "@/src/schema";
-import { success } from "zod/v4";
 
 
 type actionStateT = {
@@ -67,7 +66,7 @@ export async function updateCategory ( categoryId : categoryT['id'] , accessToke
 
 
         return {
-            error: messages,
+            errors: messages,
             success: ""
         }
 
