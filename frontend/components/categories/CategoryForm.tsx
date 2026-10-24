@@ -1,4 +1,11 @@
-export default function CategoryForm () {
+import { categoryT } from "@/src/schema"
+
+type categoryFormPropsT = {
+    category? : categoryT
+}
+
+
+export default function CategoryForm ( {category} : categoryFormPropsT ) {
 
     return (
 
@@ -6,7 +13,7 @@ export default function CategoryForm () {
 
             <article className="space-y-2">
             
-                <label htmlFor="" className="block text-stone-800 font-semibold">
+                <label htmlFor="name" className="block text-stone-800 font-semibold">
                     Name of Category
                 </label>
 
@@ -17,6 +24,7 @@ export default function CategoryForm () {
                     name="name"
                     placeholder="Name of Category"
                     className="border border-gray-300 w-full p-2"
+                    defaultValue={category?.name}
                 />
 
             </article>
