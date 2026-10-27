@@ -76,6 +76,15 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
                         Add New Product
                     </Link>
 
+                    
+                    <Link
+                        href='/admin/categories'
+                        className="rounded text-base bg-sky-200/90 font-bold py-2 px-6 text-sky-800 transition-all duration-300 hover:bg-sky-300/85 hover:shadow-md"    
+                    >
+                        Edit Categories
+                    </Link>
+
+
                 </div>
 
             </div>
