@@ -1,8 +1,6 @@
 import { productT } from "@/src/schema"
 import { FormatCurrency, isAvailableByStock } from "@/src/utils"
 import Image from "next/image"
-import Link from "next/link"
-import DeleteProductForm from "./DeleteProductForm"
 import ProductActionMenu from "./ProductsActionsMenu"
 
 type productsTablePropsT = {
