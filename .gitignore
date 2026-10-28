@@ -1,3 +1,4 @@
 .env
 backend/.env
 backup.sql
+supabase_before_migration_backup.sql
