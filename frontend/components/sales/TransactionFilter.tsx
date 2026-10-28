@@ -10,6 +10,7 @@ import TransactionSummary from "./TransactionSummary"
 import { TransactionProvider } from "./transaction-context-provider"
 import { FormatCurrency } from "@/src/utils"
 import dynamic from "next/dynamic"
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 
 
 const Calendar = dynamic( () => import("react-calendar") , {
@@ -26,9 +27,13 @@ export default function TransactionFilter () {
     const formattedDate = format( (date instanceof Date ? date : new Date()), "yyyy-MM-dd" ) ;
 
 
+    const accessToken = useAuthStore( (state) => state.accessToken ) ;
+
+
     const { data, isLoading } = useQuery({
-        queryKey: ["sales", formattedDate],
-        queryFn: () => getSalesByDate(formattedDate)
+        queryKey: ["sales", formattedDate, accessToken],
+        queryFn: () => getSalesByDate(formattedDate, accessToken),
+        enabled: !!accessToken
     })
 
 
@@ -39,11 +44,10 @@ export default function TransactionFilter () {
 
     return (
     
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 relative items-start" >
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-2 relative items-start" >
 
             <section className="lg:sticky lg:top-10" >
 
-                <br />
                 
                 <Calendar
                     value={date}

@@ -3,6 +3,7 @@ import Logo from "./ui/Logo";
 import Link from "next/link";
 //import { redirect } from "next/dist/server/api-utils";
 import { redirect } from "next/navigation"
+import AuthNavButton from "./ui/AuthNavButton";
 
 const getCategories = async () => {
 
@@ -48,11 +49,13 @@ export default async function MainNav () {
 
                 {categories.map( (category) => (
 
-                    <Link key={category.id} href={ `${category.id}` } className="text-slate-100 hover:text-green-400 font-bold p-2">
+                    <Link key={category.id} href={ `/${category.id}` } className="text-slate-100 hover:text-green-400 font-bold p-2">
                         {category.name}
                     </Link>
 
                 ) )}
+
+                <AuthNavButton/>
 
             </nav>
         

@@ -1,13 +1,15 @@
 "use server"
 
 import { ErrorResponseSchema, ProductFormSchema } from "@/src/schema";
+import { error } from "console";
+import { success } from "zod/v4";
 
 type actionStateT = {
     errors : string[] ;
     success : string
 }
 
-export async function addNewProduct( prevState : actionStateT , formData : FormData ) {
+export async function addNewProduct( accessToken : string | null , prevState : actionStateT , formData : FormData ) {
 
     const product = ProductFormSchema.safeParse({
 
@@ -19,7 +21,9 @@ export async function addNewProduct( prevState : actionStateT , formData : FormD
 
         categoryId: formData.get("categoryId"),
 
-        imageUrl: formData.get("image")
+        images: formData.getAll("images"),
+
+        description: formData.get("description") || undefined
 
     })
 
@@ -41,7 +45,8 @@ export async function addNewProduct( prevState : actionStateT , formData : FormD
     const request = await fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            ...( accessToken  ?  {Authorization: `Bearer ${accessToken}`}  :  {} )
         },
         body: productJson
     } ) ;
@@ -54,8 +59,13 @@ export async function addNewProduct( prevState : actionStateT , formData : FormD
 
         const errors = ErrorResponseSchema.parse(response)
 
+        const messages = Array.isArray( errors.message.message )
+            ? errors.message.message
+            : [errors.message.message]
+        ;
+
         return {
-            errors: errors.message.map( (issue) => issue ),
+            errors: messages,
             success: ""
         }
     }

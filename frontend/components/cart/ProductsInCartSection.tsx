@@ -2,7 +2,7 @@
 
 import ShoppingCartItem from "./ShoppingCartItem"
 import Amount from "./Amount"
-import { useStore } from "@/src/store-zustand"
+import { useStore } from "@/src/store-zustand/store-zustand"
 import { FormatCurrency } from "@/src/utils"
 import CouponForm from "./CouponForm"
 import SubmitOrderForm from "./SubmitOrderForm"

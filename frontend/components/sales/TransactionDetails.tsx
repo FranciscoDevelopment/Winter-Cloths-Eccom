@@ -18,7 +18,7 @@ export default function TransactionDetails () {
 
                         <div className='relative w-32 h-32'>
                             <Image
-                                src={item.product.image}
+                                src={item.product.images[0]}
                                 alt={`Image for the product ${item.product.name}`}
                                 className="absolute"
                                 fill

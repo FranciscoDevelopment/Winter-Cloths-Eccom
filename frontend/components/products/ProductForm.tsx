@@ -31,7 +31,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="name"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Name of Product
                 </label>
@@ -51,7 +51,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="price"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Price
                 </label>
@@ -71,7 +71,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="inventory"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Stock inventory
                 </label>
@@ -91,7 +91,7 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
                 <label
                     htmlFor="categoryId"
-                    className="block"
+                    className="block text-stone-800 font-semibold"
                 >
                     Category
                 </label>
@@ -118,8 +118,28 @@ export default async function ProductForm( {product} : productFormPropsT ) {
 
             </article>
 
+            <article className="space-y-2 ">
+
+                <label
+                    htmlFor="description"
+                    className="block text-stone-800 font-semibold"
+                >
+                    Description (optional)
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Descripción del producto"
+                    className="border border-gray-300 w-full p-2"
+                    name="description"
+                    rows={4}
+                    maxLength={500}
+                    defaultValue={product?.description ?? ""}
+                />
+            </article>
+
             <UploadProductImage
-                currentImage={product?.image}
+                currentImages={product?.images}
             />
 
         </section>

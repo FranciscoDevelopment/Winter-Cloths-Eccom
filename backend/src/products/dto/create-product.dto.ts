@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { ArrayMaxSize, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class CreateProductDto {
 
@@ -23,7 +23,14 @@ export class CreateProductDto {
     categoryId! : number ;
 
     @IsOptional()
-    @IsString()
-    imageUrl? : string
+    @IsArray( {message: "Images must be an array"} )
+    @ArrayMaxSize( 3, {message: "You can upload up to 3 images"} )
+    @IsString( {each: true, message: "Each image must be a valid URL"} )
+    images? : string[]
+
+    @IsOptional()
+    @IsString( {message: "The description is not valid"} )
+    @MaxLength( 90, {message: "The description can't exceed 500 characters"} )
+    description? : string
 
 }

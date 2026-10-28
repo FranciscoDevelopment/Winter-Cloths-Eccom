@@ -7,13 +7,18 @@ export const productNameSchema : ColumnOptions = {
 
 } as const
 
-export const imageProductSchema : ColumnOptions = {
+export const imagesProductSchema : ColumnOptions = {
 
-    type: "varchar" ,
-    length: 120,
-    nullable: true ,
-    default: "default.svg"
+    type: "text" ,
+    array: true,
+    default: '{}'
 
+} as const
+
+export const descriptionProductSchema : ColumnOptions = {
+
+    type: "text",
+    nullable: true
 } as const
 
 export const priceProductSchema : ColumnOptions = {
@@ -28,4 +33,13 @@ export const inventoryProductSchema : ColumnOptions = {
 
 export const categoryIdProductSchema : ColumnOptions = {
     type: "int"
+} as const
+
+
+export const isActiveProductSchema : ColumnOptions = {
+
+    type: "boolean" ,
+
+    default: true
+
 } as const

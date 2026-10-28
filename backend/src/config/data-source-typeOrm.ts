@@ -16,6 +16,6 @@ export const appDataSourceForTypeOrmCliCommands = new DataSource( {
     entities: [ join( __dirname, '../../**/*.entity.{js,ts}' ) ] ,
     migrations: [ join(__dirname, '../../migrations/**/*.{js,ts}') ]
 
-
+    //adapt to main
 
 } )

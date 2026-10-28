@@ -1,6 +1,7 @@
 "use client"
 
 import { isServer, QueryClient, QueryClientProvider } from "@tanstack/react-query" ;
+import { useAuthBootstrap } from "@/src/hooks/use-auth-bootstrap";
 
 type childrenProps = Readonly< {children: React.ReactNode} >
 
@@ -34,6 +35,8 @@ function getQueryClient () {
 export default function Providers( {children} : childrenProps ) {
 
     const queryClient = getQueryClient() ;
+
+    useAuthBootstrap()
 
     return(
         <QueryClientProvider

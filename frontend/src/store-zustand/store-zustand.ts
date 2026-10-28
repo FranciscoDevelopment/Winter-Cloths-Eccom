@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import { CouponResponseSchema, couponT, productT, shoppingCartT } from "./schema"
+import { CouponResponseSchema, couponT, productT, shoppingCartT } from "../schema"
 
 type storeT = {
     
@@ -51,7 +51,7 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
 
         addToCart: ( product ) => {
 
-            const { id: productId, ...data } = product ;
+            const productId = product.id ;
 
             let contents : shoppingCartT = [] ;
 
@@ -62,7 +62,7 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 if( get().contents[duplicated].quantity >= get().contents[duplicated].inventory ) return ;
 
                 contents = get().contents.map( (item) => {
-                    
+
                     return item.productId === productId
                                             ? {...item, quantity: item.quantity + 1  }
                                             : item
@@ -70,7 +70,10 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
                 } )
             } else {
                 contents = [ ...get().contents , {
-                    ...data,
+                    name: product.name,
+                    image: product.images[0],
+                    price: product.price,
+                    inventory: product.inventory,
                     quantity: 1 ,
                     productId
                 } ]
@@ -135,13 +138,18 @@ export const useStore = create<storeT>()( devtools( ( set, get ) => {
             const request = await fetch( `/coupons/api`, {
 
                 method: "POST",
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     cupon_name: couponName
                 })
 
             } )
-
+            
             const data = await request.json() ;
+            
+            if( !request.ok ) {
+                throw new Error( "Invalid Coupon" )
+            }
 
 
             const coupon = CouponResponseSchema.parse(data) ;

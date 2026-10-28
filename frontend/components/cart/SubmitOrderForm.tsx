@@ -1,5 +1,8 @@
+"use client"
+
 import { submitOrder } from "@/actions/submit-order-actions"
-import { useStore } from "@/src/store-zustand"
+import { useAuthStore } from "@/src/store-zustand/store-auth-zustand";
+import { useStore } from "@/src/store-zustand/store-zustand"
 import { useActionState, useEffect } from "react"
 import { toast } from "react-toastify";
 
@@ -13,6 +16,12 @@ export default function SubmitOrderForm () {
     const contents = useStore( (state) => state.contents ) ;
 
     const clearOrder = useStore( (state) => state.clearOrder ) ;
+
+    const isAuthenticated = useAuthStore( (state) => !!state.accessToken ) ;
+
+    const hasHydrated = useAuthStore( (state) => state.hasHydrated ) ;
+
+    const accessToken = useAuthStore( (state) => state.accessToken )
 
     const orderFormatContents = contents.map( ( {price, ...item} ) => {
         return {
@@ -28,7 +37,7 @@ export default function SubmitOrderForm () {
     }
 
 
-    const submitOrderWithData = submitOrder.bind(null, orderFull) ; 
+    const submitOrderWithData = submitOrder.bind(null, orderFull, accessToken) ; 
 
     const [ state, dispatch ] = useActionState( submitOrderWithData , {
         errors: [],
@@ -56,12 +65,13 @@ export default function SubmitOrderForm () {
         <form action={dispatch}>
 
             <input
-                type="submit" 
+                type="submit"
+                disabled={ !hasHydrated || !isAuthenticated }
                 className="
                     mt-5 w-full bg-indigo-500 hover:bg-indigo-600 text-yellow-100 uppercase
                     font-bold p-3
                 "
-                value="Confirm purchase"
+                value={ isAuthenticated  ?  "Confirm purchase"  :  "Login or Sign in to buy"}
             />
 
         </form>

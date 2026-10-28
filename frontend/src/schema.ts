@@ -4,10 +4,13 @@ export const ProductSchema = z.object(
     {
         id: z.number(),
         name: z.string(),
-        image: z.string(),
+        images: z.array( z.string() ).max(3),
+        description: z.string().nullable().optional(),
         price: z.coerce.number(),
         inventory: z.number(),
-        categoryId: z.number()
+        categoryId: z.number(),
+        isActive: z.boolean(),
+        canDelete: z.boolean().optional() // solo admin
     }
 )
 
@@ -24,7 +27,8 @@ export const ProductFormSchema = z.object({
     price: z.coerce.number({message: 'Precio no válido'}).min(1, {message: 'El Precio debe ser mayor a 0'}),
     inventory: z.coerce.number({message: 'Inventario no válido'}).min(1, {message: 'El inventario debe ser mayor a 0'}),
     categoryId: z.coerce.number({message: 'La Categoria no es válida'}),
-    imageUrl: z.string().optional()
+    images: z.array( z.string() ).min(1, {message: 'Subí al menos una imagen'}).max(3, {message: 'Como máximo 3 imágenes'}),
+    description: z.string().max(500, {message: 'La descripción es muy larga'}).optional()
 })
 
 export const CategorySchema = z.object(
@@ -46,13 +50,13 @@ export const CategoriesResponseSchema = z.array( CategorySchema )
 const ShoppingCartContentsSchema = ProductSchema.pick(
     {
         name: true,
-        image: true,
         price: true,
         inventory: true,
 
     }
 ).extend(
     {
+        image: z.string(),
         productId: z.number(),
         quantity: z.number()
     }
@@ -90,11 +94,26 @@ export const SuccessResponseSchema = z.object({
     message: z.string()
 })
 
+/*
 export const ErrorResponseSchema = z.object({
     message: z.array( z.string() ),
     error: z.string() ,
     statusCode: z.number()
 })
+*/
+
+// schema.ts
+export const ErrorResponseSchema = z.object({
+    statusCode: z.number(),
+    path: z.string(),
+    timestamp: z.string(),
+    message: z.object({
+        statusCode: z.number(),
+        message: z.union([ z.string(), z.array(z.string()) ]),
+        error: z.string()
+    })
+})
+
 
 export const ContentsSchemas = z.object({
     id: z.number(),
@@ -112,6 +131,13 @@ export const TransactionResponseSchema = z.object({
     contents: z.array( ContentsSchemas ) ,
 })
 
+
+export const CategoryFormSchema = z.object({
+    name: z.string().min(1, {message: 'El Nombre de la Categoría no puede ir vacío'})
+})
+
+
+
 export const TransactionsResponseSchema = z.array( TransactionResponseSchema ) ;
 
 export const ShoppingCartSchema = z.array( ShoppingCartContentsSchema )
@@ -125,3 +151,6 @@ export type cartItemT = z.infer< typeof ShoppingCartContentsSchema >
 export type couponT = z.infer<typeof CouponResponseSchema> ;
 
 export type transactionT = z.infer< typeof TransactionResponseSchema > ;
+
+
+export type categoryT = z.infer< typeof CategorySchema >

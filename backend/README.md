@@ -1,98 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Proceso para implementar Autentificación y Autorización de Usuarios con roles de clientes o de admin
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Paso 1 — Scaffolding del módulo de usuarios
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> Commit: `feat: implement user management module with DTOs, entity, controller, and service`
 
-## Description
+Primer paso hacia la autenticación/autorización: se creó el módulo `users` completo (entidad, DTOs, enum de roles, controller y service), siguiendo el mismo patrón de `schemas/*.schema.ts` que ya usan `products`, `categories`, `cupons` y `transactions`.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Archivos creados
 
-## Project setup
+```
+backend/src/users/
+├── dto/
+│   ├── create-user.dto.ts
+│   └── update-user.dto.ts
+├── entities/
+│   └── user.entity.ts
+├── enums/
+│   └── role.enum.ts
+├── schemas/
+│   └── user.schema.ts
+├── types/
+│   └── user.types.ts
+├── users.controller.ts
+├── users.module.ts
+└── users.service.ts
 
-```bash
-$ pnpm install
+backend/src/common/regex/
+└── some-regex.ts
 ```
 
-## Compile and run the project
+Y se registró `UsersModule` en `app.module.ts`.
 
-```bash
-# development
-$ pnpm run start
+### 1. Rol del usuario (`enums/role.enum.ts`)
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+```ts
+export enum Role {
+    USER = "USER",
+    ADMIN = "ADMIN"
+}
 ```
 
-## Run tests
+### 2. Columnas de la entidad (`schemas/user.schema.ts`)
 
-```bash
-# unit tests
-$ pnpm run test
+Cada columna vive como una constante `ColumnOptions` separada, igual que en el resto de los módulos:
 
-# e2e tests
-$ pnpm run test:e2e
+- `emailUserSchema` → `varchar`, `unique: true`
+- `passwordUserSchema` → `varchar`
+- `nameUserSchema` → `varchar`, `length: 60`
+- `hashedRefreshTokenUserSchema` → `varchar`, `nullable: true`
+- `roleUserSchema` → `enum`, `enum: Role`, `default: Role.USER`
 
-# test coverage
-$ pnpm run test:cov
+### 3. Entidad (`entities/user.entity.ts`)
+
+```ts
+@Entity("users")
+export class User {
+
+    @PrimaryGeneratedColumn("uuid")
+    id! : string
+
+    @Column( emailUserSchema )
+    email! : string
+
+    @Column( passwordUserSchema )
+    password! : string
+
+    @Column( nameUserSchema )
+    name! : string
+
+    @Column( roleUserSchema )
+    role! : Role
+
+    @Column( hashedRefreshTokenUserSchema )
+    hashedRefreshToken! : string | null
+
+    @CreateDateColumn()
+    createdAt! : Date
+
+    @UpdateDateColumn()
+    updatedAt! : Date
+
+}
 ```
 
-## Deployment
+`id` es `uuid` (no autoincremental), pensado para no exponer un id secuencial en un recurso de autenticación.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 4. Validación de entrada (`dto/create-user.dto.ts`)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Con `class-validator`:
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+- `email` → `@IsEmail()`
+- `password` → `@IsString()`, entre 8 y 72 caracteres, `@Matches(passwordRegex)` (mayúscula + minúscula + número) y `@IsStrongPassword()`
+- `name` → `@IsString()`, entre 2 y 50 caracteres
+
+El regex de password se extrajo a `common/regex/some-regex.ts` para poder reutilizarlo:
+
+```ts
+export const passwordRegex : RegExp = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+`update-user.dto.ts` reutiliza el DTO de creación con `PartialType`, como en el resto de los módulos.
 
-## Resources
+### 5. Controller y service
 
-Check out a few resources that may come in handy when working with NestJS:
+Se generó el CRUD base (`create`, `findAll`, `findOne`, `update`, `remove`) siguiendo la convención de Nest CLI. **Por ahora el service todavía son los stubs por default** (`return 'This action adds a new user'`, etc.) — no hay lógica real ni conexión a la base de datos todavía.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## Pendiente para los próximos pasos
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- [ ] Registrar el repositorio en `UsersModule` (`TypeOrmModule.forFeature([User])`) — hoy la entidad existe pero no está conectada al módulo.
+- [ ] Implementar la lógica real de `UsersService` (hashear `password` con `bcrypt` antes de guardar, chequear `email` duplicado, etc.).
+- [ ] Corregir `UsersController`: `findOne`, `update` y `remove` todavía hacen `+id` (lo convierten a `number`), pero el `id` de la entidad es `uuid` (`string`) — hay que sacar esa conversión.
+- [ ] Módulo de `Auth`: login, emisión de JWT, y uso de `hashedRefreshToken` (ya está en la entidad, pensado para esto) para el flujo de refresh token.
+- [ ] Guard de roles (`RolesGuard` + decorador `@Roles()`) para diferenciar rutas de `ADMIN` (ej. `/admin/products`, `/admin/sales`) de rutas de `USER`.

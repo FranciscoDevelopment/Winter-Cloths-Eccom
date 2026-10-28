@@ -9,9 +9,31 @@ import { ProductsModule } from './products/products.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CuponsModule } from './cupons/cupons.module';
 import { S3UploadService } from './s3-upload/s3-upload.service';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/role/roles.guard';
+import { AuthGuard } from './auth/guards/auth/auth.guard';
+
 
 @Module({
   imports: [
+
+    ThrottlerModule.forRoot(
+      [
+        {
+          name: 'long',
+          ttl: 120000,
+          limit: 300
+        },
+        {
+          name: 'short',
+          ttl: 1000,
+          limit: 200   // 100 requests por minuto, generoso para navegación normal
+        }
+      ]
+    ) ,
     
     ConfigModule.forRoot({
       isGlobal: true
@@ -30,10 +52,20 @@ import { S3UploadService } from './s3-upload/s3-upload.service';
   
     TransactionsModule,
   
-    CuponsModule
+    CuponsModule,
+  
+    UsersModule,
+  
+    AuthModule
   
   ],
   controllers: [AppController],
-  providers: [AppService, S3UploadService],
+  providers: [
+    {provide: APP_GUARD, useClass: ThrottlerGuard}, // 1°
+    {provide: APP_GUARD, useClass: AuthGuard},      // 2°
+    {provide: APP_GUARD, useClass: RolesGuard },    // 3°
+    AppService,
+    S3UploadService
+  ],
 })
 export class AppModule {}

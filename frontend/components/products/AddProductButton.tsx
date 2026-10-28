@@ -1,7 +1,7 @@
 "use client"
 
 import { productT } from "@/src/schema"
-import { useStore } from "@/src/store-zustand"
+import { useStore } from "@/src/store-zustand/store-zustand"
 
 type productPropsT = {
     product : productT
