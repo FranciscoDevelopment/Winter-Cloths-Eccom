@@ -2,8 +2,12 @@
 
 import { isServer, QueryClient, QueryClientProvider } from "@tanstack/react-query" ;
 import { useAuthBootstrap } from "@/src/hooks/use-auth-bootstrap";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 type childrenProps = Readonly< {children: React.ReactNode} >
+
+const muiTheme = createTheme()
 
 function makeQueryClient () {
 
@@ -39,11 +43,15 @@ export default function Providers( {children} : childrenProps ) {
     useAuthBootstrap()
 
     return(
-        <QueryClientProvider
-            client={queryClient}
-        >
-            {children}
-        </QueryClientProvider>
+        <AppRouterCacheProvider>
+            <ThemeProvider theme={muiTheme}>
+                <QueryClientProvider
+                    client={queryClient}
+                >
+                    {children}
+                </QueryClientProvider>
+            </ThemeProvider>
+        </AppRouterCacheProvider>
     )
 
 }

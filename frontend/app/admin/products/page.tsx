@@ -62,6 +62,13 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
                 <div className="flex gap-3">
 
                     <Link
+                        href='/admin/categories'
+                        className="rounded text-base bg-sky-200/90 font-bold py-2 px-6 text-sky-800 transition-all duration-300 hover:bg-sky-300/85 hover:shadow-md"    
+                    >
+                        Edit Categories
+                    </Link>
+
+                    <Link
                         href='/admin/categories/new'
                         className="rounded  text-base bg-emerald-200/90 font-bold py-2 px-6 text-teal-800 transition-all duration-300 hover:bg-emerald-300/85 hover:shadow-md"
                     >
@@ -77,12 +84,6 @@ export default async function ProductsPage ( {searchParams} : searchParamsT ) {
                     </Link>
 
                     
-                    <Link
-                        href='/admin/categories'
-                        className="rounded text-base bg-sky-200/90 font-bold py-2 px-6 text-sky-800 transition-all duration-300 hover:bg-sky-300/85 hover:shadow-md"    
-                    >
-                        Edit Categories
-                    </Link>
 
 
                 </div>
