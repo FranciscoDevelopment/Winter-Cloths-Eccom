@@ -60,7 +60,7 @@ export default function DeleteProductForm ( {productId, accessToken, canDelete} 
                             <h2 className="text-lg text-start font-bold text-gray-900">Delete product</h2>
 
                             <p className="text-sm text-gray-600 text-center" >
-                                This action can't be undone.<br/> Type <span className="font-bold">&quot;{CONFIRMATION_PHRASE}&quot;</span> to confirm.
+                                This action can&apos;t be undone.<br/> Type <span className="font-bold">&quot;{CONFIRMATION_PHRASE}&quot;</span> to confirm.
                             </p>
 
                             <form action={handleDeleteProduct} className="space-y-4">

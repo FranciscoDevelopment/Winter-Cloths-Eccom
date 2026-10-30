@@ -32,10 +32,11 @@ export default function AuthNavButton () {
 
             }
 
-            document.addEventListener("mousedown", handleClickOutside) ;
-
-            return () => document.removeEventListener("mousedown", handleClickOutside)
         }
+
+        document.addEventListener("mousedown", handleClickOutside) ;
+
+        return () => document.removeEventListener("mousedown", handleClickOutside)
 
     }, [] )
 

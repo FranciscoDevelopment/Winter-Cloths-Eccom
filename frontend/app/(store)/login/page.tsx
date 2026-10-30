@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/src/store-zustand/store-auth-zustand";
-import type { AuthResponseT, ErrorResponseT, LoginCredentialsT, SessionResponseT } from "@/src/types/auth-responses.type"
+import type { ErrorResponseT, LoginCredentialsT, SessionResponseT } from "@/src/types/auth-responses.type"
 
 
 function LoginForm() {
@@ -122,7 +122,7 @@ function LoginForm() {
 
             <p className="text-md text-center" >
 
-                Don't have an account?
+                Don&apos;t have an account?
                 <Link
                     href="/register"
                     className="text-indigo-500 font-bold m-2"

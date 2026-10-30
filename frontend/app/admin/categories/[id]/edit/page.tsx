@@ -1,9 +1,7 @@
 import EditCategoryForm from "@/components/products/EditCategoryForm";
 import CategoryForm from "@/components/categories/CategoryForm";
 import Heading from "@/components/ui/Heading";
-import { CategorySchema } from "@/src/schema";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { getCategory } from "@/actions/get-single-category-action";
 
 
@@ -14,7 +12,7 @@ type editCategoryPagePropsT = {
     params : paramsT
 }
 
-export default async function ( {params} : editCategoryPagePropsT ) {
+export default async function EditCategoryPage ( {params} : editCategoryPagePropsT ) {
 
     const {id} = await params ;
 

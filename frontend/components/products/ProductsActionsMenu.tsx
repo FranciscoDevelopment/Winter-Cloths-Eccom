@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
 import { productT } from "@/src/schema"
 import { useAuthStore } from "@/src/store-zustand/store-auth-zustand"
 import DeleteProductForm from "./DeleteProductForm"
@@ -24,34 +23,6 @@ const inter = Inter( { subsets: ["latin"] } )
 export default function ProductActionMenu ( {productId, productName, canDelete, isActive} : productActionsMenuPropsT ) {
 
     const accessToken = useAuthStore( (state) => state.accessToken ) ;
-
-    
-    const [ isOpen, setIsOpen ] = useState(false)
-
-
-    const containerRef = useRef<HTMLElement>(null) ;
-
-
-    useEffect( () => {
-
-        const handleClickOutside = ( event : MouseEvent ) => {
-
-            if( containerRef.current && !containerRef.current.contains(event.target as Node) ) {
-                setIsOpen(false)
-            }
-
-        }
-        
-
-        document.addEventListener("mousedown", handleClickOutside) ;
-
-
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-
-    }, [] )
-
-
-
 
 
     return (
