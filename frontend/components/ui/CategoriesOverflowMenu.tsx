@@ -26,6 +26,7 @@ export default function CategoriesOverflowMenu ( {categories} : categoriesOverfl
         <>
             <IconButton
                 onClick={handleOpen}
+                title="View more categories"
                 aria-label="More categories"
                 aria-controls={isOpen ? "categories-overflow-menu" : undefined}
                 aria-haspopup="true"
@@ -47,10 +48,31 @@ export default function CategoriesOverflowMenu ( {categories} : categoriesOverfl
                 anchorEl={anchorEl}
                 open={isOpen}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            backgroundColor: "#374151", // tailwind bg-gray-700, igual que el navbar
+                            fontFamily: "inherit", // hereda la tipografia global (Outfit) en vez del Roboto default de MUI
+                            border: "2px solid white"
+                        }
+                    }
+                }}
             >
                 {categories.map( (category) => (
-                    <MenuItem key={category.id} onClick={handleClose} component={Link} href={`/${category.id}`}>
+                    <MenuItem
+                        key={category.id}
+                        onClick={handleClose}
+                        component={Link}
+                        href={`/${category.id}`}
+                        sx={{
+                            color: "#F1F5F9", // tailwind text-slate-100
+                            fontWeight: 700, // tailwind font-bold
+                            fontFamily: "inherit",
+                            "&:hover": { color: "#4ADE80", backgroundColor: "transparent" } // tailwind hover:text-green-400
+                        }}
+                    >
                         {category.name}
                     </MenuItem>
                 ) )}
